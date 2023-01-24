@@ -21,11 +21,11 @@ public class Arm extends SubsystemBase {
         rotationEncoder = rotationMotor.getEncoder();
     }
 
-    public void Extend() {
+    public void ExtendArm() {
         armSolenoid.set(Value.kForward);
     }
 
-    public void Retract() {
+    public void RetractArm() {
         armSolenoid.set(Value.kReverse);
     }
 
@@ -55,7 +55,7 @@ public class Arm extends SubsystemBase {
         return (rotationEncoder.getPosition() >= rev);
     }
 
-    public void stopMotor() {
+    public void stopRotationMotor() {
         rotationMotor.set(0.0);
     }
 }
