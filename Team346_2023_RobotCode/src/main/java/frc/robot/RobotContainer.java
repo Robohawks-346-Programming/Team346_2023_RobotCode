@@ -4,15 +4,24 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.Drivetrain.JoystickDrive;
+import frc.robot.commands.Drivetrain.SyncEncoder;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Grabber;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LED;
+
+import java.util.function.DoubleSupplier;
+
+import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -27,15 +36,22 @@ public class RobotContainer {
   public static final Arm arm = new Arm();
   public static final Grabber grabber = new Grabber();
   public static final LED led = new LED();
+  public static final Intake intake = new Intake();
+  public final Drivetrain drivetrain = new Drivetrain();
+  public final PS4Controller driverControl = new PS4Controller(Constants.DRIVER_CONTROLLER_PORT);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+
+    DoubleSupplier xAxis = () -> (-driverControl.getLeftY());
+    DoubleSupplier yAxis = () -> (-driverControl.getLeftX());
+    DoubleSupplier thetaAxis = () -> (-driverControl.getRightX());
+
+    drivetrain.setDefaultCommand(new JoystickDrive(drivetrain, xAxis, yAxis, thetaAxis));
   }
 
   /**
@@ -54,7 +70,7 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    new JoystickButton(driverControl, Button.kL2.value).onTrue(new SyncEncoder(drivetrain));
   }
 
   /**
