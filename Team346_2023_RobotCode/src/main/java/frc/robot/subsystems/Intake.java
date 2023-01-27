@@ -26,7 +26,7 @@ public class Intake {
     }
 
     public void RunIntake() {
-        intakeMotor.set(Constants.ARM_MOTOR_SPEED);
+        intakeMotor.set(Constants.INTAKE_MOTOR_SPEED);
     }
     
     public void stopIntakeMotor() {

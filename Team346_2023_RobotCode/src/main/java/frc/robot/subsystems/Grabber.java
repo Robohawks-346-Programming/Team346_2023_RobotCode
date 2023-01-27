@@ -10,7 +10,7 @@ public class Grabber extends SubsystemBase {
     DoubleSolenoid grabberSolenoid;
     
     public Grabber() {
-        grabberSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.GRABBER_OUT_PNEUMATIC_ID, Constants.GRABBER_IN_PNEUMATIC_ID);
+        grabberSolenoid = new DoubleSolenoid(1, PneumaticsModuleType.REVPH, Constants.GRABBER_OUT_PNEUMATIC_ID, Constants.GRABBER_IN_PNEUMATIC_ID);
     }
 
     public void Grab() {
