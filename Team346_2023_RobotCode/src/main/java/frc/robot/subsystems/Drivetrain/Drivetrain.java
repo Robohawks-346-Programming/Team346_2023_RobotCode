@@ -119,7 +119,7 @@ public class Drivetrain extends SubsystemBase{
 
     public void resetEncoders() {
         for (SwerveModule module : modules) {
-            module.resetDistance();
+            module.resetEncoders();
         }
     }
 

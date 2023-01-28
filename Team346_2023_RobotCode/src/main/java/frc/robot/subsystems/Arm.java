@@ -17,26 +17,27 @@ public class Arm extends SubsystemBase {
     
     public Arm() {
         armSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.GRABBER_OUT_PNEUMATIC_ID, Constants.GRABBER_IN_PNEUMATIC_ID);
+        //Need to change to Rev PH
         rotationMotor = new CANSparkMax(Constants.ARM_MOTOR_ID, MotorType.kBrushless);
         rotationEncoder = rotationMotor.getEncoder();
     }
 
-    public void ExtendArm() {
+    public void ExtendArmPneumatic() {
         armSolenoid.set(Value.kForward);
     }
 
-    public void RetractArm() {
+    public void RetractArmPneumatic() {
         armSolenoid.set(Value.kReverse);
     }
 
-    public void RotateUp() {
+    public void RotateArmUp() {
         while(rotationEncoder.getPosition() <= Constants.ARM_REV) {
             rotationMotor.set(Constants.ARM_MOTOR_SPEED);
         }
         rotationMotor.set(0.0);
     }
 
-    public void RotateDown() {
+    public void RotateArmDown() {
         while(rotationEncoder.getPosition() <= Constants.ARM_REV) {
             rotationMotor.set(-Constants.ARM_MOTOR_SPEED);
         }

@@ -17,19 +17,19 @@ public class Intake {
         intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR_ID, MotorType.kBrushless);
     }
 
-    public void ExtendIntake() {
+    public void extendIntake() {
         intakeSolenoid.set(Value.kForward);
     }
 
-    public void RetractIntake() {
+    public void retractIntake() {
         intakeSolenoid.set(Value.kReverse);
     }
 
-    public void RunIntake() {
+    public void runIntake() {
         intakeMotor.set(Constants.INTAKE_MOTOR_SPEED);
     }
     
-    public void stopIntakeMotor() {
+    public void stopIntake() {
         intakeMotor.set(0.0);
     }
 
