@@ -16,7 +16,6 @@ public class Intake {
         intakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.GRABBER_OUT_PNEUMATIC_ID, Constants.GRABBER_IN_PNEUMATIC_ID);
         intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR_ID, MotorType.kBrushless);
     }
-
     public void extendIntake() {
         intakeSolenoid.set(Value.kForward);
     }

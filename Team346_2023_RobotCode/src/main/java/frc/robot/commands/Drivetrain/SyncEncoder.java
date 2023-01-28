@@ -1,7 +1,7 @@
 package frc.robot.commands.Drivetrain;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Drivetrain.Drivetrain;
 
 /** An example command that uses an example subsystem. */
 public class SyncEncoder extends CommandBase {
