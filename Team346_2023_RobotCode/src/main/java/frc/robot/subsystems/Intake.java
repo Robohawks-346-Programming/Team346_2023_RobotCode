@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.robot.Constants;
 
+// Write to extend SubsystemBase. Remember to config properly
 public class Intake {
     DoubleSolenoid intakeSolenoid;
     CANSparkMax intakeMotor;
@@ -16,7 +17,7 @@ public class Intake {
         intakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.GRABBER_OUT_PNEUMATIC_ID, Constants.GRABBER_IN_PNEUMATIC_ID);
         intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR_ID, MotorType.kBrushless);
     }
-
+    
     public void ExtendIntake() {
         intakeSolenoid.set(Value.kForward);
     }

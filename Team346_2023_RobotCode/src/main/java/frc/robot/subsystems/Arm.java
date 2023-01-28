@@ -24,6 +24,7 @@ public class Arm extends SubsystemBase {
     public void ExtendArm() {
         armSolenoid.set(Value.kForward);
     }
+    
 
     public void RetractArm() {
         armSolenoid.set(Value.kReverse);
