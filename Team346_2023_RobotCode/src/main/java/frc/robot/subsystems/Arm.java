@@ -22,22 +22,22 @@ public class Arm extends SubsystemBase {
         rotationEncoder = rotationMotor.getEncoder();
     }
 
-    public void ExtendArmPneumatic() {
+    public void extendArmPneumatic() {
         armSolenoid.set(Value.kForward);
     }
 
-    public void RetractArmPneumatic() {
+    public void retractArmPneumatic() {
         armSolenoid.set(Value.kReverse);
     }
 
-    public void RotateArmUp() {
+    public void rotateArmUp() {
         while(rotationEncoder.getPosition() <= Constants.ARM_REV) {
             rotationMotor.set(Constants.ARM_MOTOR_SPEED);
         }
         rotationMotor.set(0.0);
     }
 
-    public void RotateArmDown() {
+    public void rotateArmDown() {
         while(rotationEncoder.getPosition() <= Constants.ARM_REV) {
             rotationMotor.set(-Constants.ARM_MOTOR_SPEED);
         }
