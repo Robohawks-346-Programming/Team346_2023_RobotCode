@@ -36,8 +36,13 @@ public class VisionProcessor extends SubsystemBase {
 
     // check if centered with target
     public boolean isCentered() {
-        xAngle = tx.getDouble(0.0);         // using network tables, check angle that target is at to camera
-        return (Math.abs(xAngle) <= Constants.END_ANGLE_THRESHOLD);
+        if (isVisible()) {
+            xAngle = tx.getDouble(0.0);         // using network tables, check angle that target is at to camera
+            return (Math.abs(xAngle) <= Constants.END_ANGLE_THRESHOLD);
+        }
+        else {
+            return false;
+        }
     }
 
     // calculate distance from target: TBD

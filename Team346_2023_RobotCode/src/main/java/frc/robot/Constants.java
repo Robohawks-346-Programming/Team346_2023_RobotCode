@@ -100,7 +100,7 @@ public final class Constants {
           new Translation2d(-DRIVETRAIN_WHEELBASE_METERS/ 2.0, -DRIVETRAIN_TRACKWIDTH_METERS / 2.0) // back right
       );
 
-  // vision processor constants
+  // vision processor constants: Need to be adjusted for actual values
   public static final double END_DISTANCE = 2;            // the distance we want the robot to be from the target
   public static final double END_ANGLE = 2;               // the angle we want the robot to have from the target
   public static final double END_DISTANCE_THRESHOLD = 1;  // the acceptable margin of error for distance from target
