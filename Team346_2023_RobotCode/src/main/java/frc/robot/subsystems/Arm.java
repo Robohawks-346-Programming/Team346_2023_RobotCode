@@ -22,40 +22,59 @@ public class Arm extends SubsystemBase {
         rotationEncoder = rotationMotor.getEncoder();
     }
 
+    // Alternative Method to extend Pneumatic part of Arm
     public void extendArmPneumatic() {
         armSolenoid.set(Value.kForward);
     }
 
+
+    // Alternative Method to retract Pneumatic part of Arm
     public void retractArmPneumatic() {
         armSolenoid.set(Value.kReverse);
     }
 
-    public void rotateArmUp() {
+    // Extend Pneumatic part of Arm
+    public void extendArm() {
+        armSolenoid.set(Value.kForward);
+    }
+    
+    // Retract Pneumatic part of Arm
+    public void retractArm() {
+        armSolenoid.set(Value.kReverse);
+    }
+
+    // Rotatate arm up
+    public void RotateUp() {
         while(rotationEncoder.getPosition() <= Constants.ARM_REV) {
             rotationMotor.set(Constants.ARM_MOTOR_SPEED);
         }
         rotationMotor.set(0.0);
     }
 
-    public void rotateArmDown() {
+    // Rotate arm down
+    public void RotateDown() {
         while(rotationEncoder.getPosition() <= Constants.ARM_REV) {
             rotationMotor.set(-Constants.ARM_MOTOR_SPEED);
         }
         rotationMotor.set(0.0);
     }
 
+    // Resetting Rotation encoders
     public void resetRotationEncoder() {
         rotationEncoder.setPosition(0.0);
     }
 
+    // Alternative method to rotateUp, does not use while loop
     public void ArmUp(double speed) {
         rotationMotor.set(speed);
     } 
 
+    // Checks to see if the position has been reached
     public boolean isAtPosition(double rev) {
         return (rotationEncoder.getPosition() >= rev);
     }
 
+    // Stops rotation motor once finished
     public void stopRotationMotor() {
         rotationMotor.set(0.0);
     }

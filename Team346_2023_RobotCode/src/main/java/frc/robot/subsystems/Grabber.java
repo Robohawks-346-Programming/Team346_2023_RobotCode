@@ -13,10 +13,12 @@ public class Grabber extends SubsystemBase {
         grabberSolenoid = new DoubleSolenoid(1, PneumaticsModuleType.REVPH, Constants.GRABBER_OUT_PNEUMATIC_ID, Constants.GRABBER_IN_PNEUMATIC_ID);
     }
 
+    // Retracts Pneumatic part of the Grabber
     public void Grab() {
         grabberSolenoid.set(Value.kForward);
     }
 
+    // Extends Pneumatic part of the Grabber
     public void Release() {
         grabberSolenoid.set(Value.kReverse);
     }
