@@ -23,6 +23,11 @@ public final class Constants {
   // Pneumatic Channels
   public static final int GRABBER_OUT_PNEUMATIC_ID = 5;
   public static final int GRABBER_IN_PNEUMATIC_ID  = 6;
+  public static final int ARM_OUT_PNEUMATIC_ID = 0;
+  public static final int ARM_IN_PNEUMATIC_ID  = 8;
+  public static final int BRAKE_OUT_PNEUMATIC_ID = 0;
+  public static final int BRAKE_IN_PNEUMATIC_ID  = 8;
+  
 
   // Motor IDs
   public static final int ARM_MOTOR_ID        = 3;

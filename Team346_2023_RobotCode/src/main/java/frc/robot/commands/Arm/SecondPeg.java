@@ -26,6 +26,7 @@ public class SecondPeg extends CommandBase {
   @Override
   public void initialize() {
     RobotContainer.arm.resetRotationEncoder();
+    RobotContainer.arm.armBrakeOff();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -38,6 +39,7 @@ public class SecondPeg extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     RobotContainer.arm.stopRotationMotor();
+    RobotContainer.arm.armBrakeOn();
   }
 
   // Returns true when the command should end.
