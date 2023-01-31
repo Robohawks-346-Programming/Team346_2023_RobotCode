@@ -9,7 +9,7 @@ import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class FirstShelf extends CommandBase {
+public class MoveArmLevel2 extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
 
@@ -18,21 +18,20 @@ public class FirstShelf extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public FirstShelf() {
+  public MoveArmLevel2() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.arm.resetRotationEncoder();
     RobotContainer.arm.armBrakeOff();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.arm.ArmUp(Constants.FIRST_SHELF_ARM_POSITION);
+    RobotContainer.arm.moveArm(Constants.LEVEL_2_ARM_ANGLE);
   }
 
   // Called once the command ends or is interrupted.
@@ -45,6 +44,6 @@ public class FirstShelf extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return RobotContainer.arm.isAtPosition(Constants.FIRST_SHELF_ARM_POSITION);
+    return RobotContainer.arm.isAtPosition(Constants.LEVEL_2_ARM_ANGLE);
   }
 }

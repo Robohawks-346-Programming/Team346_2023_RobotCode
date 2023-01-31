@@ -50,18 +50,12 @@ public class Arm extends SubsystemBase {
 
     // Rotatate arm up
     public void RotateUp() {
-        while(rotationEncoder.getPosition() <= Constants.ARM_REV) {
-            rotationMotor.set(Constants.ARM_MOTOR_SPEED);
-        }
-        rotationMotor.set(0.0);
+        rotationMotor.set(Constants.ARM_MOTOR_SPEED);
     }
 
     // Rotate arm down
     public void RotateDown() {
-        while(rotationEncoder.getPosition() <= Constants.ARM_REV) {
-            rotationMotor.set(-Constants.ARM_MOTOR_SPEED);
-        }
-        rotationMotor.set(0.0);
+        rotationMotor.set(-Constants.ARM_MOTOR_SPEED);
     }
 
     // Resetting Rotation encoders
@@ -92,5 +86,20 @@ public class Arm extends SubsystemBase {
     // Releases Disc brake
     public void armBrakeOff() {
         brakeSolenoid.set(Value.kReverse);
+    }
+
+    public void moveArm(double wantedPosition) {
+        double currentPosition = rotationEncoder.getPosition();
+        if (wantedPosition > currentPosition) {
+            rotationMotor.set(Constants.ARM_MOTOR_SPEED);
+        }
+
+        else if (wantedPosition < currentPosition) {
+            rotationMotor.set(-Constants.ARM_MOTOR_SPEED);
+        }
+
+        else {
+            rotationMotor.set(0.0);
+        }
     }
 }

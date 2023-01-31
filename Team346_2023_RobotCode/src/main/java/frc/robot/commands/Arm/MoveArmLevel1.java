@@ -6,10 +6,11 @@ package frc.robot.commands.Arm;
 
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class SecondPeg extends CommandBase {
+public class MoveArmLevel1 extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
 
@@ -18,21 +19,20 @@ public class SecondPeg extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public SecondPeg() {
+  public MoveArmLevel1() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.arm.resetRotationEncoder();
     RobotContainer.arm.armBrakeOff();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.arm.ArmUp(Constants.SECOND_PEG_ARM_POSITION);
+    RobotContainer.arm.moveArm(Constants.LEVEL_1_ARM_ANGLE);
   }
 
   // Called once the command ends or is interrupted.
@@ -45,6 +45,6 @@ public class SecondPeg extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return RobotContainer.arm.isAtPosition(Constants.SECOND_PEG_ARM_POSITION);
+    return RobotContainer.arm.isAtPosition(Constants.LEVEL_1_ARM_ANGLE);
   }
 }

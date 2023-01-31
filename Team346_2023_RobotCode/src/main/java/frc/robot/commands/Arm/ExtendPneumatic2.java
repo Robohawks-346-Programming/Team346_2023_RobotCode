@@ -8,7 +8,7 @@ import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class ExtendPneumatic extends CommandBase {
+public class ExtendPneumatic2 extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
 
@@ -17,7 +17,7 @@ public class ExtendPneumatic extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ExtendPneumatic() {
+  public ExtendPneumatic2() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -28,7 +28,7 @@ public class ExtendPneumatic extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.arm.extendArmPneumatic();
+    RobotContainer.arm.extendArmPneumatic2();
   }
 
   // Called once the command ends or is interrupted.

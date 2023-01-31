@@ -16,30 +16,27 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
-  }
 
   // Pneumatic Channels
-  public static final int GRABBER_OUT_PNEUMATIC_ID = 5;
-  public static final int GRABBER_IN_PNEUMATIC_ID  = 6;
-  public static final int INTAKE_OUT_PNEUMATIC_ID  = 0;
-  public static final int INTAKE_IN_PNEUMATIC_ID   = 0;
-  public static final int ARM_1_OUT_PNEUMATIC_ID = 0;
-  public static final int ARM_1_IN_PNEUMATIC_ID  = 8;
-  public static final int ARM_2_OUT_PNEUMATIC_ID = 0;
-  public static final int ARM_2_IN_PNEUMATIC_ID  = 0;
-  public static final int BRAKE_OUT_PNEUMATIC_ID = 0;
-  public static final int BRAKE_IN_PNEUMATIC_ID  = 8;
+  public static final int GRABBER_OUT_PNEUMATIC_ID  = 0;
+  public static final int GRABBER_IN_PNEUMATIC_ID   = 0;
+  public static final int INTAKE_OUT_PNEUMATIC_ID   = 0;
+  public static final int INTAKE_IN_PNEUMATIC_ID    = 0;
+  public static final int ARM_1_OUT_PNEUMATIC_ID    = 0;
+  public static final int ARM_1_IN_PNEUMATIC_ID     = 0;
+  public static final int ARM_2_OUT_PNEUMATIC_ID    = 0;
+  public static final int ARM_2_IN_PNEUMATIC_ID     = 0;
+  public static final int BRAKE_OUT_PNEUMATIC_ID    = 0;
+  public static final int BRAKE_IN_PNEUMATIC_ID     = 0;
   
 
   // Motor IDs
-  public static final int ARM_MOTOR_ID        = 3;
-  public static final int INTAKE_MOTOR_ID = 1;
+  public static final int ARM_MOTOR_ID              = 0;
+  public static final int INTAKE_MOTOR_ID           = 0;
 
   // Motor Speed
-  public static final double ARM_MOTOR_SPEED  = 0.5;
-  public static final double INTAKE_MOTOR_SPEED = 0.5;
+  public static final double ARM_MOTOR_SPEED        = 0;
+  public static final double INTAKE_MOTOR_SPEED     = 0;
 
   // Arm Angles
   public static final double HOME_ARM_ANGLE               = 12; //off vertical
@@ -51,28 +48,28 @@ public final class Constants {
 
   
   // Front left Swerve Module
-  public static final int FRONT_LEFT_DRIVE_ID = 1;
-  public static final int FRONT_LEFT_TURN_ID = 2;
-  public static final int FRONT_LEFT_ENCODER_ID = 3;
-  public static final double FRONT_LEFT_TURN_OFFSET = 4;
+  public static final int FRONT_LEFT_DRIVE_ID             = 0;
+  public static final int FRONT_LEFT_TURN_ID              = 0;
+  public static final int FRONT_LEFT_ENCODER_ID           = 0;
+  public static final double FRONT_LEFT_TURN_OFFSET       = 0;
 
   // Back left Swerve Module
-  public static final int BACK_LEFT_DRIVE_ID = 5;
-  public static final int BACK_LEFT_TURN_ID = 6;
-  public static final int BACK_LEFT_ENCODER_ID = 7;
-  public static final double BACK_LEFT_TURN_OFFSET = 8;
+  public static final int BACK_LEFT_DRIVE_ID              = 0;
+  public static final int BACK_LEFT_TURN_ID               = 0;
+  public static final int BACK_LEFT_ENCODER_ID            = 0;
+  public static final double BACK_LEFT_TURN_OFFSET        = 0;
 
   // Front Right Swerve Module
-  public static final int FRONT_RIGHT_DRIVE_ID = 9;
-  public static final int FRONT_RIGHT_TURN_ID = 10;
-  public static final int FRONT_RIGHT_ENCODER_ID = 11;
-  public static final double FRONT_RIGHT_TURN_OFFSET = 12;
+  public static final int FRONT_RIGHT_DRIVE_ID            = 0;
+  public static final int FRONT_RIGHT_TURN_ID             = 0;
+  public static final int FRONT_RIGHT_ENCODER_ID          = 0;
+  public static final double FRONT_RIGHT_TURN_OFFSET      = 0;
 
   // Back Right Swerve Module
-  public static final int BACK_RIGHT_DRIVE_ID = 13;
-  public static final int BACK_RIGHT_TURN_ID = 14;
-  public static final int BACK_RIGHT_ENCODER_ID = 15;
-  public static final double BACK_RIGHT_TURN_OFFSET = 16;
+  public static final int BACK_RIGHT_DRIVE_ID             = 0;
+  public static final int BACK_RIGHT_TURN_ID              = 0;
+  public static final int BACK_RIGHT_ENCODER_ID           = 0;
+  public static final double BACK_RIGHT_TURN_OFFSET       = 0;
 
   public static final double MAX_VELOCITY                             = 0.5; // just for testing
   public static final int MAX_VOLTAGE                                 = 12;
