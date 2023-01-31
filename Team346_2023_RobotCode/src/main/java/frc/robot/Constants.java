@@ -23,8 +23,12 @@ public final class Constants {
   // Pneumatic Channels
   public static final int GRABBER_OUT_PNEUMATIC_ID = 5;
   public static final int GRABBER_IN_PNEUMATIC_ID  = 6;
-  public static final int ARM_OUT_PNEUMATIC_ID = 0;
-  public static final int ARM_IN_PNEUMATIC_ID  = 8;
+  public static final int INTAKE_OUT_PNEUMATIC_ID  = 0;
+  public static final int INTAKE_IN_PNEUMATIC_ID   = 0;
+  public static final int ARM_1_OUT_PNEUMATIC_ID = 0;
+  public static final int ARM_1_IN_PNEUMATIC_ID  = 8;
+  public static final int ARM_2_OUT_PNEUMATIC_ID = 0;
+  public static final int ARM_2_IN_PNEUMATIC_ID  = 0;
   public static final int BRAKE_OUT_PNEUMATIC_ID = 0;
   public static final int BRAKE_IN_PNEUMATIC_ID  = 8;
   
@@ -37,13 +41,14 @@ public final class Constants {
   public static final double ARM_MOTOR_SPEED  = 0.5;
   public static final double INTAKE_MOTOR_SPEED = 0.5;
 
-  // Motor Revolutions
-  public static final double ARM_REV       = 1;
-  public static final double GROUND_ARM_POSITION = 1;
-  public static final double FIRST_PEG_ARM_POSITION = 1;
-  public static final double SECOND_PEG_ARM_POSITION = 1;
-  public static final double FIRST_SHELF_ARM_POSITION = 1;
-  public static final double SECOND_SHELF_ARM_POSITION = 1;
+  // Arm Angles
+  public static final double HOME_ARM_ANGLE               = 12; //off vertical
+  public static final double LEVEL_1_ARM_ANGLE            = 22; //off vertical
+  public static final double ROTATE_UP_LEVEL_1_ARM_ANGLE  = 25; //off vertical
+  public static final double LEVEL_2_ARM_ANGLE            = 73; //off vertical
+  public static final double LEVEL_3_ARM_ANGLE            = 90; //off vertical
+  public static final double SUBSTATION_ARM_ANGLE         = 79; //off vertical
+
   
   // Front left Swerve Module
   public static final int FRONT_LEFT_DRIVE_ID = 1;
@@ -104,4 +109,6 @@ public final class Constants {
           new Translation2d(-DRIVETRAIN_WHEELBASE_METERS/ 2.0, DRIVETRAIN_TRACKWIDTH_METERS / 2.0), // back left
           new Translation2d(-DRIVETRAIN_WHEELBASE_METERS/ 2.0, -DRIVETRAIN_TRACKWIDTH_METERS / 2.0) // back right
       );
+
+  public static final double ARM_GEAR_RATIO                            = 580; // 580 motor rev :1 arm rev
 }

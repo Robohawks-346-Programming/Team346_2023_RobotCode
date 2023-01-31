@@ -12,35 +12,40 @@ import frc.robot.Constants;
 
 public class Arm extends SubsystemBase {
     CANSparkMax rotationMotor;
-    DoubleSolenoid armSolenoid, brakeSolenoid;
+    DoubleSolenoid armSolenoid1, armSolenoid2, brakeSolenoid;
     RelativeEncoder rotationEncoder;
+
+    double armDegreesPerMotorRev;
     
     public Arm() {
-        armSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.ARM_OUT_PNEUMATIC_ID, Constants.ARM_IN_PNEUMATIC_ID);
+        armSolenoid1 = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.ARM_1_OUT_PNEUMATIC_ID, Constants.ARM_1_IN_PNEUMATIC_ID);
+        armSolenoid2 = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.ARM_2_OUT_PNEUMATIC_ID, Constants.ARM_2_IN_PNEUMATIC_ID);
         rotationMotor = new CANSparkMax(Constants.ARM_MOTOR_ID, MotorType.kBrushless);
         rotationEncoder = rotationMotor.getEncoder();
         brakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.BRAKE_IN_PNEUMATIC_ID, Constants.BRAKE_OUT_PNEUMATIC_ID);
+
+        armDegreesPerMotorRev = 360/Constants.ARM_GEAR_RATIO;
+        
+        rotationEncoder.setPositionConversionFactor(armDegreesPerMotorRev);
     }
 
     // Alternative Method to extend Pneumatic part of Arm
-    public void extendArmPneumatic() {
-        armSolenoid.set(Value.kForward);
+    public void extendArmPneumatic1() {
+        armSolenoid1.set(Value.kForward);
     }
 
 
     // Alternative Method to retract Pneumatic part of Arm
-    public void retractArmPneumatic() {
-        armSolenoid.set(Value.kReverse);
+    public void retractArmPneumatic1() {
+        armSolenoid1.set(Value.kReverse);
     }
 
-    // Extend Pneumatic part of Arm
-    public void extendArm() {
-        armSolenoid.set(Value.kForward);
+    public void extendArmPneumatic2() {
+        armSolenoid2.set(Value.kForward);
     }
-    
-    // Retract Pneumatic part of Arm
-    public void retractArm() {
-        armSolenoid.set(Value.kReverse);
+
+    public void retractArmPneumatic2() {
+        armSolenoid2.set(Value.kReverse);
     }
 
     // Rotatate arm up
