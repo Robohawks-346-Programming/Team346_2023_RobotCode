@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Arm;
+package frc.robot.commands.arm;
 
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -19,7 +19,7 @@ public class MoveArmHomeToLevel1 extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public MoveArmLevel1() {
+  public MoveArmHomeToLevel1() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

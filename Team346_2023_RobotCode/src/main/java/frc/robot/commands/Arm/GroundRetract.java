@@ -5,21 +5,21 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 /** An example command that uses an example subsystem. */
-public class StartingConfig extends SequentialCommandGroup {
+public class GroundRetract extends SequentialCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public StartingConfig() {
+  public GroundRetract() {
     // Use addRequirements() here to declare subsystem dependencies.
     addCommands(
       new ParallelCommandGroup(
         new SequentialCommandGroup(
-          new RetractPneumatic1(),
-          new RetractPneumatic2(),
           new GrabberClose(),
+          new MoveArmHomeToLevel1(),
+          new RetractPneumatic1(),
           new MoveArmHome()
         )
       )

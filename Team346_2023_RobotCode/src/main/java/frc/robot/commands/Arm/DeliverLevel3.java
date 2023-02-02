@@ -1,6 +1,6 @@
-package frc.robot.commands.Arm;
+package frc.robot.commands.arm;
 
-
+import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
@@ -17,14 +17,14 @@ public class DeliverLevel3 extends SequentialCommandGroup {
     addCommands(
       new ParallelCommandGroup(
         new SequentialCommandGroup(
-          new GrabberIn();
-          new MoveArmLevel3();
-          new ExtendPneumatic1();
-          new ExtendPneumatic2();
-          new WaitCommand(2.5);
-          new GrabberOut();
-          new RetractPneumatic1();
-          new RetractPneumatic2();
+          new GrabberIn(),
+          new MoveArmLevel3(),
+          new ExtendPneumatic1(),
+          new ExtendPneumatic2(),
+          new WaitCommand(2.5),
+          new GrabberOut(),
+          new RetractPneumatic1(),
+          new RetractPneumatic2()
         )
       )
       

@@ -1,29 +1,26 @@
-package frc.robot.commands.Arm;
+package frc.robot.commands.arm;
 
+import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 /** An example command that uses an example subsystem. */
-public class GroundPickup extends SequentialCommandGroup {
+public class GroundPickupConfig extends SequentialCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public MoveOnly() {
+  public GroundPickupConfig() {
     // Use addRequirements() here to declare subsystem dependencies.
     addCommands(
       new ParallelCommandGroup(
         new SequentialCommandGroup(
-          new MoveArmLevel1();
-          new RetractPneumatic2();
-          new ExtendPneumatic1();
-          new GrabberOut();
-          new WaitCommand(2.5);
-          new GrabberIn();
-          new MoveArmHomeToLevel1();
-          new RetractPneumatic1();
+          new MoveArmLevel1(),
+          new RetractPneumatic2(),
+          new ExtendPneumatic1(),
+          new GrabberOpen()
         )
       )
       
