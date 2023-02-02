@@ -1,26 +1,29 @@
-package frc.robot.commands.arm;
+package frc.robot.commands.States;
 
-import frc.robot.commands.*;
+import frc.robot.commands.Arm.ExtendPneumatic1;
+import frc.robot.commands.Arm.MoveArmLevel1;
+import frc.robot.commands.Arm.RetractPneumatic2;
+import frc.robot.commands.Grabber.GrabberOpen;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 /** An example command that uses an example subsystem. */
-public class DeliverLevel2 extends SequentialCommandGroup {
+public class Level1Config extends SequentialCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public DeliverLevel2() {
+  public Level1Config() {
     // Use addRequirements() here to declare subsystem dependencies.
     addCommands(
       new ParallelCommandGroup(
         new SequentialCommandGroup(
-          new GrabberOpen(),
-          new WaitCommand(2),
-          new GrabberClose(0),
-          new MoveArmHome()
+          new MoveArmLevel1(),
+          new RetractPneumatic2(),
+          new ExtendPneumatic1(),
+          new GrabberOpen()
         )
       )
       

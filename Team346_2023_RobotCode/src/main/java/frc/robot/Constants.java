@@ -108,4 +108,9 @@ public final class Constants {
       );
 
   public static final double ARM_GEAR_RATIO                            = 580; // 580 motor rev :1 arm rev
+  public static final double END_ANGLE_THRESHOLD = 0;
+  public static final int HEIGHT_OF_TARGET = 0;
+public static final double END_DISTANCE = 0;
+public static final double END_DISTANCE_THRESHOLD = 0;
+public static final double CAMERA_ANGLE = 0;
 }

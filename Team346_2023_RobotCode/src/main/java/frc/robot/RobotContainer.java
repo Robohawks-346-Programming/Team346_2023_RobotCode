@@ -9,12 +9,11 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Drivetrain.JoystickDrive;
 import frc.robot.commands.Drivetrain.SyncEncoder;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Drivetrain.*;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Grabber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LED;
-import frc.robot.subsystems.Drivetrain.Drivetrain;
-
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.PS4Controller;

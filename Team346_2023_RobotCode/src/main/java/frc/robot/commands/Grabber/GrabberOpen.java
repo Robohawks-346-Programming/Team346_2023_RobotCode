@@ -2,13 +2,13 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.grabber;
+package frc.robot.commands.Grabber;
 
 import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class GrabberOut extends CommandBase {
+public class GrabberOpen extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
 
@@ -17,7 +17,7 @@ public class GrabberOut extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public GrabberOut() {
+  public GrabberOpen() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
