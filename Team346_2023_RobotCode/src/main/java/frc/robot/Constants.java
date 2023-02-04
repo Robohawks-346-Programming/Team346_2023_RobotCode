@@ -108,9 +108,13 @@ public final class Constants {
       );
 
   public static final double ARM_GEAR_RATIO                            = 580; // 580 motor rev :1 arm rev
-  public static final double END_ANGLE_THRESHOLD = 0;
-  public static final int HEIGHT_OF_TARGET = 0;
-public static final double END_DISTANCE = 0;
-public static final double END_DISTANCE_THRESHOLD = 0;
-public static final double CAMERA_ANGLE = 0;
+  
+  // vision processor constants: Need to be adjusted for actual values
+  public static final double END_DISTANCE = 2;            // the distance we want the robot to be from the target
+  public static final double END_ANGLE = 2;               // the angle we want the robot to have from the target
+  public static final double END_DISTANCE_THRESHOLD = 1;  // the acceptable margin of error for distance from target
+  public static final double END_ANGLE_THRESHOLD = 1;     // the acceptable margin of error for angle from target
+  public static final double CAMERA_ANGLE = 1;            // the angle of the camera to the ground                                
+  public static final double HEIGHT_OF_TARGET = 1;        // the height of the target we're aiming for
 }
+
