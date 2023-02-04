@@ -19,7 +19,7 @@ public class SubstationRetract extends SequentialCommandGroup {
   public SubstationRetract() {
     // Use addRequirements() here to declare subsystem dependencies.
     addCommands(
-      CommandScheduler.getInstance().
+      // CommandScheduler.getInstance().
     // if (x = SubstationConfig) {
       new ParallelCommandGroup(
         new SequentialCommandGroup(
@@ -45,10 +45,8 @@ public class SubstationRetract extends SequentialCommandGroup {
       // )
       // }
         )
-      )
-      )
+      );
       
-    );
   }
 
 
