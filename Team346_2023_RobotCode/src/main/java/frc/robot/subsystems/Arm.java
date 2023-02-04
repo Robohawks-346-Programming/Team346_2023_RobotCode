@@ -34,7 +34,6 @@ public class Arm extends SubsystemBase {
         armSolenoid1.set(Value.kForward);
     }
 
-
     // Alternative Method to retract Pneumatic part of Arm
     public void retractArmPneumatic1() {
         armSolenoid1.set(Value.kReverse);
