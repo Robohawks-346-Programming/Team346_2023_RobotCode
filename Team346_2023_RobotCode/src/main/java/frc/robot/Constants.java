@@ -109,12 +109,14 @@ public final class Constants {
 
   public static final double ARM_GEAR_RATIO                            = 580; // 580 motor rev :1 arm rev
   
-  // vision processor constants: Need to be adjusted for actual values
-  public static final double END_DISTANCE = 2;            // the distance we want the robot to be from the target
-  public static final double END_ANGLE = 2;               // the angle we want the robot to have from the target
-  public static final double END_DISTANCE_THRESHOLD = 1;  // the acceptable margin of error for distance from target
-  public static final double END_ANGLE_THRESHOLD = 1;     // the acceptable margin of error for angle from target
-  public static final double CAMERA_ANGLE = 1;            // the angle of the camera to the ground                                
-  public static final double HEIGHT_OF_TARGET = 1;        // the height of the target we're aiming for
+  // vision processor constants: Need to be adjusted for actual values - distance is always measured in meters for vision processor
+  public static final double END_DISTANCE = 2;                                  // the distance we want the robot to be from the target
+  public static final double END_ANGLE = 2;                                     // the angle we want the robot to have from the target
+  public static final double END_DISTANCE_THRESHOLD = 1;                       // the acceptable margin of error for distance from target
+  public static final double END_ANGLE_THRESHOLD = 1;                           // the acceptable margin of error for angle from target
+  public static final double CAMERA_ANGLE = 1;                                  // the angle of the camera to the ground           
+  public static final double CAMERA_HEIGHT = 1;                                 // the height of the camera from the ground                     
+  public static final double HEIGHT_OF_TARGET1 = 0.587375 - CAMERA_HEIGHT;        // the height of the middle rung reflective tape in inches
+  public static final double HEIGHT_OF_TARGET2 = 0.981075 - CAMERA_HEIGHT;       // the height of the highest rung reflective tape in inches
 }
 

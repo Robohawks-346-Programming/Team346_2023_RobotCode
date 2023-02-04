@@ -4,10 +4,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 public class VisionProcessor extends SubsystemBase {
     
     //Variables:
@@ -23,12 +25,20 @@ public class VisionProcessor extends SubsystemBase {
     private double xAngle = tx.getDouble(0.0);      // distance horizontaly using angles
     private double yAngle = ty.getDouble(0.0);      // distance verticly using angles
 
-    // changes pipeline
+    // updates the theta value of a variable to equal the data table value
+    public void updateTheta() { 
+        tx = limelightTable.getEntry("tx");
+        ty = limelightTable.getEntry("ty");
+        xAngle = tx.getDouble(0.0);
+        yAngle = ty.getDouble(0.0);
+    }
+
+    // changes pipeline - command
     public void changePipeline(int newPipeline) {
         pipeline.setInteger(newPipeline);
     }
 
-    // check if target is visible
+    // check if target is visible - DON'T USE UPDATE THETA COMMAND UNLESS YOU ADD TV TO THAT METHOD
     public boolean isVisible() {
         tv = limelightTable.getEntry("tv");     // use network table to check if target is visible
         return (tv.getBoolean(false));   
@@ -37,7 +47,7 @@ public class VisionProcessor extends SubsystemBase {
     // check if centered with target
     public boolean isCentered() {
         if (isVisible()) {
-            xAngle = tx.getDouble(0.0);         // using network tables, check angle that target is at to camera
+            updateTheta();
             return (Math.abs(xAngle) <= Constants.END_ANGLE_THRESHOLD);
         }
         else {
@@ -45,14 +55,20 @@ public class VisionProcessor extends SubsystemBase {
         }
     }
 
-    // calculate distance from target: TBD
-    public double distanceFromTarget() {
-        yAngle = ty.getDouble(0.0);
-        return (Constants.HEIGHT_OF_TARGET/(Math.tan((yAngle + Constants.CAMERA_ANGLE)*(Math.PI/180)))); 
+    // calculate distance from reflective tape level 2 - in degrees NOT RADIANS
+    public double distanceFromTarget(double targetHeight) {
+        updateTheta();
+        return (targetHeight/(Math.tan(yAngle + Constants.CAMERA_ANGLE))); 
     }
 
-    // check if at target distance
-    public boolean atTargetDistance() {
-        return (Math.abs(distanceFromTarget() - Constants.END_DISTANCE) <= Constants.END_DISTANCE_THRESHOLD);
+    // check if at target distancen
+    public boolean atTargetDistance(double targetHeight) {
+        if (Math.abs(distanceFromTarget(targetHeight) - Constants.END_DISTANCE) <= Constants.END_DISTANCE_THRESHOLD) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
+
 }

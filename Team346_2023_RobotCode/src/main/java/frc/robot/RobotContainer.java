@@ -37,7 +37,7 @@ public class RobotContainer {
   public static final Grabber grabber = new Grabber();
   public static final LED led = new LED();
   public static final Intake intake = new Intake();
-  public final Drivetrain drivetrain = new Drivetrain();
+  public final static Drivetrain drivetrain = new Drivetrain();
   public final PS4Controller driverControl = new PS4Controller(Constants.DRIVER_CONTROLLER_PORT);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed

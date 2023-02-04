@@ -1,5 +1,8 @@
 package frc.robot.subsystems.Drivetrain;
 
+import com.pathplanner.lib.auto.PIDConstants;
+import com.revrobotics.AbsoluteEncoder;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -46,6 +49,8 @@ public class Drivetrain extends SubsystemBase{
 
     ADIS16448_IMU gyro = new ADIS16448_IMU();
 
+    PIDConstants driveConstants, turnConstants;
+    
     public Drivetrain() {
         gyro.reset(); //Ask if this would work
         
@@ -54,6 +59,20 @@ public class Drivetrain extends SubsystemBase{
         for( SwerveModule module : modules) {
             module.resetDistance();
         }
+
+        driveConstants = new PIDConstants(Constants.DRIVE_P, Constants.DRIVE_I, Constants.DRIVE_D);
+        turnConstants = new PIDConstants(Constants.TURN_P, Constants.DRIVE_I, Constants.DRIVE_D);
+
+    }
+
+    public PIDConstants getDriveConstants() {
+        driveConstants = new PIDConstants(Constants.DRIVE_P, Constants.DRIVE_I, Constants.DRIVE_D);
+        return driveConstants;
+    }
+
+    public PIDConstants getTurnConstants() {
+        turnConstants = new PIDConstants(Constants.TURN_P, Constants.DRIVE_I, Constants.DRIVE_D);
+        return turnConstants;
     }
 
     public Pose2d getPose() {
