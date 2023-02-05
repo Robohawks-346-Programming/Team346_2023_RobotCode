@@ -75,6 +75,8 @@ public final class Constants {
   public static final int MAX_VOLTAGE                                 = 12;
   public static final int DRIVE_CURRENT_LIMIT                         = 60;
   public static final int TURN_CURRENT_LIMIT                          = 25;
+
+
   public static final double MAX_MOVE_VELOCITY                        = 0.25; // for testing
   public static final double MAX_TURN_VELOCITY                        = 0.25; // for testing
   public static final boolean IS_FIELD_RELATIVE                       = true;
@@ -97,8 +99,11 @@ public final class Constants {
   public static final double DRIVETRAIN_WHEELBASE_METERS              = 0.7112; //28 in
   public static final double DRIVETRAIN_GEAR_RATIO                    = 5.12; //For L2 Module
   public static final double WHEEL_DIAMETER                           = 0.09398; // 3.7 in
-  public static final double DRIVE_CONVERSION                         = (WHEEL_DIAMETER * Math.PI) / DRIVETRAIN_GEAR_RATIO;
+  public static final double WHEEL_CIRCUMFERENCE                      = (WHEEL_DIAMETER * Math.PI);
+  public static final double DRIVE_CONVERSION                         = ((WHEEL_DIAMETER * Math.PI) / DRIVETRAIN_GEAR_RATIO);
   public static final double TURN_CONVERSION                          = 12.8;
+  public static final double THEORETICAL_MAX_MOVE_SPEED = 5.791; // in m/s
+  public static final double THEORETICAL_MAX_TURN_SPEED = THEORETICAL_MAX_MOVE_SPEED / Math.hypot(DRIVETRAIN_WHEELBASE_METERS / 2, DRIVETRAIN_TRACKWIDTH_METERS / 2); // in rad/s
   public static final SwerveDriveKinematics DRIVE_KINEMATICS          = 
       new SwerveDriveKinematics(
           new Translation2d(DRIVETRAIN_WHEELBASE_METERS/ 2.0, DRIVETRAIN_TRACKWIDTH_METERS / 2.0), // front left
@@ -116,7 +121,9 @@ public final class Constants {
   public static final double END_ANGLE_THRESHOLD = 1;                           // the acceptable margin of error for angle from target
   public static final double CAMERA_ANGLE = 1;                                  // the angle of the camera to the ground           
   public static final double CAMERA_HEIGHT = 1;                                 // the height of the camera from the ground                     
-  public static final double HEIGHT_OF_TARGET1 = 0.587375 - CAMERA_HEIGHT;        // the height of the middle rung reflective tape in inches
-  public static final double HEIGHT_OF_TARGET2 = 0.981075 - CAMERA_HEIGHT;       // the height of the highest rung reflective tape in inches
+  public static final double HEIGHT_OF_TARGET1 = 0.587375;        // the height of the middle rung reflective tape in inches
+  public static final double HEIGHT_OF_TARGET2 = 0.981075;       // the height of the highest rung reflective tape in inches
+  public static final double HEIGHT_OF_GRID_APRIL_TAG = 0.38735;           // the height of the grid april tag in relation to the camera
+  public static final double HEIGHT_OF_SUBSTATION_APRIL_TAG = 0.619125;          // the height of the substation april tag in relation to the camera
 }
 

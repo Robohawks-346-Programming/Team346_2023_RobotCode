@@ -14,6 +14,8 @@ import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Grabber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LED;
+import frc.robot.subsystems.VisionProcessor;
+
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.PS4Controller;
@@ -38,6 +40,7 @@ public class RobotContainer {
   public static final LED led = new LED();
   public static final Intake intake = new Intake();
   public final static Drivetrain drivetrain = new Drivetrain();
+  public static final VisionProcessor visionProcessor = new VisionProcessor();
   public final PS4Controller driverControl = new PS4Controller(Constants.DRIVER_CONTROLLER_PORT);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
