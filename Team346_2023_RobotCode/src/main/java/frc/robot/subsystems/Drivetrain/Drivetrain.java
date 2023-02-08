@@ -170,20 +170,4 @@ public class Drivetrain extends SubsystemBase{
         };
     }
 
-    public void makePerpendicular() {
-
-    }
-
-    public void rotateWheelsToTag(double angle) {
-
-    }
-
-    public void driveToDistance(double distanceTag) {
-
-    }
-
-    public void getSparkTheta () {
-
-    }
-
 }

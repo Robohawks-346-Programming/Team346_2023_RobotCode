@@ -121,8 +121,7 @@ public final class Constants {
   public static final double END_ANGLE_THRESHOLD = 1;                           // the acceptable margin of error for angle from target
   public static final double CAMERA_ANGLE = 1;                                  // the angle of the camera to the ground           
   public static final double CAMERA_HEIGHT = 1;                                 // the height of the camera from the ground                     
-  public static final double HEIGHT_OF_TARGET1 = 0.587375;        // the height of the middle rung reflective tape in inches
-  public static final double HEIGHT_OF_TARGET2 = 0.981075;       // the height of the highest rung reflective tape in inches
+  public static final double HEIGHT_OF_TARGET = 0.854075;                          // the mean of target height 1 and 2
   public static final double HEIGHT_OF_GRID_APRIL_TAG = 0.38735;           // the height of the grid april tag in relation to the camera
   public static final double HEIGHT_OF_SUBSTATION_APRIL_TAG = 0.619125;          // the height of the substation april tag in relation to the camera
 }
