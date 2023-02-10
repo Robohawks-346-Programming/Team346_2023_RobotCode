@@ -37,8 +37,8 @@ public class VisionProcessor extends SubsystemBase {
 
     // updates the theta value of a variable to equal the data table value
     public void updateLimelightTheta() { 
-        tx = limelightTable.getEntry("tx"); // I'm not sure if I need this line
-        ty = limelightTable.getEntry("ty"); // I'm not sure if I need this line
+        tx = limelightTable.getEntry("tx"); 
+        ty = limelightTable.getEntry("ty"); 
         xAngle = tx.getDouble(0.0);
         yAngle = ty.getDouble(0.0);
     }
@@ -77,25 +77,20 @@ public class VisionProcessor extends SubsystemBase {
         return (targetHeight/(Math.tan(yAngle + Constants.CAMERA_ANGLE))); 
     }
 
-    // calculate x distance from target (parrallel to grid)
+    // calculate x distance from target (parallel to grid)
     public double distanceFromTargetX(double targetHeight) {
         updateLimelightTheta();
         return (Math.cos (xAngle))*distanceFromTarget(targetHeight);
     }
 
-    // calucalte z distance from target (distance is perpindicular to grid)
+    // calculate z distance from target (distance is perpendicular to grid)
     public double distanceFromTargetZ(double targetHeight) {
         updateLimelightTheta();
         return (Math.sin (xAngle))*distanceFromTarget(targetHeight);
     }
 
-    // check if at target distancen
+    // check if at target distance
     public boolean atTargetDistance(double targetHeight) {
-        if (Math.abs(distanceFromTarget(targetHeight) - Constants.END_DISTANCE) <= Constants.END_DISTANCE_THRESHOLD) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return (Math.abs(distanceFromTarget(targetHeight) - Constants.END_DISTANCE) <= Constants.END_DISTANCE_THRESHOLD);
     }
 }

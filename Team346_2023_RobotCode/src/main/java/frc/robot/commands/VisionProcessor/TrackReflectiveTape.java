@@ -16,26 +16,17 @@ public class TrackReflectiveTape extends SequentialCommandGroup {
    * @param subsystem The subsystem used by this command.
    */
   public TrackReflectiveTape() {
-    if (RobotContainer.visionProcessor.isVisible() == true) {
+    if (RobotContainer.visionProcessor.isVisible()) {
       // Use addRequirements() here to declare subsystem dependencies.
       double x1 = RobotContainer.visionProcessor.distanceFromTargetX(Constants.HEIGHT_OF_TARGET);
       double z1 = RobotContainer.visionProcessor.distanceFromTargetZ(Constants.HEIGHT_OF_TARGET);
-      Pose2d distance1 = new Pose2d(x1, z1, null);
+      Pose2d distance = new Pose2d(x1, z1, null);
 
-      double x2 = RobotContainer.visionProcessor.distanceFromTargetX(Constants.HEIGHT_OF_TARGET);
-      double z2 = RobotContainer.visionProcessor.distanceFromTargetZ(Constants.HEIGHT_OF_TARGET);
-      Pose2d distance2 = new Pose2d(x2, z2, null);
-
-      double aprilTagID = RobotContainer.visionProcessor.getAprilTagID();
-
-      if (aprilTagID == 5.0) {
         addCommands(
           new ParallelCommandGroup(
-              new AlignCommand(distance1),
-              new AlignCommand(distance2)
+              new AlignCommand(distance)
           )
         );
-      }
     }
   }
 }
