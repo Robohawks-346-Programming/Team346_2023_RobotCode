@@ -1,6 +1,7 @@
 package frc.robot.commands.States;
 
-import frc.robot.commands.Arm.MoveArmLevel2;
+import frc.robot.Constants;
+import frc.robot.commands.Arm.MoveArm;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
@@ -17,7 +18,7 @@ public class Level2Config extends SequentialCommandGroup {
     addCommands(
       new ParallelCommandGroup(
         new SequentialCommandGroup(
-          new MoveArmLevel2()
+          new MoveArm(Constants.LEVEL_2_ARM_ANGLE)
         )
       )
       

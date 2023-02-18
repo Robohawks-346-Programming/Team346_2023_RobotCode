@@ -1,6 +1,7 @@
 package frc.robot.commands.States;
 
-import frc.robot.commands.Arm.MoveArmHome;
+import frc.robot.Constants;
+import frc.robot.commands.Arm.MoveArm;
 import frc.robot.commands.Arm.RetractPneumatic1;
 import frc.robot.commands.Arm.RetractPneumatic2;
 import frc.robot.commands.Grabber.GrabberOpen;
@@ -25,7 +26,7 @@ public class DeliverLevelHigh extends SequentialCommandGroup {
           new RetractPneumatic1(),
           new RetractPneumatic2(),
           new WaitCommand(2),
-          new MoveArmHome()
+          new MoveArm(Constants.HOME_ARM_ANGLE)
         )
       )
       

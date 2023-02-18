@@ -1,8 +1,9 @@
 package frc.robot.commands.States;
 
+import frc.robot.Constants;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.Arm.MoveArmHome;
+import frc.robot.commands.Arm.MoveArm;
 import frc.robot.commands.Arm.RetractPneumatic1;
 import frc.robot.commands.Arm.RetractPneumatic2;
 import frc.robot.commands.Grabber.GrabberClose;
@@ -23,7 +24,7 @@ public class StartingConfig extends SequentialCommandGroup {
           new RetractPneumatic1(),
           new RetractPneumatic2(),
           new GrabberClose(),
-          new MoveArmHome()
+          new MoveArm(Constants.HOME_ARM_ANGLE)
         )
       )
       
