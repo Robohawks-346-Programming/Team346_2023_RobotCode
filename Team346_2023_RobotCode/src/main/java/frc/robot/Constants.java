@@ -32,10 +32,10 @@ public final class Constants {
 
   // Motor IDs
   public static final int ARM_MOTOR_ID              = 41;
-  public static final int INTAKE_MOTOR_ID           = 0;
+  public static final int INTAKE_MOTOR_ID           = 69;
 
   // Motor Speed
-  public static final double ARM_MOTOR_SPEED        = 0;
+  public static final double ARM_MOTOR_SPEED        = 0.1;
   public static final double INTAKE_MOTOR_SPEED     = 0;
 
   // Arm Angles

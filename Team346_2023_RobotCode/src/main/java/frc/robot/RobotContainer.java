@@ -15,6 +15,7 @@ import frc.robot.subsystems.Grabber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LED;
 import java.util.function.DoubleSupplier;
+import frc.robot.commands.Arm.MoveArm;
 
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
@@ -71,6 +72,7 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     new JoystickButton(driverControl, Button.kL2.value).onTrue(new SyncEncoder(drivetrain));
+    new JoystickButton(driverControl, Button.kCircle.value).whileHeld(new MoveArm(10)); 
   }
 
   /**
