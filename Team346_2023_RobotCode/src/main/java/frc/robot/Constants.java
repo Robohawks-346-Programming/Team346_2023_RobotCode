@@ -115,14 +115,18 @@ public final class Constants {
   public static final double ARM_GEAR_RATIO                            = 580; // 580 motor rev :1 arm rev
   
   // vision processor constants: Need to be adjusted for actual values - distance is always measured in meters for vision processor
-  public static final double END_DISTANCE = 2;                                  // the distance we want the robot to be from the target
-  public static final double END_ANGLE = 2;                                     // the angle we want the robot to have from the target
-  public static final double END_DISTANCE_THRESHOLD = 1;                       // the acceptable margin of error for distance from target
-  public static final double END_ANGLE_THRESHOLD = 1;                           // the acceptable margin of error for angle from target
-  public static final double CAMERA_ANGLE = 1;                                  // the angle of the camera to the ground           
-  public static final double CAMERA_HEIGHT = 1;                                 // the height of the camera from the ground                     
-  public static final double HEIGHT_OF_TARGET = 0.854075;                          // the mean of target height 1 and 2
-  public static final double HEIGHT_OF_GRID_APRIL_TAG = 0.38735;           // the height of the grid april tag in relation to the camera
-  public static final double HEIGHT_OF_SUBSTATION_APRIL_TAG = 0.619125;          // the height of the substation april tag in relation to the camera
+  public static final double END_DISTANCE                     = 2;                 // the distance we want the robot to be from the target
+  public static final double END_ANGLE                        = 2;                 // the angle we want the robot to have from the target
+  public static final double END_DISTANCE_THRESHOLD           = 1;                 // the acceptable margin of error for distance from target
+  public static final double END_ANGLE_THRESHOLD              = 1;                 // the acceptable margin of error for angle from target
+  public static final double CAMERA_ANGLE                     = 1;                 // the angle of the camera to the ground           
+  public static final double CAMERA_HEIGHT                    = 1;                 // the height of the camera from the ground                     
+  public static final double HEIGHT_OF_TARGET                 = 0.854075;          // the mean of target height 1 and 2
+  public static final double HEIGHT_OF_GRID_APRIL_TAG         = 0.38735;           // the height of the grid april tag in relation to the camera
+  public static final double HEIGHT_OF_SUBSTATION_APRIL_TAG   = 0.619125;          // the height of the substation april tag in relation to the camera
+  public static final double APRIL_TAG_PIPELINE               = 0;                 // Pipeline for April Tags
+  public static final double REFLECTIVE_TAPE_PIPELINE         = 1;                 // Pipeline for Reflective Tape
+  public static final double PURPLE_TAG_PIPELINE              = 2;                 // Pipeline for Purple 
+  public static final double YELLOW_TAPE_PIPELINE             = 3;                 // Pipeline for Yellow
 }
 

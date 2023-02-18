@@ -16,7 +16,8 @@ public class TrackAprilTag extends SequentialCommandGroup {
    * @param subsystem The subsystem used by this command.
    */
   public TrackAprilTag() {
-    if (RobotContainer.visionProcessor.isVisible() == true) {
+    RobotContainer.VisionProcessor.changePipeline(Constants.APRIL_TAG_PIPELINE);
+    if (RobotContainer.visionProcessor.isVisible()) {
       // Use addRequirements() here to declare subsystem dependencies.
       double xSubstation = RobotContainer.visionProcessor.distanceFromTargetX(Constants.HEIGHT_OF_SUBSTATION_APRIL_TAG);
       double zSubstation = RobotContainer.visionProcessor.distanceFromTargetZ(Constants.HEIGHT_OF_SUBSTATION_APRIL_TAG);

@@ -8,14 +8,15 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 /** An example command that uses an example subsystem. */
-public class TrackReflectiveTape extends SequentialCommandGroup {
+public class TrackColor extends SequentialCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public TrackReflectiveTape() {
+  public TrackColor(colorPipeline) {
+    RobotContainer.VisionProcessor.changePipeline(colorPipeline);
     if (RobotContainer.visionProcessor.isVisible()) {
       // Use addRequirements() here to declare subsystem dependencies.
       double x1 = RobotContainer.visionProcessor.distanceFromTargetX(Constants.HEIGHT_OF_TARGET);

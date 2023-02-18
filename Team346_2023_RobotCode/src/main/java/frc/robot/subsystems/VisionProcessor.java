@@ -71,8 +71,8 @@ public class VisionProcessor extends SubsystemBase {
         }
     }
 
-    // calculate distance from target
-    public double distanceFromTarget(double targetHeight) {
+     // calculate z distance from target (distance is perpendicular to grid)
+     public double distanceFromTargetZ(double targetHeight) {
         updateLimelightTheta();
         return (targetHeight/(Math.tan(yAngle + Constants.CAMERA_ANGLE))); 
     }
@@ -80,13 +80,7 @@ public class VisionProcessor extends SubsystemBase {
     // calculate x distance from target (parallel to grid)
     public double distanceFromTargetX(double targetHeight) {
         updateLimelightTheta();
-        return (Math.cos (xAngle))*distanceFromTarget(targetHeight);
-    }
-
-    // calculate z distance from target (distance is perpendicular to grid)
-    public double distanceFromTargetZ(double targetHeight) {
-        updateLimelightTheta();
-        return (Math.sin (xAngle))*distanceFromTarget(targetHeight);
+        return (Math.tan (xAngle))*distanceFromTargetZ(targetHeight);
     }
 
     // check if at target distance
