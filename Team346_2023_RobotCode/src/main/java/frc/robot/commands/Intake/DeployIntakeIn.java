@@ -4,11 +4,12 @@
 
 package frc.robot.commands.Intake;
 
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class ExtendIntake extends CommandBase {
+public class DeployIntakeIn extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
 
@@ -17,7 +18,7 @@ public class ExtendIntake extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ExtendIntake() {
+  public DeployIntakeIn() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -29,11 +30,15 @@ public class ExtendIntake extends CommandBase {
   @Override
   public void execute() {
     RobotContainer.intake.extendIntake();
+    RobotContainer.intake.runIntake(Constants.INTAKE_MOTOR_SPEED);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    RobotContainer.intake.stopIntake();
+    RobotContainer.intake.retractIntake();
+  }
 
   // Returns true when the command should end.
   @Override
