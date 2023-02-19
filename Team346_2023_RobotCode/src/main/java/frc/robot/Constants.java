@@ -18,16 +18,16 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 public final class Constants {
 
   // Pneumatic Channels
-  public static final int GRABBER_OUT_PNEUMATIC_ID  = 0;
-  public static final int GRABBER_IN_PNEUMATIC_ID   = 0;
-  public static final int INTAKE_OUT_PNEUMATIC_ID   = 0;
-  public static final int INTAKE_IN_PNEUMATIC_ID    = 0;
-  public static final int ARM_1_OUT_PNEUMATIC_ID    = 0;
-  public static final int ARM_1_IN_PNEUMATIC_ID     = 0;
-  public static final int ARM_2_OUT_PNEUMATIC_ID    = 0;
-  public static final int ARM_2_IN_PNEUMATIC_ID     = 0;
-  public static final int BRAKE_OUT_PNEUMATIC_ID    = 0;
-  public static final int BRAKE_IN_PNEUMATIC_ID     = 0;
+  public static final int GRABBER_OUT_PNEUMATIC_ID  = 0;  //0
+  public static final int GRABBER_IN_PNEUMATIC_ID   = 0;  //15
+  public static final int INTAKE_OUT_PNEUMATIC_ID   = 0;  //1
+  public static final int INTAKE_IN_PNEUMATIC_ID    = 0;  //14
+  public static final int ARM_1_OUT_PNEUMATIC_ID    = 0;  //2
+  public static final int ARM_1_IN_PNEUMATIC_ID     = 0;  //13
+  public static final int ARM_2_OUT_PNEUMATIC_ID    = 0;  //3
+  public static final int ARM_2_IN_PNEUMATIC_ID     = 0;  //12
+  public static final int BRAKE_OUT_PNEUMATIC_ID    = 0;  //4
+  public static final int BRAKE_IN_PNEUMATIC_ID     = 0;  //11
   
 
   // Motor IDs
