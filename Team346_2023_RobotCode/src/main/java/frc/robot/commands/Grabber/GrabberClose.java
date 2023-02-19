@@ -31,7 +31,12 @@ public class GrabberClose extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.grabber.Grab();
+    if (RobotContainer.grabber.getLaserBreakValue()) {
+      RobotContainer.grabber.Grab();
+    } 
+    else {
+      
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -41,6 +46,6 @@ public class GrabberClose extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return RobotContainer.grabber.getLaserBreakValue();
   }
 }

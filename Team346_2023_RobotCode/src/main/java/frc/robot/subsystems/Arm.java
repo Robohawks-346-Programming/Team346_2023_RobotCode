@@ -11,9 +11,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Arm extends SubsystemBase {
-    CANSparkMax rotationMotor;
-    DoubleSolenoid armSolenoid1, armSolenoid2, brakeSolenoid;
-    RelativeEncoder rotationEncoder;
+    private static CANSparkMax rotationMotor;
+    private static DoubleSolenoid armSolenoid1, armSolenoid2, brakeSolenoid;
+    private static RelativeEncoder rotationEncoder;
 
     double armDegreesPerMotorRev;
     
@@ -48,7 +48,7 @@ public class Arm extends SubsystemBase {
         armSolenoid2.set(Value.kReverse);
     }
 
-    // Rotatate arm up
+    // Rotate arm up
     public void RotateUp() {
         rotationMotor.set(Constants.ARM_MOTOR_SPEED);
     }

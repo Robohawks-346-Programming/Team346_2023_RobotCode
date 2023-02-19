@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
-    DoubleSolenoid intakeSolenoid;
-    CANSparkMax intakeMotor;
+    private static DoubleSolenoid intakeSolenoid;
+    private static CANSparkMax intakeMotor;
     
     public Intake() {
         intakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.INTAKE_OUT_PNEUMATIC_ID, Constants.INTAKE_IN_PNEUMATIC_ID);
@@ -29,8 +29,8 @@ public class Intake extends SubsystemBase {
     }
 
     // Runs Intake Motor
-    public void runIntake() {
-        intakeMotor.set(Constants.INTAKE_MOTOR_SPEED);
+    public void runIntake(double speed) {
+        intakeMotor.set(speed);
     }
     
     // Stops Intake Motor when finished
