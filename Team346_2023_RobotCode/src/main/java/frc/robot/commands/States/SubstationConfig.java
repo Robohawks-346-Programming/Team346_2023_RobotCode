@@ -1,6 +1,7 @@
 package frc.robot.commands.States;
 
-import frc.robot.commands.Arm.MoveArmDoubleSubstation;
+import frc.robot.Constants;
+import frc.robot.commands.Arm.MoveArm;
 import frc.robot.commands.Arm.RetractPneumatic1;
 import frc.robot.commands.Arm.RetractPneumatic2;
 import frc.robot.commands.Grabber.GrabberOpen;
@@ -23,7 +24,7 @@ public class SubstationConfig extends SequentialCommandGroup {
           new GrabberOpen(),
           new RetractPneumatic1(),
           new RetractPneumatic2(),
-          new MoveArmDoubleSubstation()
+          new MoveArm(Constants.SUBSTATION_ARM_ANGLE)
         )
       )
       

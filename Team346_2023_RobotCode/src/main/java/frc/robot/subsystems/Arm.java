@@ -20,7 +20,7 @@ public class Arm extends SubsystemBase {
     public Arm() {
         armSolenoid1 = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.ARM_1_OUT_PNEUMATIC_ID, Constants.ARM_1_IN_PNEUMATIC_ID);
         armSolenoid2 = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.ARM_2_OUT_PNEUMATIC_ID, Constants.ARM_2_IN_PNEUMATIC_ID);
-        rotationMotor = new CANSparkMax(Constants.ARM_MOTOR_ID, MotorType.kBrushless);
+        rotationMotor = new CANSparkMax(40, MotorType.kBrushless);      //Test ID
         rotationEncoder = rotationMotor.getEncoder();
         brakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.BRAKE_IN_PNEUMATIC_ID, Constants.BRAKE_OUT_PNEUMATIC_ID);
 

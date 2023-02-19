@@ -1,7 +1,8 @@
 package frc.robot.commands.States;
 
+import frc.robot.Constants;
 import frc.robot.commands.Arm.ExtendPneumatic1;
-import frc.robot.commands.Arm.MoveArmLevel1;
+import frc.robot.commands.Arm.MoveArm;
 import frc.robot.commands.Arm.RetractPneumatic2;
 import frc.robot.commands.Grabber.GrabberOpen;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -20,7 +21,7 @@ public class Level1Config extends SequentialCommandGroup {
     addCommands(
       new ParallelCommandGroup(
         new SequentialCommandGroup(
-          new MoveArmLevel1(),
+          new MoveArm(Constants.LEVEL_1_ARM_ANGLE),
           new RetractPneumatic2(),
           new ExtendPneumatic1(),
           new GrabberOpen()

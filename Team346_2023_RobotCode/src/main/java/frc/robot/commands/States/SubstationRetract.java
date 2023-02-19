@@ -1,6 +1,7 @@
 package frc.robot.commands.States;
 
-import frc.robot.commands.Arm.MoveArmHome;
+import frc.robot.Constants;
+import frc.robot.commands.Arm.MoveArm;
 import frc.robot.commands.Grabber.GrabberClose;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -25,25 +26,8 @@ public class SubstationRetract extends SequentialCommandGroup {
         new SequentialCommandGroup(
           new GrabberClose(),
           new WaitCommand(2),
-          new MoveArmHome()
+          new MoveArm(Constants.HOME_ARM_ANGLE)
         )
-      // }
-      // else if (x = Level1Config) {
-      //   new ParallelCommandGroup(
-      //   new SequentialCommandGroup(
-      //     new GrabberClose(),
-      //     new MoveArmHomeToLevel1(),
-      //     new RetractPneumatic1(),
-      //     new MoveArmHome()
-      //   )
-      // )
-      // }
-      // else {
-      // new ParallelCommandGroup(
-        // new SequentialCommandGroup (
-        // )
-      // )
-      // }
         )
       );
       
