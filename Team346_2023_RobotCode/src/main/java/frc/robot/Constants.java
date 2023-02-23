@@ -18,24 +18,24 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 public final class Constants {
 
   // Pneumatic Channels
-  public static final int GRABBER_OUT_PNEUMATIC_ID  = 0;
-  public static final int GRABBER_IN_PNEUMATIC_ID   = 0;
-  public static final int INTAKE_OUT_PNEUMATIC_ID   = 0;
-  public static final int INTAKE_IN_PNEUMATIC_ID    = 0;
-  public static final int ARM_1_OUT_PNEUMATIC_ID    = 0;
-  public static final int ARM_1_IN_PNEUMATIC_ID     = 0;
-  public static final int ARM_2_OUT_PNEUMATIC_ID    = 0;
-  public static final int ARM_2_IN_PNEUMATIC_ID     = 0;
-  public static final int BRAKE_OUT_PNEUMATIC_ID    = 0;
-  public static final int BRAKE_IN_PNEUMATIC_ID     = 0;
+  public static final int GRABBER_OUT_PNEUMATIC_ID  = 0; //15
+  public static final int GRABBER_IN_PNEUMATIC_ID   = 15; //0
+  public static final int INTAKE_OUT_PNEUMATIC_ID   = 14;
+  public static final int INTAKE_IN_PNEUMATIC_ID    = 1;
+  public static final int ARM_1_OUT_PNEUMATIC_ID    = 2; //13
+  public static final int ARM_1_IN_PNEUMATIC_ID     = 13;  //2
+  public static final int ARM_2_OUT_PNEUMATIC_ID    = 3; //12
+  public static final int ARM_2_IN_PNEUMATIC_ID     = 12; //3
+  public static final int BRAKE_OUT_PNEUMATIC_ID    = 11;
+  public static final int BRAKE_IN_PNEUMATIC_ID     = 4;
   
 
   // Motor IDs
-  public static final int ARM_MOTOR_ID              = 41;
-  public static final int INTAKE_MOTOR_ID           = 69;
+  public static final int ARM_MOTOR_ID              = 12;
+  public static final int INTAKE_MOTOR_ID           = 14;
 
   // Motor Speed
-  public static final double ARM_MOTOR_SPEED        = 0.1;
+  public static final double ARM_MOTOR_SPEED        = 0.2;
   public static final double INTAKE_MOTOR_SPEED     = 0;
 
   // Arm Angles
@@ -92,7 +92,7 @@ public final class Constants {
   public static final int DRIVER_CONTROLLER_PORT                      = 0;
   public static final int GRABBER_LASER_BREAK_PORT                    = 0;
   public static final int LED_1_PWM_PORT                              = 0;
-  public static final int LED_2_PWM_PORT                              = 0;
+  public static final int LED_2_PWM_PORT                              = 1;
 
   public static final double OFFSET                                   = 180.0;
 

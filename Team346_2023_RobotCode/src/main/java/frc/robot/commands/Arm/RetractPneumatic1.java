@@ -23,12 +23,13 @@ public class RetractPneumatic1 extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    RobotContainer.arm.retractArmPneumatic1();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.arm.retractArmPneumatic1();
   }
 
   // Called once the command ends or is interrupted.

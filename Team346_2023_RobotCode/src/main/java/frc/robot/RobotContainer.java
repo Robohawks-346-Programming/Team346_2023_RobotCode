@@ -8,6 +8,10 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Drivetrain.JoystickDrive;
 import frc.robot.commands.Drivetrain.SyncEncoder;
+import frc.robot.commands.States.Level1Config;
+import frc.robot.commands.States.Level1Retract;
+import frc.robot.commands.States.Level2Config;
+import frc.robot.commands.States.StartingConfig;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain.*;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -16,7 +20,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LED;
 import java.util.function.DoubleSupplier;
 import frc.robot.commands.Arm.MoveArm;
-
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -52,7 +56,7 @@ public class RobotContainer {
     DoubleSupplier yAxis = () -> (-driverControl.getLeftX());
     DoubleSupplier thetaAxis = () -> (-driverControl.getRightX());
 
-    drivetrain.setDefaultCommand(new JoystickDrive(drivetrain, xAxis, yAxis, thetaAxis));
+    //drivetrain.setDefaultCommand(new JoystickDrive(drivetrain, xAxis, yAxis, thetaAxis));
   }
 
   /**
@@ -71,8 +75,13 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    new JoystickButton(driverControl, Button.kL2.value).onTrue(new SyncEncoder(drivetrain));
-    new JoystickButton(driverControl, Button.kCircle.value).whileHeld(new MoveArm(10)); 
+    //new JoystickButton(driverControl, Button.kL2.value).onTrue(new SyncEncoder(drivetrain));
+    new JoystickButton(driverControl, Button.kTriangle.value).onTrue(new Level1Retract());
+    new JoystickButton(driverControl, Button.kSquare.value).onTrue(new StartingConfig());
+    new JoystickButton(driverControl, Button.kCircle.value).onTrue(new Level1Config());
+    new JoystickButton(driverControl, Button.kCross.value).onTrue(new Level2Config());
+    //new JoystickButton(driverControl, Button.kCross.value).onTrue();
+
   }
 
   /**

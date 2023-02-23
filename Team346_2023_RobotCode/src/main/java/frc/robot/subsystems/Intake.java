@@ -6,26 +6,36 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
     private static DoubleSolenoid intakeSolenoid;
     private static CANSparkMax intakeMotor;
+    private boolean intakeValue;
     
     public Intake() {
-        intakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.INTAKE_OUT_PNEUMATIC_ID, Constants.INTAKE_IN_PNEUMATIC_ID);
+        intakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.INTAKE_OUT_PNEUMATIC_ID, Constants.INTAKE_IN_PNEUMATIC_ID);
         intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR_ID, MotorType.kBrushless);
+
+        intakeValue = false;
     }
 
+    @Override
+    public void periodic() {
+        SmartDashboard.putBoolean("Intake Value", intakeValue);
+    }
     // Extends Pneumatic part of the Intake
     public void extendIntake() {
         intakeSolenoid.set(Value.kForward);
+        intakeValue = true;
     }
 
     // Retracts Pneumatic part of the Intake
     public void retractIntake() {
         intakeSolenoid.set(Value.kReverse);
+        intakeValue = false;
     }
 
     // Runs Intake Motor
