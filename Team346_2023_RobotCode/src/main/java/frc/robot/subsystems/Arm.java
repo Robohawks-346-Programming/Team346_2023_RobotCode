@@ -95,16 +95,7 @@ public class Arm extends SubsystemBase {
 
     // Checks to see if the position has been reached
     public boolean isAtPosition(double rev) {
-        // if(rotationEncoder.getPosition() >= rev) {
-        //     return rotationEncoder.getPosition() <= rev;
-        // }
-        // else if (rotationEncoder.getPosition() <= rev) {
-        //     return rotationEncoder.getPosition() >= rev;
-        // }
-        // else {
-        //     return true;
-        // }
-        return rotationEncoder.getPosition() >= rev;
+        return (rotationEncoder.getPosition() >= rev);
     }
 
     // Stops rotation motor once finished
