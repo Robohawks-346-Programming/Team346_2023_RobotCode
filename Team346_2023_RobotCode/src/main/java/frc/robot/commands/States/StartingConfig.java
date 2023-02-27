@@ -7,6 +7,7 @@ import frc.robot.commands.Arm.MoveArm;
 import frc.robot.commands.Arm.RetractPneumatic1;
 import frc.robot.commands.Arm.RetractPneumatic2;
 import frc.robot.commands.Grabber.GrabberClose;
+import frc.robot.commands.Grabber.GrabberCloseManual;
 
 /** An example command that uses an example subsystem. */
 public class StartingConfig extends SequentialCommandGroup {
@@ -23,7 +24,7 @@ public class StartingConfig extends SequentialCommandGroup {
         new SequentialCommandGroup(
           new RetractPneumatic1(),
           new RetractPneumatic2(),
-          new GrabberClose(),
+          new GrabberCloseManual(),
           new MoveArm(Constants.HOME_ARM_ANGLE)
         )
       )

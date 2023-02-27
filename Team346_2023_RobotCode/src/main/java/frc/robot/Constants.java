@@ -18,58 +18,62 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 public final class Constants {
 
   // Pneumatic Channels
-  public static final int GRABBER_OUT_PNEUMATIC_ID  = 0; //15
-  public static final int GRABBER_IN_PNEUMATIC_ID   = 15; //0
-  public static final int INTAKE_OUT_PNEUMATIC_ID   = 14;
-  public static final int INTAKE_IN_PNEUMATIC_ID    = 1;
-  public static final int ARM_1_OUT_PNEUMATIC_ID    = 2; //13
-  public static final int ARM_1_IN_PNEUMATIC_ID     = 13;  //2
-  public static final int ARM_2_OUT_PNEUMATIC_ID    = 3; //12
-  public static final int ARM_2_IN_PNEUMATIC_ID     = 12; //3
-  public static final int BRAKE_OUT_PNEUMATIC_ID    = 11;
-  public static final int BRAKE_IN_PNEUMATIC_ID     = 4;
+  public static final int GRABBER_OUT_PNEUMATIC_ID                    = 15; 
+  public static final int GRABBER_IN_PNEUMATIC_ID                     = 0; 
+  public static final int INTAKE_OUT_PNEUMATIC_ID                     = 1;
+  public static final int INTAKE_IN_PNEUMATIC_ID                      = 14;
+  public static final int ARM_1_OUT_PNEUMATIC_ID                      = 2; 
+  public static final int ARM_1_IN_PNEUMATIC_ID                       = 13; 
+  public static final int ARM_2_OUT_PNEUMATIC_ID                      = 3;
+  public static final int ARM_2_IN_PNEUMATIC_ID                       = 12;
+  public static final int BRAKE_OUT_PNEUMATIC_ID                      = 11;
+  public static final int BRAKE_IN_PNEUMATIC_ID                       = 4;
+  public static final int LIMELIGHT_IN_PNEUMATIC_CHANNEL              = 5;
+  public static final int LIMELIGHT_OUT_PNEUMATIC_CHANNEL             = 10;
   
 
   // Motor IDs
-  public static final int ARM_MOTOR_ID              = 12;
-  public static final int INTAKE_MOTOR_ID           = 14;
+  public static final int ARM_MOTOR_ID                                = 12;
+  public static final int INTAKE_MOTOR_ID                             = 40;
 
   // Motor Speed
-  public static final double ARM_MOTOR_SPEED        = 0.2;
-  public static final double INTAKE_MOTOR_SPEED     = 0;
+  public static final double ARM_MOTOR_SPEED                          = 0.5;
+  public static final double INTAKE_IN_MOTOR_SPEED                    = 0.75;
+  public static final double INTAKE_OUT_SLOW_MOTOR_SPEED              = 0.5;
+  public static final double INTAKE_OUT_FAST_MOTOR_SPEED              = 1;
 
   // Arm Angles
-  public static final double HOME_ARM_ANGLE               = 12; //off vertical
-  public static final double LEVEL_1_ARM_ANGLE            = 22; //off vertical
-  public static final double ROTATE_UP_LEVEL_1_ARM_ANGLE  = 25; //off vertical
-  public static final double LEVEL_2_ARM_ANGLE            = 73; //off vertical
-  public static final double LEVEL_3_ARM_ANGLE            = 90; //off vertical
-  public static final double SUBSTATION_ARM_ANGLE         = 79; //off vertical
+  public static final double HOME_ARM_ANGLE                           = 12; //off vertical
+  public static final double LEVEL_1_ARM_ANGLE                        = 27; //off vertical
+  public static final double ROTATE_UP_LEVEL_1_ARM_ANGLE              = 25; //off vertical
+  public static final double LEVEL_2_ARM_ANGLE                        = 73; //off vertical
+  public static final double LEVEL_3_ARM_ANGLE                        = 92; //off vertical
+  public static final double SUBSTATION_ARM_ANGLE                     = 80; //off vertical
+  public static final double ARM_ANGLE_THRESHOLD                      = 0.5; // in degrees
 
-  
   // Front left Swerve Module
-  public static final int FRONT_LEFT_DRIVE_ID             = 21;
-  public static final int FRONT_LEFT_TURN_ID              = 22;
-  public static final int FRONT_LEFT_ENCODER_ID           = 23;
-  public static final double FRONT_LEFT_TURN_OFFSET       = 0;
+  public static final int FRONT_LEFT_DRIVE_ID                         = 21;
+  public static final int FRONT_LEFT_TURN_ID                          = 22;
+  public static final int FRONT_LEFT_ENCODER_ID                       = 23;
+  public static final double FRONT_LEFT_TURN_OFFSET                   = 0;
 
   // Back left Swerve Module
-  public static final int BACK_LEFT_DRIVE_ID              = 31;
-  public static final int BACK_LEFT_TURN_ID               = 32;
-  public static final int BACK_LEFT_ENCODER_ID            = 33;
-  public static final double BACK_LEFT_TURN_OFFSET        = 0;
+  public static final int BACK_LEFT_DRIVE_ID                          = 31;
+  public static final int BACK_LEFT_TURN_ID                           = 32;
+  public static final int BACK_LEFT_ENCODER_ID                        = 33;
+  public static final double BACK_LEFT_TURN_OFFSET                    = 0;
 
   // Front Right Swerve Module
-  public static final int FRONT_RIGHT_DRIVE_ID            = 24;
-  public static final int FRONT_RIGHT_TURN_ID             = 25;
-  public static final int FRONT_RIGHT_ENCODER_ID          = 26;
-  public static final double FRONT_RIGHT_TURN_OFFSET      = 0;
+  public static final int FRONT_RIGHT_DRIVE_ID                        = 24;
+  public static final int FRONT_RIGHT_TURN_ID                         = 25;
+  public static final int FRONT_RIGHT_ENCODER_ID                      = 26;
+  public static final double FRONT_RIGHT_TURN_OFFSET                  = 0;
 
   // Back Right Swerve Module
-  public static final int BACK_RIGHT_DRIVE_ID             = 34;
-  public static final int BACK_RIGHT_TURN_ID              = 35;
-  public static final int BACK_RIGHT_ENCODER_ID           = 36;
-  public static final double BACK_RIGHT_TURN_OFFSET       = 0;
+  public static final int BACK_RIGHT_DRIVE_ID                         = 34;
+  public static final int BACK_RIGHT_TURN_ID                          = 35;
+  public static final int BACK_RIGHT_ENCODER_ID                       = 36;
+  public static final double BACK_RIGHT_TURN_OFFSET                   = 0;
 
   public static final double MAX_VELOCITY                             = 0.5; // just for testing
   public static final int MAX_VOLTAGE                                 = 12;
@@ -90,9 +94,13 @@ public final class Constants {
   public static final double TURN_FF                                  = 0;
 
   public static final int DRIVER_CONTROLLER_PORT                      = 0;
+  public static final int OPERATOR_CONTROLLER_PORT                    = 1;
+  public static final int MANUAL_OPERATOR_CONTROLLER_PORT             = 1;
   public static final int GRABBER_LASER_BREAK_PORT                    = 0;
+  public static final int INTAKE_LASER_BREAK_PORT                     = 2;
   public static final int LED_1_PWM_PORT                              = 0;
   public static final int LED_2_PWM_PORT                              = 1;
+
 
   public static final double OFFSET                                   = 180.0;
 
@@ -110,7 +118,7 @@ public final class Constants {
           new Translation2d(-DRIVETRAIN_WHEELBASE_METERS/ 2.0, -DRIVETRAIN_TRACKWIDTH_METERS / 2.0) // back right
       );
 
-  public static final double ARM_GEAR_RATIO                            = 580; // 580 motor rev :1 arm rev
+  public static final double ARM_GEAR_RATIO                           = 580; // 580 motor rev :1 arm rev
   
   // vision processor constants: Need to be adjusted for actual values - distance is always measured in meters for vision processor
   public static final double END_DISTANCE = 2;                                  // the distance we want the robot to be from the target

@@ -5,6 +5,7 @@
 package frc.robot.commands.Intake;
 
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -30,7 +31,7 @@ public class DeployIntakeIn extends CommandBase {
   @Override
   public void execute() {
     RobotContainer.intake.extendIntake();
-    RobotContainer.intake.runIntake(Constants.INTAKE_MOTOR_SPEED);
+    RobotContainer.intake.runIntake(Constants.INTAKE_IN_MOTOR_SPEED);
   }
 
   // Called once the command ends or is interrupted.
@@ -43,6 +44,6 @@ public class DeployIntakeIn extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return RobotContainer.intake.getLaserBreak();
   }
 }

@@ -8,22 +8,32 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Drivetrain.JoystickDrive;
 import frc.robot.commands.Drivetrain.SyncEncoder;
+import frc.robot.commands.Intake.DeployIntakeIn;
+import frc.robot.commands.Intake.DeployIntakeSlowOut;
+import frc.robot.commands.Intake.DeployIntakeFastOut;
+import frc.robot.commands.States.DeliverLevelHigh;
 import frc.robot.commands.States.Level1Config;
 import frc.robot.commands.States.Level1Retract;
 import frc.robot.commands.States.Level2Config;
+import frc.robot.commands.States.Level3Config;
 import frc.robot.commands.States.StartingConfig;
+import frc.robot.commands.States.SubstationConfig;
+import frc.robot.commands.States.SubstationRetract;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain.*;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Grabber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LED;
+import frc.robot.subsystems.VisionProcessor;
+
 import java.util.function.DoubleSupplier;
 import frc.robot.commands.Arm.MoveArm;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -42,11 +52,28 @@ public class RobotContainer {
   public static final Grabber grabber = new Grabber();
   public static final LED led = new LED();
   public static final Intake intake = new Intake();
-  public final Drivetrain drivetrain = new Drivetrain();
+  public static final Drivetrain drivetrain = new Drivetrain();
+  public static final VisionProcessor visionProcessor = new VisionProcessor();
   public final PS4Controller driverControl = new PS4Controller(Constants.DRIVER_CONTROLLER_PORT);
+  public static final Joystick operatorControl = new Joystick(Constants.OPERATOR_CONTROLLER_PORT);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-
+  public static final JoystickButton BUTTON_1 = new JoystickButton(operatorControl, 1),
+    BUTTON_2 = new JoystickButton(operatorControl, 2),
+    BUTTON_3 = new JoystickButton(operatorControl, 3),
+    BUTTON_4 = new JoystickButton(operatorControl, 4),
+    BUTTON_5 = new JoystickButton(operatorControl, 5),
+    BUTTON_6 = new JoystickButton(operatorControl, 6),
+    BUTTON_7 = new JoystickButton(operatorControl, 7),
+    BUTTON_8 = new JoystickButton(operatorControl, 8),
+    BUTTON_9 = new JoystickButton(operatorControl, 9),
+    BUTTON_10 = new JoystickButton(operatorControl, 10),
+    BUTTON_11 = new JoystickButton(operatorControl, 11),
+    BUTTON_12 = new JoystickButton(operatorControl, 12),
+    BUTTON_13 = new JoystickButton(operatorControl, 13),
+    BUTTON_14 = new JoystickButton(operatorControl, 14),
+    BUTTON_15 = new JoystickButton(operatorControl, 15),
+    BUTTON_16 = new JoystickButton(operatorControl, 16);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
@@ -55,6 +82,7 @@ public class RobotContainer {
     DoubleSupplier xAxis = () -> (-driverControl.getLeftY());
     DoubleSupplier yAxis = () -> (-driverControl.getLeftX());
     DoubleSupplier thetaAxis = () -> (-driverControl.getRightX());
+
 
     //drivetrain.setDefaultCommand(new JoystickDrive(drivetrain, xAxis, yAxis, thetaAxis));
   }
@@ -70,16 +98,22 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    //new JoystickButton(driverControl, Button.kL2.value).onTrue(new SyncEncoder(drivetrain));
-    new JoystickButton(driverControl, Button.kTriangle.value).onTrue(new Level1Retract());
-    new JoystickButton(driverControl, Button.kSquare.value).onTrue(new StartingConfig());
-    new JoystickButton(driverControl, Button.kCircle.value).onTrue(new Level1Config());
-    new JoystickButton(driverControl, Button.kCross.value).onTrue(new Level2Config());
+    new JoystickButton(driverControl, Button.kCircle.value).onTrue(new InstantCommand(drivetrain::resetEncoders));
+    
+    BUTTON_1.onTrue(new StartingConfig());
+    BUTTON_2.onTrue(new Level1Config());
+    BUTTON_3.onTrue(new Level2Config());
+    BUTTON_4.onTrue(new Level3Config());
+    BUTTON_9.onTrue(new Level1Retract());
+    BUTTON_10.onTrue(new DeliverLevelHigh());
+    BUTTON_11.onTrue(new SubstationRetract());
+    BUTTON_12.onTrue(new SubstationConfig());
+    BUTTON_13.whileTrue(new DeployIntakeIn());
+    BUTTON_14.whileTrue(new DeployIntakeFastOut());
+    BUTTON_15.whileTrue(new DeployIntakeSlowOut());
     //new JoystickButton(driverControl, Button.kCross.value).onTrue();
 
   }

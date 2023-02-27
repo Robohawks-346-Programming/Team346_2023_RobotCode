@@ -2,16 +2,20 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.Constants;
 public class VisionProcessor extends SubsystemBase {
-    
+    private static DoubleSolenoid limelightSolenoid;
+    public VisionProcessor() {
+        limelightSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.LIMELIGHT_OUT_PNEUMATIC_CHANNEL, Constants.LIMELIGHT_IN_PNEUMATIC_CHANNEL);
+    }
     //Variables:
-    
     NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelightTable"); // creates network table object
     NetworkTableEntry tx = limelightTable.getEntry("tx");              // defining tx using network table - used for xAngle
     NetworkTableEntry ty = limelightTable.getEntry("ty");              // defining ty using network table - used for yAngle
@@ -54,5 +58,13 @@ public class VisionProcessor extends SubsystemBase {
     // check if at target distance
     public boolean atTargetDistance() {
         return (Math.abs(distanceFromTarget() - Constants.END_DISTANCE) <= Constants.END_DISTANCE_THRESHOLD);
+    }
+
+    public void limelightExtend() {
+        limelightSolenoid.set(Value.kForward);
+    }
+
+    public void limelightRetract() {
+        limelightSolenoid.set(Value.kReverse);
     }
 }

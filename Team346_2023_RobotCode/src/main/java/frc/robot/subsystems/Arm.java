@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -23,6 +24,7 @@ public class Arm extends SubsystemBase {
         armSolenoid1 = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.ARM_1_OUT_PNEUMATIC_ID, Constants.ARM_1_IN_PNEUMATIC_ID);
         armSolenoid2 = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.ARM_2_OUT_PNEUMATIC_ID, Constants.ARM_2_IN_PNEUMATIC_ID);
         rotationMotor = new CANSparkMax(Constants.ARM_MOTOR_ID, MotorType.kBrushless);      //Test ID
+        rotationMotor.setIdleMode(IdleMode.kBrake);
         rotationEncoder = rotationMotor.getEncoder();
         brakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.BRAKE_IN_PNEUMATIC_ID, Constants.BRAKE_OUT_PNEUMATIC_ID);
 
@@ -32,6 +34,7 @@ public class Arm extends SubsystemBase {
 
         arm1Value = false;
         arm2Value = false;
+        rotationMotor.setInverted(true);
     }
 
     @Override
@@ -95,7 +98,8 @@ public class Arm extends SubsystemBase {
 
     // Checks to see if the position has been reached
     public boolean isAtPosition(double rev) {
-        return (rotationEncoder.getPosition() >= rev);
+        double difference = Math.abs(rotationEncoder.getPosition() - rev);
+        return(difference <= Constants.ARM_ANGLE_THRESHOLD);
     }
 
     // Stops rotation motor once finished

@@ -37,7 +37,7 @@ public class Grabber extends SubsystemBase {
     }
 
     public boolean getLaserBreakValue() {
-        return laserBreak.get();
+        return !laserBreak.get();
     }
     
 }

@@ -9,7 +9,7 @@ import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class DeployIntakeOut extends CommandBase {
+public class DeployIntakeSlowOut extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
 
@@ -18,7 +18,7 @@ public class DeployIntakeOut extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public DeployIntakeOut() {
+  public DeployIntakeSlowOut() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -30,7 +30,7 @@ public class DeployIntakeOut extends CommandBase {
   @Override
   public void execute() {
     RobotContainer.intake.extendIntake();
-    RobotContainer.intake.runIntake(-Constants.INTAKE_MOTOR_SPEED);
+    RobotContainer.intake.runIntake(-Constants.INTAKE_OUT_SLOW_MOTOR_SPEED);
   }
 
   // Called once the command ends or is interrupted.
