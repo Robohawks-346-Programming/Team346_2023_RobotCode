@@ -84,7 +84,7 @@ public class RobotContainer {
     DoubleSupplier thetaAxis = () -> (-driverControl.getRightX());
 
 
-    //drivetrain.setDefaultCommand(new JoystickDrive(drivetrain, xAxis, yAxis, thetaAxis));
+    drivetrain.setDefaultCommand(new JoystickDrive(drivetrain, xAxis, yAxis, thetaAxis));
   }
 
   /**
@@ -102,7 +102,7 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     new JoystickButton(driverControl, Button.kCircle.value).onTrue(new InstantCommand(drivetrain::resetEncoders));
-    
+
     BUTTON_1.onTrue(new StartingConfig());
     BUTTON_2.onTrue(new Level1Config());
     BUTTON_3.onTrue(new Level2Config());
