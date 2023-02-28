@@ -174,6 +174,6 @@ public class SwerveModule extends SubsystemBase{
     }
 
     public double turnAngleRadians() {
-        return Constants.OFFSET + (turnEncoder.getPosition() * 2 * Math.PI);
+        return encoderOffset + (turnEncoder.getPosition() * 2 * Math.PI);
     }
 }

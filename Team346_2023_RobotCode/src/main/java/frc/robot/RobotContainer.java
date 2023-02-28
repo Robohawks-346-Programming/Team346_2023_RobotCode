@@ -81,7 +81,7 @@ public class RobotContainer {
 
     DoubleSupplier xAxis = () -> (-driverControl.getLeftY());
     DoubleSupplier yAxis = () -> (-driverControl.getLeftX());
-    DoubleSupplier thetaAxis = () -> (-driverControl.getRightX());
+    DoubleSupplier thetaAxis = () -> (driverControl.getRightX());
 
 
     drivetrain.setDefaultCommand(new JoystickDrive(drivetrain, xAxis, yAxis, thetaAxis));

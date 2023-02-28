@@ -10,6 +10,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -64,7 +65,19 @@ public class Drivetrain extends SubsystemBase{
         driveConstants = new PIDConstants(Constants.DRIVE_P, Constants.DRIVE_I, Constants.DRIVE_D);
         turnConstants = new PIDConstants(Constants.TURN_P, Constants.TURN_I, Constants.TURN_D);
     }
+    @Override
+    public void periodic() {
+        updateOdometry();
+        SmartDashboard.putNumber("x", odometry.getPoseMeters().getX());
+        SmartDashboard.putNumber("y", odometry.getPoseMeters().getY());
+        SmartDashboard.putNumber("theta", odometry.getPoseMeters().getRotation().getDegrees());
+        SmartDashboard.putNumber("Gyro Angle", getHeading().getDegrees());
+        SmartDashboard.putNumber("Wheel Encoder", frontRight.getMetersDriven());
+        SmartDashboard.putNumber("Back right encoder", backRight.getPosition().angle.getDegrees());
+        SmartDashboard.putNumber("Back left encoder", backLeft.getPosition().angle.getDegrees());
 
+    }
+    
     public PIDConstants getDriveConstants() {
         driveConstants = new PIDConstants(Constants.DRIVE_P, Constants.DRIVE_I, Constants.DRIVE_D);
         return driveConstants;

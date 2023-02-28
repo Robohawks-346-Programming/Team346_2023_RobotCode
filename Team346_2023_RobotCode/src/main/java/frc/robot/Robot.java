@@ -56,6 +56,7 @@ public class Robot extends TimedRobot {
     RobotContainer.arm.retractArmPneumatic1();
     RobotContainer.arm.retractArmPneumatic2();
     RobotContainer.grabber.Grab();
+    RobotContainer.intake.retractIntake();
     //RobotContainer.visionProcessor.limelightRetract();
   }
 
@@ -94,6 +95,7 @@ public class Robot extends TimedRobot {
     RobotContainer.arm.retractArmPneumatic1();
     RobotContainer.arm.retractArmPneumatic2();
     RobotContainer.grabber.Grab();
+    RobotContainer.intake.retractIntake();
     //RobotContainer.visionProcessor.limelightExtend();
   }
 

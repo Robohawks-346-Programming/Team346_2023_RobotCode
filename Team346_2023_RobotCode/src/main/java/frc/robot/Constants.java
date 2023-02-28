@@ -20,16 +20,16 @@ public final class Constants {
   // Pneumatic Channels
   public static final int GRABBER_OUT_PNEUMATIC_ID                    = 15; 
   public static final int GRABBER_IN_PNEUMATIC_ID                     = 0; 
-  public static final int INTAKE_OUT_PNEUMATIC_ID                     = 1;
-  public static final int INTAKE_IN_PNEUMATIC_ID                      = 14;
+  public static final int INTAKE_OUT_PNEUMATIC_ID                     = 14;
+  public static final int INTAKE_IN_PNEUMATIC_ID                      = 1;
   public static final int ARM_1_OUT_PNEUMATIC_ID                      = 2; 
   public static final int ARM_1_IN_PNEUMATIC_ID                       = 13; 
   public static final int ARM_2_OUT_PNEUMATIC_ID                      = 3;
   public static final int ARM_2_IN_PNEUMATIC_ID                       = 12;
   public static final int BRAKE_OUT_PNEUMATIC_ID                      = 11;
   public static final int BRAKE_IN_PNEUMATIC_ID                       = 4;
-  public static final int LIMELIGHT_IN_PNEUMATIC_CHANNEL              = 5;
-  public static final int LIMELIGHT_OUT_PNEUMATIC_CHANNEL             = 10;
+  public static final int LIMELIGHT_IN_PNEUMATIC_CHANNEL              = 10;
+  public static final int LIMELIGHT_OUT_PNEUMATIC_CHANNEL             = 5;
   
 
   // Motor IDs
@@ -73,14 +73,14 @@ public final class Constants {
   public static final int BACK_RIGHT_DRIVE_ID                         = 34;
   public static final int BACK_RIGHT_TURN_ID                          = 35;
   public static final int BACK_RIGHT_ENCODER_ID                       = 36;
-  public static final double BACK_RIGHT_TURN_OFFSET                   = 0;
+  public static final double BACK_RIGHT_TURN_OFFSET                   = 15; // in degrees
 
-  public static final double MAX_VELOCITY                             = 0.5; // just for testing
+  public static final double MAX_VELOCITY                             = 1; // just for testing
   public static final int MAX_VOLTAGE                                 = 12;
   public static final int DRIVE_CURRENT_LIMIT                         = 60;
   public static final int TURN_CURRENT_LIMIT                          = 25;
-  public static final double MAX_MOVE_VELOCITY                        = 0.25; // for testing
-  public static final double MAX_TURN_VELOCITY                        = 0.25; // for testing
+  public static final double MAX_MOVE_VELOCITY                        = 1; // for testing
+  public static final double MAX_TURN_VELOCITY                        = 1; // for testing
   public static final boolean IS_FIELD_RELATIVE                       = true;
 
   public static final double DRIVE_P                                  = 0.1;
