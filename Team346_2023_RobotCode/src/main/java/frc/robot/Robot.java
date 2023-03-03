@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -29,6 +30,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    CameraServer.startAutomaticCapture();
     RobotContainer.arm.retractArmPneumatic1();
     RobotContainer.arm.retractArmPneumatic2();
     RobotContainer.grabber.Grab();
@@ -57,7 +59,7 @@ public class Robot extends TimedRobot {
     RobotContainer.arm.retractArmPneumatic2();
     RobotContainer.grabber.Grab();
     RobotContainer.intake.retractIntake();
-    //RobotContainer.visionProcessor.limelightRetract();
+    RobotContainer.visionProcessor.limelightRetract();
   }
 
   @Override
@@ -96,7 +98,7 @@ public class Robot extends TimedRobot {
     RobotContainer.arm.retractArmPneumatic2();
     RobotContainer.grabber.Grab();
     RobotContainer.intake.retractIntake();
-    //RobotContainer.visionProcessor.limelightExtend();
+    RobotContainer.visionProcessor.limelightExtend();
   }
 
   /** This function is called periodically during operator control. */

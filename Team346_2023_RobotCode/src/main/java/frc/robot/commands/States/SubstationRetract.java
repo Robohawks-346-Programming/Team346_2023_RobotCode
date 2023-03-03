@@ -26,6 +26,7 @@ public class SubstationRetract extends SequentialCommandGroup {
       new ParallelCommandGroup(
         new SequentialCommandGroup(
           new GrabberClose(),
+          new WaitCommand(0.5),
           new RetractPneumatic1(),
           new WaitCommand(2),
           new MoveArm(Constants.HOME_ARM_ANGLE)

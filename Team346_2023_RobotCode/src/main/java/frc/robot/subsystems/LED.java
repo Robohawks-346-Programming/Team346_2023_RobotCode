@@ -10,7 +10,7 @@ public class LED extends SubsystemBase{
 
     public LED() {
         LED1 = new Spark(Constants.LED_1_PWM_PORT);
-        LED2 = new Spark(Constants.LED_2_PWM_PORT);
+        //LED2 = new Spark(Constants.LED_2_PWM_PORT);
     }
     // Changes LED to yellow for a cone
     public void cone() {
@@ -23,12 +23,12 @@ public class LED extends SubsystemBase{
     }
 
     // Changes LED to red for a Single Substation
-    public void singleSubstation() {
-        LED2.set(0.61); //Red
-    }
+    // public void singleSubstation() {
+    //     LED2.set(0.61); //Red
+    // }
 
-    // Changes LED to Green for a Double Substation
-    public void doubleSubstation() {
-        LED2.set(0.77); //Green
-    }
+    // // Changes LED to Green for a Double Substation
+    // public void doubleSubstation() {
+    //     LED2.set(0.77); //Green
+    // }
 }

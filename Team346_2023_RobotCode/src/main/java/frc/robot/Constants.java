@@ -28,8 +28,8 @@ public final class Constants {
   public static final int ARM_2_IN_PNEUMATIC_ID                       = 12;
   public static final int BRAKE_OUT_PNEUMATIC_ID                      = 11;
   public static final int BRAKE_IN_PNEUMATIC_ID                       = 4;
-  public static final int LIMELIGHT_IN_PNEUMATIC_CHANNEL              = 10;
-  public static final int LIMELIGHT_OUT_PNEUMATIC_CHANNEL             = 5;
+  public static final int LIMELIGHT_IN_PNEUMATIC_CHANNEL              = 5;
+  public static final int LIMELIGHT_OUT_PNEUMATIC_CHANNEL             = 10;
   
 
   // Motor IDs
@@ -41,14 +41,15 @@ public final class Constants {
   public static final double INTAKE_IN_MOTOR_SPEED                    = 0.75;
   public static final double INTAKE_OUT_SLOW_MOTOR_SPEED              = 0.5;
   public static final double INTAKE_OUT_FAST_MOTOR_SPEED              = 1;
+  public static final double INTAKE_OUT_MANUAL_MOTOR_SPEED            = 0.75;
 
   // Arm Angles
   public static final double HOME_ARM_ANGLE                           = 12; //off vertical
-  public static final double LEVEL_1_ARM_ANGLE                        = 27; //off vertical
+  public static final double LEVEL_1_ARM_ANGLE                        = 28; //off vertical
   public static final double ROTATE_UP_LEVEL_1_ARM_ANGLE              = 25; //off vertical
   public static final double LEVEL_2_ARM_ANGLE                        = 73; //off vertical
   public static final double LEVEL_3_ARM_ANGLE                        = 92; //off vertical
-  public static final double SUBSTATION_ARM_ANGLE                     = 80; //off vertical
+  public static final double SUBSTATION_ARM_ANGLE                     = 81; //off vertical
   public static final double ARM_ANGLE_THRESHOLD                      = 0.5; // in degrees
 
   // Front left Swerve Module
@@ -73,14 +74,16 @@ public final class Constants {
   public static final int BACK_RIGHT_DRIVE_ID                         = 34;
   public static final int BACK_RIGHT_TURN_ID                          = 35;
   public static final int BACK_RIGHT_ENCODER_ID                       = 36;
-  public static final double BACK_RIGHT_TURN_OFFSET                   = 15; // in degrees
+  public static final double BACK_RIGHT_TURN_OFFSET                   = 0; // in degrees
 
-  public static final double MAX_VELOCITY                             = 1; // just for testing
+  public static final double MAX_VELOCITY                             = 2;
   public static final int MAX_VOLTAGE                                 = 12;
   public static final int DRIVE_CURRENT_LIMIT                         = 60;
   public static final int TURN_CURRENT_LIMIT                          = 25;
-  public static final double MAX_MOVE_VELOCITY                        = 1; // for testing
-  public static final double MAX_TURN_VELOCITY                        = 1; // for testing
+  public static final double MAX_MOVE_VELOCITY                        = 2;
+  public static final double MAX_TURN_VELOCITY                        = 2;
+  public static final double MAX_MOVE_VELOCITY_FAST                   = 3;
+  public static final double MAX_TURN_VELOCITY_FAST                   = 3;
   public static final boolean IS_FIELD_RELATIVE                       = true;
 
   public static final double DRIVE_P                                  = 0.1;
@@ -98,8 +101,8 @@ public final class Constants {
   public static final int MANUAL_OPERATOR_CONTROLLER_PORT             = 1;
   public static final int GRABBER_LASER_BREAK_PORT                    = 0;
   public static final int INTAKE_LASER_BREAK_PORT                     = 2;
-  public static final int LED_1_PWM_PORT                              = 0;
-  public static final int LED_2_PWM_PORT                              = 1;
+  public static final int LED_1_PWM_PORT                              = 9;
+  public static final int LED_2_PWM_PORT                              = 0;
 
 
   public static final double OFFSET                                   = 180.0;
@@ -125,11 +128,12 @@ public final class Constants {
   public static final double END_ANGLE = 2;                                     // the angle we want the robot to have from the target
   public static final double END_DISTANCE_THRESHOLD = 1;                       // the acceptable margin of error for distance from target
   public static final double END_ANGLE_THRESHOLD = 1;                           // the acceptable margin of error for angle from target
-  public static final double CAMERA_ANGLE = 1;                                  // the angle of the camera to the ground           
+  public static final double CAMERA_ANGLE = 81;                                  // the angle of the camera to the ground           
   public static final double CAMERA_HEIGHT = 1;                                 // the height of the camera from the ground                     
   public static final double HEIGHT_OF_TARGET = 0.854075;                          // the mean of target height 1 and 2
   public static final double HEIGHT_OF_GRID_APRIL_TAG = 0.38735;           // the height of the grid april tag in relation to the camera
   public static final double HEIGHT_OF_SUBSTATION_APRIL_TAG = 0.619125;          // the height of the substation april tag in relation to the camera
   
 }
+
 

@@ -151,9 +151,8 @@ public class SwerveModule extends SubsystemBase{
     }
 
     public void resetEncoders() {
-        turnEncoder.setPosition(0.0);
-        turningCANCoder.setPosition(0.0);
-        turningCANCoder.configMagnetOffset(turningCANCoder.configGetMagnetOffset()- turningCANCoder.getAbsolutePosition());
+        turnEncoder.setPosition(turningCANCoder.getAbsolutePosition()- encoderOffset);
+        //turningCANCoder.configMagnetOffset(turningCANCoder.configGetMagnetOffset()- turningCANCoder.getAbsolutePosition());
     }
 
     public double getMetersDriven() {
@@ -174,6 +173,6 @@ public class SwerveModule extends SubsystemBase{
     }
 
     public double turnAngleRadians() {
-        return encoderOffset + (turnEncoder.getPosition() * 2 * Math.PI);
+        return encoderOffset + (turnEncoder.getPosition() * 2 * Math.PI); 
     }
 }

@@ -24,7 +24,7 @@ public class Level1Retract extends SequentialCommandGroup {
           new GrabberClose(),
           new WaitCommand(0.5),
           new RetractPneumatic1(),
-          new WaitCommand(0.5),
+          new WaitCommand(1),
           new MoveArm(Constants.HOME_ARM_ANGLE)
           
         )
