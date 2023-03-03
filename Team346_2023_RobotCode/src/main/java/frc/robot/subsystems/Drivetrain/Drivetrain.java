@@ -1,5 +1,8 @@
 package frc.robot.subsystems.Drivetrain;
 
+import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.auto.PIDConstants;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -7,6 +10,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -44,18 +48,45 @@ public class Drivetrain extends SubsystemBase{
 
     SwerveModule[] modules = {frontLeft, frontRight, backLeft, backRight};
 
-    ADIS16448_IMU gyro = new ADIS16448_IMU();
+    //ADIS16448_IMU gyro = new ADIS16448_IMU();
+    AHRS gyro = new AHRS();
+
+    PIDConstants driveConstants, turnConstants;
 
     public Drivetrain() {
-        gyro.reset(); //Ask if this would work
+        gyro.calibrate();; //Ask if this would work
         
         odometry = new SwerveDriveOdometry(Constants.DRIVE_KINEMATICS, getHeading(), getModulePositions());
 
         for( SwerveModule module : modules) {
             module.resetDistance();
         }
+
+        driveConstants = new PIDConstants(Constants.DRIVE_P, Constants.DRIVE_I, Constants.DRIVE_D);
+        turnConstants = new PIDConstants(Constants.TURN_P, Constants.TURN_I, Constants.TURN_D);
+    }
+    @Override
+    public void periodic() {
+        updateOdometry();
+        SmartDashboard.putNumber("x", odometry.getPoseMeters().getX());
+        SmartDashboard.putNumber("y", odometry.getPoseMeters().getY());
+        SmartDashboard.putNumber("theta", odometry.getPoseMeters().getRotation().getDegrees());
+        SmartDashboard.putNumber("Gyro Angle", getHeading().getDegrees());
+        SmartDashboard.putNumber("Wheel Encoder", frontRight.getMetersDriven());
+        SmartDashboard.putNumber("Back right encoder", backRight.getPosition().angle.getDegrees());
+        SmartDashboard.putNumber("Back left encoder", backLeft.getPosition().angle.getDegrees());
+
+    }
+    
+    public PIDConstants getDriveConstants() {
+        driveConstants = new PIDConstants(Constants.DRIVE_P, Constants.DRIVE_I, Constants.DRIVE_D);
+        return driveConstants;
     }
 
+    public PIDConstants getTurnConstants() {
+        turnConstants = new PIDConstants(Constants.TURN_P, Constants.TURN_I, Constants.TURN_D);
+        return turnConstants;
+    }
     public Pose2d getPose() {
         return odometry.getPoseMeters();
     }
@@ -64,7 +95,11 @@ public class Drivetrain extends SubsystemBase{
         odometry.resetPosition(getHeading(), getModulePositions(), pose2d);
     }
 
-    public void drive(ChassisSpeeds speed, ChassisSpeeds percent) {
+    private void updateOdometry() {
+        odometry.update(getHeading(), getModulePositions());
+    }
+
+    public void drive(ChassisSpeeds speed, boolean normalize) {
         if(speed.vxMetersPerSecond == 0 && speed.vyMetersPerSecond == 0 && speed.omegaRadiansPerSecond == 0) {
             brake();
             return;
@@ -72,38 +107,43 @@ public class Drivetrain extends SubsystemBase{
 
         SwerveModuleState[] swerveStates = Constants.DRIVE_KINEMATICS.toSwerveModuleStates(speed);
 
-        normalDrive(swerveStates, Constants.MAX_VELOCITY, percent);
+        if(normalize) {
+            normalDrive(swerveStates, speed);
+        }
         setModuleState(swerveStates);
     }
 
     public void brake() {
         for (SwerveModule module : modules) {
             module.setState(new SwerveModuleState(0, module.getState().angle));
-            module.setState(new SwerveModuleState(0, module.getState().angle));
         }
     }
 
-    public void normalDrive(SwerveModuleState[] states, double maxVelocity, ChassisSpeeds percent) {
-        double x = percent.vxMetersPerSecond;
-        double y = percent.vyMetersPerSecond;
-        double theta = percent.omegaRadiansPerSecond;
-        double maxSpeed = 0.0;
-        for(SwerveModuleState moduleState : states) {
-            if (Math.abs(moduleState.speedMetersPerSecond) > maxSpeed) {
-                maxSpeed = Math.abs(moduleState.speedMetersPerSecond);
-            }
+    public void normalDrive(SwerveModuleState[] desiredState, ChassisSpeeds speed) {
+        double translationK = Math.hypot(speed.vxMetersPerSecond, speed.vyMetersPerSecond) / Constants.MAX_MOVE_VELOCITY;
+        double rotationK = Math.abs(speed.omegaRadiansPerSecond) / Constants.MAX_TURN_VELOCITY;
+        double k = Math.max(translationK, rotationK);
+
+        double currentMaxSpeed = 0.0;
+        for (SwerveModuleState moduleState: desiredState) {
+            currentMaxSpeed = Math.max(currentMaxSpeed, Math.abs(moduleState.speedMetersPerSecond));
         }
-        double a = Math.max(Math.hypot(x, y), Math.abs(theta));
-        if (maxSpeed != 0.0) {
-            for (SwerveModuleState moduleState : states) {
-                moduleState.speedMetersPerSecond *= (a* maxVelocity / maxSpeed);
-            }
+
+        double scale = Math.min(k * Constants.MAX_VELOCITY / currentMaxSpeed, 1);
+        for (SwerveModuleState moduleState : desiredState) {
+            moduleState.speedMetersPerSecond *= scale;
         }
     }
 
     public void setModuleState(SwerveModuleState[] states) {
         for (int i = 0; i<=3; i++) {
             modules[i].setState(states[i]);
+        }
+    }
+
+    public void setOpenLoopState(SwerveModuleState[] desiredState) {
+        for (int i = 0; i<=3; i++) {
+            modules[i].setOpenLoopState(desiredState[i]);
         }
     }
 
@@ -124,12 +164,12 @@ public class Drivetrain extends SubsystemBase{
     }
 
     public void zeroHeading() {
-        gyro.reset();
+        gyro.zeroYaw();
     }
 
     public Rotation2d getHeading() {
-        double rawYaw = gyro.getAngle();
-        double calcYaw = rawYaw;
+        float rawYaw = gyro.getYaw();
+        float calcYaw = rawYaw;
         if(0.0 > rawYaw) {
             calcYaw +=360.0;
         }

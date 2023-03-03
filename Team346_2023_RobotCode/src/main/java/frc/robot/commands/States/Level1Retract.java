@@ -1,11 +1,12 @@
 package frc.robot.commands.States;
 
-import frc.robot.commands.Arm.MoveArmHome;
-import frc.robot.commands.Arm.MoveArmHomeToLevel1;
+import frc.robot.Constants;
+import frc.robot.commands.Arm.MoveArm;
 import frc.robot.commands.Arm.RetractPneumatic1;
 import frc.robot.commands.Grabber.GrabberClose;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 /** An example command that uses an example subsystem. */
 public class Level1Retract extends SequentialCommandGroup {
@@ -21,9 +22,11 @@ public class Level1Retract extends SequentialCommandGroup {
       new ParallelCommandGroup(
         new SequentialCommandGroup(
           new GrabberClose(),
-          new MoveArmHomeToLevel1(),
+          new WaitCommand(0.5),
           new RetractPneumatic1(),
-          new MoveArmHome()
+          new WaitCommand(1),
+          new MoveArm(Constants.HOME_ARM_ANGLE)
+          
         )
       )
       

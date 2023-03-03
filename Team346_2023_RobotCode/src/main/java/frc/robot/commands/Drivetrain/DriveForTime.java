@@ -8,12 +8,12 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain.Drivetrain;
 
 /** An example command that uses an example subsystem. */
-public class JoystickDrive extends CommandBase {
+public class DriveForTime extends CommandBase {
 
   Drivetrain drivetrain;
-  DoubleSupplier x,y,theta;
+  double x,y,theta;
 
-  public JoystickDrive(Drivetrain drivetrain, DoubleSupplier x, DoubleSupplier y, DoubleSupplier theta) {
+  public DriveForTime(Drivetrain drivetrain, double x, double y, double theta) {
     this.drivetrain = drivetrain;
     this.x = x;
     this.y = y;
@@ -28,9 +28,9 @@ public class JoystickDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double doubleX = Math.abs(x.getAsDouble()) < 0.05 ? 0 : x.getAsDouble();
-    double doubleY = Math.abs(y.getAsDouble()) < 0.05 ? 0 : y.getAsDouble();
-    double doubleTheta = Math.abs(theta.getAsDouble()) < 0.05 ? 0 : theta.getAsDouble();
+    double doubleX = Math.abs(x) < 0.05 ? 0 : x;
+    double doubleY = Math.abs(y) < 0.05 ? 0 : y;
+    double doubleTheta = Math.abs(theta) < 0.05 ? 0 : theta;
 
     double vx = doubleX * Constants.MAX_MOVE_VELOCITY;
     double vy = doubleY * Constants.MAX_MOVE_VELOCITY;

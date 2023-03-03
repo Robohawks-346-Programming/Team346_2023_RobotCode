@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -28,6 +30,10 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    CameraServer.startAutomaticCapture();
+    RobotContainer.arm.retractArmPneumatic1();
+    RobotContainer.arm.retractArmPneumatic2();
+    RobotContainer.grabber.Grab();
   }
 
   /**
@@ -48,7 +54,13 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    RobotContainer.arm.retractArmPneumatic1();
+    RobotContainer.arm.retractArmPneumatic2();
+    RobotContainer.grabber.Grab();
+    RobotContainer.intake.retractIntake();
+    RobotContainer.visionProcessor.limelightRetract();
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -56,6 +68,8 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    RobotContainer.drivetrain.zeroHeading();
+    RobotContainer.drivetrain.resetOdometry(new Pose2d());
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -77,6 +91,14 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    RobotContainer.drivetrain.zeroHeading();
+    RobotContainer.drivetrain.resetOdometry(new Pose2d());
+    RobotContainer.arm.setRotationEncoder();
+    RobotContainer.arm.retractArmPneumatic1();
+    RobotContainer.arm.retractArmPneumatic2();
+    RobotContainer.grabber.Grab();
+    RobotContainer.intake.retractIntake();
+    RobotContainer.visionProcessor.limelightExtend();
   }
 
   /** This function is called periodically during operator control. */

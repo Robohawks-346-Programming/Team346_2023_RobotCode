@@ -94,27 +94,52 @@ public class SwerveModule extends SubsystemBase{
     public double deltaAdjustedAngle(double target, double current) {
         return((target - current + 180) % 360 + 360) %360 -180;
     }
+
+    public Rotation2d adjustedAngle = new Rotation2d();
+     
     public void setState(SwerveModuleState state) {
-        double currentAngle = turnEncoder.getPosition();
-        double delta = deltaAdjustedAngle(state.angle.getDegrees(), currentAngle);
-        double driveOutput = state.speedMetersPerSecond;
+        Rotation2d currentAngle = Rotation2d.fromDegrees(turnEncoder.getPosition());
+        double delta = deltaAdjustedAngle(state.angle.getDegrees(), currentAngle.getDegrees());
+        // double currentAngle = turnEncoder.getPosition();
+        // double delta = deltaAdjustedAngle(state.angle.getDegrees(), currentAngle);
+        double velocityInput = state.speedMetersPerSecond;
+        double driveOutput = (state.speedMetersPerSecond) / 11.63659; // Testing showed we needed to divide by 11.63659, for some reason :( 
 
         if(Math.abs(delta) > 90) {
             driveOutput *= -1;
             delta -= Math.signum(delta) * 180;
         }
 
-        double adjustedAngle = delta + currentAngle;
+        adjustedAngle = Rotation2d.fromDegrees(delta + currentAngle.getDegrees());
 
-        SmartDashboard.putNumber("Commanded Velocity", driveOutput);
-        SmartDashboard.putNumber("Commanded Position", adjustedAngle);
+        SmartDashboard.putNumber("Commanded Velocity", velocityInput);
+        SmartDashboard.putNumber("Commanded Position", adjustedAngle.getDegrees());
 
-        turnController.setReference(adjustedAngle, ControlType.kPosition);
-        driveController.setReference(driveOutput, ControlType.kVelocity);
+        turnController.setReference(adjustedAngle.getDegrees(), ControlType.kPosition);
+        driveController.setReference(driveOutput, ControlType.kVelocity, 0, Constants.DRIVE_FF * driveOutput);
     }
 
     public double getDistance() {
         return driveEncoder.getPosition();
+    }
+
+    public void setOpenLoopState(SwerveModuleState state) {
+        Rotation2d currentAngle = Rotation2d.fromDegrees(turnEncoder.getPosition());
+        double delta = deltaAdjustedAngle(state.angle.getDegrees(), currentAngle.getDegrees());
+        double driveOutput = state.speedMetersPerSecond;
+
+        if (Math.abs(delta) > 90) {
+            driveOutput *= -1;
+            delta -= Math.signum(delta) * 180;
+        }
+
+        adjustedAngle = Rotation2d.fromDegrees(delta + currentAngle.getDegrees());
+
+        SmartDashboard.putNumber("Commanded Velocity", driveOutput);
+        SmartDashboard.putNumber("Commanded Position", adjustedAngle.getDegrees());
+
+        turnController.setReference(adjustedAngle.getDegrees(), ControlType.kPosition);
+        driveMotor.setVoltage(Constants.DRIVE_FF * driveOutput);
     }
 
     public void resetDistance() {
@@ -126,15 +151,14 @@ public class SwerveModule extends SubsystemBase{
     }
 
     public void resetEncoders() {
-        turnEncoder.setPosition(0.0);
-        turningCANCoder.setPosition(0.0);
-        turningCANCoder.configMagnetOffset(turningCANCoder.configGetMagnetOffset()- turningCANCoder.getAbsolutePosition());
+        turnEncoder.setPosition(turningCANCoder.getAbsolutePosition()- encoderOffset);
+        //turningCANCoder.configMagnetOffset(turningCANCoder.configGetMagnetOffset()- turningCANCoder.getAbsolutePosition());
     }
 
     public double getMetersDriven() {
         // The formula for calculating meters from total rotation is:
         // (Total Rotations * 2PI * Wheel Radius)
-        return (driveEncoder.getPosition() * (Math.PI) * (Constants.WHEEL_DIAMETER));
+        return (driveEncoder.getPosition());
     }
 
     public SwerveModulePosition getPosition() {
@@ -149,6 +173,6 @@ public class SwerveModule extends SubsystemBase{
     }
 
     public double turnAngleRadians() {
-        return Constants.OFFSET + (turnEncoder.getPosition() * 2 * Math.PI);
+        return encoderOffset + (turnEncoder.getPosition() * 2 * Math.PI); 
     }
 }

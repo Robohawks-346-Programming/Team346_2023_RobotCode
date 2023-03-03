@@ -8,12 +8,12 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain.Drivetrain;
 
 /** An example command that uses an example subsystem. */
-public class JoystickDrive extends CommandBase {
+public class JoystickDriveFast extends CommandBase {
 
   Drivetrain drivetrain;
   DoubleSupplier x,y,theta;
 
-  public JoystickDrive(Drivetrain drivetrain, DoubleSupplier x, DoubleSupplier y, DoubleSupplier theta) {
+  public JoystickDriveFast(Drivetrain drivetrain, DoubleSupplier x, DoubleSupplier y, DoubleSupplier theta) {
     this.drivetrain = drivetrain;
     this.x = x;
     this.y = y;
@@ -32,9 +32,9 @@ public class JoystickDrive extends CommandBase {
     double doubleY = Math.abs(y.getAsDouble()) < 0.05 ? 0 : y.getAsDouble();
     double doubleTheta = Math.abs(theta.getAsDouble()) < 0.05 ? 0 : theta.getAsDouble();
 
-    double vx = doubleX * Constants.MAX_MOVE_VELOCITY;
-    double vy = doubleY * Constants.MAX_MOVE_VELOCITY;
-    double omega = doubleTheta * Constants.MAX_TURN_VELOCITY;
+    double vx = doubleX * Constants.MAX_MOVE_VELOCITY_FAST;
+    double vy = doubleY * Constants.MAX_MOVE_VELOCITY_FAST;
+    double omega = doubleTheta * Constants.MAX_TURN_VELOCITY_FAST;
 
     ChassisSpeeds velocity = Constants.IS_FIELD_RELATIVE ? ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, omega, drivetrain.getHeading()) 
       : new ChassisSpeeds(vx, vy, omega);

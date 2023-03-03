@@ -1,10 +1,11 @@
 package frc.robot.commands.States;
 
+import frc.robot.Constants;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Arm.ExtendPneumatic1;
 import frc.robot.commands.Arm.ExtendPneumatic2;
-import frc.robot.commands.Arm.MoveArmLevel3;
+import frc.robot.commands.Arm.MoveArm;
 
 /** An example command that uses an example subsystem. */
 public class Level3Config extends SequentialCommandGroup {
@@ -19,7 +20,7 @@ public class Level3Config extends SequentialCommandGroup {
     addCommands(
       new ParallelCommandGroup(
         new SequentialCommandGroup(
-          new MoveArmLevel3(),
+          new MoveArm(Constants.LEVEL_3_ARM_ANGLE),
           new ParallelCommandGroup(
             new ExtendPneumatic1(),
             new ExtendPneumatic2()
