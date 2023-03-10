@@ -5,11 +5,10 @@
 package frc.robot;
 
 import frc.robot.commands.Auto1;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.Auto2;
 import frc.robot.commands.Drivetrain.JoystickDrive;
 import frc.robot.commands.Drivetrain.JoystickDriveFast;
-import frc.robot.commands.Drivetrain.SyncEncoder;
+import frc.robot.commands.Drivetrain.JoystickDriveReverse;
 import frc.robot.commands.Grabber.GrabberCloseManual;
 import frc.robot.commands.Intake.DeployIntakeIn;
 import frc.robot.commands.Intake.DeployIntakeSlowOut;
@@ -28,27 +27,18 @@ import frc.robot.commands.States.SubstationConfig;
 import frc.robot.commands.States.SubstationRetract;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain.*;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Grabber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.VisionProcessor;
-
 import java.util.HashMap;
 import java.util.function.DoubleSupplier;
-
-import com.pathplanner.lib.PathConstraints;
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
-
-import frc.robot.commands.Arm.MoveArm;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -62,7 +52,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   public static final Arm arm = new Arm();
   public static final Grabber grabber = new Grabber();
   public static final LED led = new LED();
@@ -72,6 +61,7 @@ public class RobotContainer {
   public final PS4Controller driverControl = new PS4Controller(Constants.DRIVER_CONTROLLER_PORT);
   public static final Joystick operatorControl = new Joystick(Constants.OPERATOR_CONTROLLER_PORT);
   public static final Auto1 auto1 = new Auto1();
+  public static final Auto2 auto2 = new Auto2();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public static final JoystickButton BUTTON_1 = new JoystickButton(operatorControl, 1),
@@ -91,9 +81,9 @@ public class RobotContainer {
     BUTTON_15 = new JoystickButton(operatorControl, 15),
     BUTTON_16 = new JoystickButton(operatorControl, 16);
 
-    public DoubleSupplier xAxis = () -> (-driverControl.getLeftY());
-    public DoubleSupplier yAxis = () -> (-driverControl.getLeftX());
-    public DoubleSupplier thetaAxis = () -> (-driverControl.getRightX());
+    public DoubleSupplier xAxis = () -> (driverControl.getLeftY());
+    public DoubleSupplier yAxis = () -> (driverControl.getLeftX());
+    public DoubleSupplier thetaAxis = () -> (driverControl.getRightX());
 
     static HashMap<String, Command> eventMap = new HashMap<>();
 
@@ -112,6 +102,9 @@ public class RobotContainer {
       // Command auto = RobotContainer.autoBuilder.fullAuto(path);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+    //SmartDashboard.putString("Auto Selector", "None");
+
     // Configure the trigger bindings
     configureBindings();
 
@@ -133,16 +126,18 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     new JoystickButton(driverControl, Button.kOptions.value).onTrue(new InstantCommand(drivetrain::resetEncoders));
-    new JoystickButton(driverControl, Button.kR2.value).onTrue(new JoystickDriveFast(drivetrain, xAxis, yAxis, thetaAxis));
-    new JoystickButton(driverControl, Button.kL2.value).onTrue(new JoystickDrive(drivetrain, xAxis, yAxis, thetaAxis));
+    new JoystickButton(driverControl, Button.kR2.value).whileTrue(new JoystickDriveFast(drivetrain, xAxis, yAxis, thetaAxis));
+    new JoystickButton(driverControl, Button.kL1.value).onTrue(new JoystickDrive(drivetrain, xAxis, yAxis, thetaAxis));
+    new JoystickButton(driverControl, Button.kL2.value).whileTrue(new JoystickDriveReverse(drivetrain, xAxis, yAxis, thetaAxis));
+    new JoystickButton(driverControl, Button.kShare.value).onTrue(new InstantCommand(visionProcessor::limelightRetract));
 
     BUTTON_1.onTrue(new Level1Deliver());
     BUTTON_2.onTrue(new Level1Config());
     BUTTON_3.onTrue(new Level2Config());
     BUTTON_4.onTrue(new Level3Config());
     BUTTON_5.onTrue(new GrabberCloseManual());
-    BUTTON_6.onTrue(new LEDCone());
-    BUTTON_7.onTrue(new LEDCube());
+    BUTTON_6.whileTrue(new LEDCone());
+    BUTTON_7.whileTrue(new LEDCube());
     BUTTON_8.onTrue(new StartingConfig());
     BUTTON_9.onTrue(new Level1Retract());
     BUTTON_10.onTrue(new DeliverLevelHigh());
@@ -163,5 +158,20 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return auto1;
+    // String val = SmartDashboard.getString("Auto Selector", "Error");
+
+    // if (val == "Error") {
+    //   return new PrintCommand("Bad Auto");
+    // }
+    // else if (val == "Auto1") {
+    //   return auto1;
+    // }
+    // else if (val == "Auto2") {
+    //   return auto2;
+    // }
+    // else {
+    //   return new PrintCommand("no auto or unrecognized auto");
+    // }
+    
   }
 }
