@@ -31,8 +31,6 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     CameraServer.startAutomaticCapture();
-    RobotContainer.arm.retractArmPneumatic1();
-    RobotContainer.arm.retractArmPneumatic2();
     RobotContainer.grabber.Grab();
   }
 
@@ -55,8 +53,6 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    RobotContainer.arm.retractArmPneumatic1();
-    RobotContainer.arm.retractArmPneumatic2();
     RobotContainer.grabber.Grab();
     RobotContainer.intake.retractIntake();
     RobotContainer.visionProcessor.limelightRetract();
@@ -95,8 +91,6 @@ public class Robot extends TimedRobot {
     //RobotContainer.drivetrain.resetOdometry(new Pose2d());
     RobotContainer.visionProcessor.changePipeline(2);
     RobotContainer.arm.setRotationEncoder();
-    RobotContainer.arm.retractArmPneumatic1();
-    RobotContainer.arm.retractArmPneumatic2();
     RobotContainer.grabber.Grab();
     RobotContainer.intake.retractIntake();
     //RobotContainer.visionProcessor.limelightExtend();

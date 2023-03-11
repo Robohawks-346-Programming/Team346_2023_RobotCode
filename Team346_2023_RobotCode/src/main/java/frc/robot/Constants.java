@@ -17,15 +17,11 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
  */
 public final class Constants {
 
+  public static final int AUTO_BALANCE_THRESHOLD                          = 2;
+
   // Pneumatic Channels
-  public static final int GRABBER_OUT_PNEUMATIC_ID                    = 15; 
-  public static final int GRABBER_IN_PNEUMATIC_ID                     = 0; 
   public static final int INTAKE_OUT_PNEUMATIC_ID                     = 14;
   public static final int INTAKE_IN_PNEUMATIC_ID                      = 1;
-  public static final int ARM_1_OUT_PNEUMATIC_ID                      = 2; 
-  public static final int ARM_1_IN_PNEUMATIC_ID                       = 13; 
-  public static final int ARM_2_OUT_PNEUMATIC_ID                      = 3;
-  public static final int ARM_2_IN_PNEUMATIC_ID                       = 12;
   public static final int BRAKE_OUT_PNEUMATIC_ID                      = 11;
   public static final int BRAKE_IN_PNEUMATIC_ID                       = 4;
   public static final int LIMELIGHT_IN_PNEUMATIC_CHANNEL              = 5;
@@ -35,6 +31,8 @@ public final class Constants {
   // Motor IDs
   public static final int ARM_MOTOR_ID                                = 12;
   public static final int INTAKE_MOTOR_ID                             = 40;
+  public static final int GRABBER_1_MOTOR_ID                          = 0;
+  public static final int GRABBER_2_MOTOR_ID                          = 0;
 
   // Motor Speed
   public static final double ARM_MOTOR_SPEED                          = 0.5;
@@ -42,6 +40,8 @@ public final class Constants {
   public static final double INTAKE_OUT_SLOW_MOTOR_SPEED              = 0.5;
   public static final double INTAKE_OUT_FAST_MOTOR_SPEED              = 1;
   public static final double INTAKE_OUT_MANUAL_MOTOR_SPEED            = 0.75;
+  public static final double GRAB_MOTOR_SPEED                         = 0.5;
+  public static final double RELEASE_MOTOR_SPEED                      = -0.5;
 
   // Arm Angles
   public static final double HOME_ARM_ANGLE                           = 12; //off vertical

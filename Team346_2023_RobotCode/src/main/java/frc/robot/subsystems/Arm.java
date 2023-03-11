@@ -14,16 +14,14 @@ import frc.robot.Constants;
 
 public class Arm extends SubsystemBase {
     private static CANSparkMax rotationMotor;
-    private static DoubleSolenoid armSolenoid1, armSolenoid2, brakeSolenoid;
+    private static DoubleSolenoid brakeSolenoid;
     private static RelativeEncoder rotationEncoder;
     private boolean arm1Value, arm2Value;
 
     double armDegreesPerMotorRev;
     
     public Arm() {
-        armSolenoid1 = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.ARM_1_OUT_PNEUMATIC_ID, Constants.ARM_1_IN_PNEUMATIC_ID);
-        armSolenoid2 = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.ARM_2_OUT_PNEUMATIC_ID, Constants.ARM_2_IN_PNEUMATIC_ID);
-        rotationMotor = new CANSparkMax(Constants.ARM_MOTOR_ID, MotorType.kBrushless);      //Test ID
+        rotationMotor = new CANSparkMax(Constants.ARM_MOTOR_ID, MotorType.kBrushless);    
         rotationMotor.setIdleMode(IdleMode.kBrake);
         rotationEncoder = rotationMotor.getEncoder();
         brakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.BRAKE_IN_PNEUMATIC_ID, Constants.BRAKE_OUT_PNEUMATIC_ID);
@@ -42,30 +40,6 @@ public class Arm extends SubsystemBase {
         SmartDashboard.putNumber("Arm Degrees", getRotationEncoder());
         SmartDashboard.putBoolean("Arm 1 value", arm1Value);
         SmartDashboard.putBoolean("Arm 2 Value", arm2Value);
-    }
-
-    // Alternative Method to extend Pneumatic part of Arm
-    public void extendArmPneumatic1() {
-        armSolenoid1.set(Value.kForward);
-        arm1Value = true;
-    }
-    
-
-    // Alternative Method to retract Pneumatic part of Arm
-    public void retractArmPneumatic1() {
-        armSolenoid1.set(Value.kReverse);
-        arm1Value = false;
-    }
-
-
-    public void extendArmPneumatic2() {
-        armSolenoid2.set(Value.kForward);
-        arm2Value = true;
-    }
-
-    public void retractArmPneumatic2() {
-        armSolenoid2.set(Value.kReverse);
-        arm2Value = false;
     }
 
     // Rotate arm up

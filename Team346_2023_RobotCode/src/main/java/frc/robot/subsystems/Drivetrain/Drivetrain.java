@@ -190,4 +190,10 @@ public class Drivetrain extends SubsystemBase{
             backRight.getPosition()
         };
     }
+
+    public void autoBalance() {
+        if (gyro.getPitch() >= 1) {
+            
+        }
+    }
 }
