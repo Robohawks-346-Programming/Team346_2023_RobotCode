@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.commands.Auto1;
 import frc.robot.commands.Auto2;
+import frc.robot.commands.Auto3;
 import frc.robot.commands.Drivetrain.JoystickDrive;
 import frc.robot.commands.Drivetrain.JoystickDriveFast;
 import frc.robot.commands.Drivetrain.JoystickDriveReverse;
@@ -41,6 +42,8 @@ import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -66,6 +69,7 @@ public class RobotContainer {
   public static final Joystick operatorControl = new Joystick(Constants.OPERATOR_CONTROLLER_PORT);
   public static final Auto1 auto1 = new Auto1();
   public static final Auto2 auto2 = new Auto2();
+  public static final Auto3 auto3 = new Auto3();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public static final JoystickButton BUTTON_1 = new JoystickButton(operatorControl, 1),
@@ -85,17 +89,17 @@ public class RobotContainer {
       BUTTON_15 = new JoystickButton(operatorControl, 15),
       BUTTON_16 = new JoystickButton(operatorControl, 16);
 
-  public DoubleSupplier xAxis = () -> (driverControl.getLeftY());
-  public DoubleSupplier yAxis = () -> (driverControl.getLeftX());
-  public DoubleSupplier thetaAxis = () -> (driverControl.getRightX());
+  public DoubleSupplier xAxis = () -> (-driverControl.getLeftY());
+  public DoubleSupplier yAxis = () -> (-driverControl.getLeftX());
+  public DoubleSupplier thetaAxis = () -> (-driverControl.getRightX());
 
-  static HashMap<String, Command> eventMap = new HashMap<>();
+  public static HashMap<String, Command> eventMap = new HashMap<>();
 
   public static SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
       drivetrain::getPose, // odometry position
       drivetrain::resetOdometry,
-      drivetrain.getDriveConstants(),
-      drivetrain.getTurnConstants(),
+      new PIDConstants(1,0,0),
+      new PIDConstants(1,0,0),
       speeds -> drivetrain.drive(speeds, true), // this sets the motor powers
       eventMap,
       drivetrain);
@@ -171,27 +175,19 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
 
-    var group = PathPlanner.loadPathGroup(
-        "MoveOnly",
-        new PathConstraints(3, 2));
+    // var group = PathPlanner.loadPathGroup(
+    //     "3 cube + 1",
+    //     new PathConstraints(2, 2));
 
-    return autoBuilder.fullAuto(group);
-    // An example command will be run in autonomous
-    // return auto1;
-    // String val = SmartDashboard.getString("Auto Selector", "Error");
+    // return autoBuilder.fullAuto(group);
 
-    // if (val == "Error") {
-    // return new PrintCommand("Bad Auto");
-    // }
-    // else if (val == "Auto1") {
-    // return auto1;
-    // }
-    // else if (val == "Auto2") {
-    // return auto2;
-    // }
-    // else {
-    // return new PrintCommand("no auto or unrecognized auto");
-    // }
-
+    var group = PathPlanner.loadPathGroup("2 Cube New", 2, 2);
+    Command path1 = RobotContainer.autoBuilder.followPath(group.get(0));
+    Command path2 = RobotContainer.autoBuilder.followPath(group.get(1));
+    return new SequentialCommandGroup(
+      path1,
+      new InstantCommand(RobotContainer.drivetrain::brake),
+      path2,
+      new InstantCommand(RobotContainer.drivetrain::brake));
   }
 }

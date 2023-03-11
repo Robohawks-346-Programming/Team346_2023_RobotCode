@@ -91,8 +91,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    //RobotContainer.drivetrain.zeroHeading();
-    //RobotContainer.drivetrain.resetOdometry(new Pose2d());
+    RobotContainer.drivetrain.zeroHeading();
+    RobotContainer.drivetrain.resetOdometry(new Pose2d());
     RobotContainer.visionProcessor.changePipeline(2);
     RobotContainer.arm.setRotationEncoder();
     RobotContainer.arm.retractArmPneumatic1();

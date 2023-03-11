@@ -76,14 +76,14 @@ public final class Constants {
   public static final int BACK_RIGHT_ENCODER_ID                       = 36;
   public static final double BACK_RIGHT_TURN_OFFSET                   = 0; // in degrees
 
-  public static final double MAX_VELOCITY                             = 2;
+  public static final double MAX_VELOCITY                             = 3;
   public static final int MAX_VOLTAGE                                 = 12;
   public static final int DRIVE_CURRENT_LIMIT                         = 60;
   public static final int TURN_CURRENT_LIMIT                          = 25;
-  public static final double MAX_MOVE_VELOCITY                        = 2;
-  public static final double MAX_TURN_VELOCITY                        = 2;
-  public static final double MAX_MOVE_VELOCITY_FAST                   = 3.5;
-  public static final double MAX_TURN_VELOCITY_FAST                   = 3.5;
+  public static final double MAX_MOVE_VELOCITY                        = 3;
+  public static final double MAX_TURN_VELOCITY                        = 3;
+  public static final double MAX_MOVE_VELOCITY_FAST                   = 4.5;
+  public static final double MAX_TURN_VELOCITY_FAST                   = 4.5;
   public static final boolean IS_FIELD_RELATIVE                       = true;
 
   public static final double DRIVE_P                                  = 0.1;
