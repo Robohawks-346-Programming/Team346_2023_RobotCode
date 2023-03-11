@@ -33,6 +33,8 @@ import frc.robot.subsystems.LED;
 import frc.robot.subsystems.VisionProcessor;
 import java.util.HashMap;
 import java.util.function.DoubleSupplier;
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
@@ -43,11 +45,13 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
-
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
@@ -65,45 +69,46 @@ public class RobotContainer {
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public static final JoystickButton BUTTON_1 = new JoystickButton(operatorControl, 1),
-    BUTTON_2 = new JoystickButton(operatorControl, 2),
-    BUTTON_3 = new JoystickButton(operatorControl, 3),
-    BUTTON_4 = new JoystickButton(operatorControl, 4),
-    BUTTON_5 = new JoystickButton(operatorControl, 5),
-    BUTTON_6 = new JoystickButton(operatorControl, 6),
-    BUTTON_7 = new JoystickButton(operatorControl, 7),
-    BUTTON_8 = new JoystickButton(operatorControl, 8),
-    BUTTON_9 = new JoystickButton(operatorControl, 9),
-    BUTTON_10 = new JoystickButton(operatorControl, 10),
-    BUTTON_11 = new JoystickButton(operatorControl, 11),
-    BUTTON_12 = new JoystickButton(operatorControl, 12),
-    BUTTON_13 = new JoystickButton(operatorControl, 13),
-    BUTTON_14 = new JoystickButton(operatorControl, 14),
-    BUTTON_15 = new JoystickButton(operatorControl, 15),
-    BUTTON_16 = new JoystickButton(operatorControl, 16);
+      BUTTON_2 = new JoystickButton(operatorControl, 2),
+      BUTTON_3 = new JoystickButton(operatorControl, 3),
+      BUTTON_4 = new JoystickButton(operatorControl, 4),
+      BUTTON_5 = new JoystickButton(operatorControl, 5),
+      BUTTON_6 = new JoystickButton(operatorControl, 6),
+      BUTTON_7 = new JoystickButton(operatorControl, 7),
+      BUTTON_8 = new JoystickButton(operatorControl, 8),
+      BUTTON_9 = new JoystickButton(operatorControl, 9),
+      BUTTON_10 = new JoystickButton(operatorControl, 10),
+      BUTTON_11 = new JoystickButton(operatorControl, 11),
+      BUTTON_12 = new JoystickButton(operatorControl, 12),
+      BUTTON_13 = new JoystickButton(operatorControl, 13),
+      BUTTON_14 = new JoystickButton(operatorControl, 14),
+      BUTTON_15 = new JoystickButton(operatorControl, 15),
+      BUTTON_16 = new JoystickButton(operatorControl, 16);
 
-    public DoubleSupplier xAxis = () -> (driverControl.getLeftY());
-    public DoubleSupplier yAxis = () -> (driverControl.getLeftX());
-    public DoubleSupplier thetaAxis = () -> (driverControl.getRightX());
+  public DoubleSupplier xAxis = () -> (driverControl.getLeftY());
+  public DoubleSupplier yAxis = () -> (driverControl.getLeftX());
+  public DoubleSupplier thetaAxis = () -> (driverControl.getRightX());
 
-    static HashMap<String, Command> eventMap = new HashMap<>();
+  static HashMap<String, Command> eventMap = new HashMap<>();
 
-    public static SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
+  public static SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
       drivetrain::getPose, // odometry position
       drivetrain::resetOdometry,
-      Constants.DRIVE_KINEMATICS,
       drivetrain.getDriveConstants(),
       drivetrain.getTurnConstants(),
-      drivetrain::setModuleState, // this sets the motor powers
+      speeds -> drivetrain.drive(speeds, true), // this sets the motor powers
       eventMap,
-      true,
       drivetrain);
-      
-      // PathPlannerTrajectory path = PathPlanner.loadPath("MoveOnly", new PathConstraints(1, 1));   
-      // Command auto = RobotContainer.autoBuilder.fullAuto(path);
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+
+  // PathPlannerTrajectory path = PathPlanner.loadPath("MoveOnly", new
+  // PathConstraints(1, 1));
+  // Command auto = RobotContainer.autoBuilder.fullAuto(path);
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
   public RobotContainer() {
 
-    //SmartDashboard.putString("Auto Selector", "None");
+    // SmartDashboard.putString("Auto Selector", "None");
 
     // Configure the trigger bindings
     configureBindings();
@@ -112,24 +117,33 @@ public class RobotContainer {
   }
 
   /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
+   * Use this method to define your trigger->command mappings. Triggers can be
+   * created via the
+   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
+   * an arbitrary
    * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
+   * {@link
+   * CommandXboxController
+   * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+   * PS4} controllers or
+   * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
+    // Schedule `exampleMethodCommand` when the Xbox controller's B button is
+    // pressed,
     // cancelling on release.
     new JoystickButton(driverControl, Button.kOptions.value).onTrue(new InstantCommand(drivetrain::resetEncoders));
-    new JoystickButton(driverControl, Button.kR2.value).whileTrue(new JoystickDriveFast(drivetrain, xAxis, yAxis, thetaAxis));
+    new JoystickButton(driverControl, Button.kR2.value)
+        .whileTrue(new JoystickDriveFast(drivetrain, xAxis, yAxis, thetaAxis));
     new JoystickButton(driverControl, Button.kL1.value).onTrue(new JoystickDrive(drivetrain, xAxis, yAxis, thetaAxis));
-    new JoystickButton(driverControl, Button.kL2.value).whileTrue(new JoystickDriveReverse(drivetrain, xAxis, yAxis, thetaAxis));
-    new JoystickButton(driverControl, Button.kShare.value).onTrue(new InstantCommand(visionProcessor::limelightRetract));
+    new JoystickButton(driverControl, Button.kL2.value)
+        .whileTrue(new JoystickDriveReverse(drivetrain, xAxis, yAxis, thetaAxis));
+    new JoystickButton(driverControl, Button.kShare.value)
+        .onTrue(new InstantCommand(visionProcessor::limelightRetract));
 
     BUTTON_1.onTrue(new Level1Deliver());
     BUTTON_2.onTrue(new Level1Config());
@@ -156,22 +170,28 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+
+    var group = PathPlanner.loadPathGroup(
+        "MoveOnly",
+        new PathConstraints(3, 2));
+
+    return autoBuilder.fullAuto(group);
     // An example command will be run in autonomous
-    return auto1;
+    // return auto1;
     // String val = SmartDashboard.getString("Auto Selector", "Error");
 
     // if (val == "Error") {
-    //   return new PrintCommand("Bad Auto");
+    // return new PrintCommand("Bad Auto");
     // }
     // else if (val == "Auto1") {
-    //   return auto1;
+    // return auto1;
     // }
     // else if (val == "Auto2") {
-    //   return auto2;
+    // return auto2;
     // }
     // else {
-    //   return new PrintCommand("no auto or unrecognized auto");
+    // return new PrintCommand("no auto or unrecognized auto");
     // }
-    
+
   }
 }
