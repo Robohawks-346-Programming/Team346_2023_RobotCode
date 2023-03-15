@@ -17,6 +17,17 @@ import frc.robot.Constants;
 public class Drivetrain extends SubsystemBase{
     
     private final SwerveDriveOdometry odometry; 
+    private int debounceCount;
+    private double onChargeStationDegree;
+    private double levelDegree;
+    private double debounceTime;
+    private boolean onChargeStation = false;
+    private boolean levelOn = false;
+    private int levelCheck = 2;
+    // 1 means need to move forward slowly
+    // -1 meand need to move backward slowly
+    // 2 is initliazation
+    // 0 means level checked
 
     SwerveModule frontLeft = new SwerveModule(
             Constants.FRONT_LEFT_DRIVE_ID,
@@ -64,6 +75,23 @@ public class Drivetrain extends SubsystemBase{
 
         driveConstants = new PIDConstants(Constants.DRIVE_P, Constants.DRIVE_I, Constants.DRIVE_D);
         turnConstants = new PIDConstants(Constants.TURN_P, Constants.TURN_I, Constants.TURN_D);
+
+        debounceCount = 0;
+
+
+        // Angle where the robot knows it is on the charge station, default = 13.0
+        onChargeStationDegree = 13.0;
+
+        // Angle where the robot can assume it is level on the charging station
+        // Used for exiting the drive forward sequence as well as for auto balancing,
+        // default = 6.0
+        levelDegree = 6.0;
+
+        // Amount of time a sensor condition needs to be met before changing states in
+        // seconds
+        // Reduces the impact of sensor noice, but too high can make the auto run
+        // slower, default = 0.2
+        debounceTime = 0.2;
     }
     @Override
     public void periodic() {
@@ -191,9 +219,51 @@ public class Drivetrain extends SubsystemBase{
         };
     }
 
-    public void autoBalance() {
-        if (gyro.getPitch() >= 1) {
-            
-        }
+    public int secondsToTicks(double time) {
+        return (int) (time * 50);
     }
+
+    // Drive at fast speed until method below returns true
+    public boolean getOnToChargeStation() {
+        if (gyro.getYaw() > onChargeStationDegree) {
+            debounceCount++;
+        }
+        if (debounceCount > secondsToTicks(debounceTime)) {
+            debounceCount = 0;
+            onChargeStation = true;
+        }
+        return onChargeStation;
+    }
+
+    // Drive at slow speed until level
+    public boolean levelOnChargeStation() {
+        if (gyro.getYaw() < levelDegree) {
+            debounceCount++;
+        }
+        if (debounceCount > secondsToTicks(debounceTime)) {
+            debounceCount = 0;
+            levelOn = true;
+        }
+        return levelOn;
+   }
+
+   // Checks Balance on charge station
+   public int checkBalance() {
+    if (Math.abs(gyro.getYaw()) <= levelDegree / 2) {
+        debounceCount++;
+    }
+    if (debounceCount > secondsToTicks(debounceTime)) {
+        debounceCount = 0;
+        // Read comments under initilization
+        levelCheck = 0;
+    }
+    if (gyro.getYaw() >= levelDegree) {
+        // Read comments under initilization
+        levelCheck = 1;
+    } else if (gyro.getYaw() <= -levelDegree) {
+        // Read comments under initilization
+        levelCheck = -1;
+    }
+    return levelCheck;
+   }
 }
