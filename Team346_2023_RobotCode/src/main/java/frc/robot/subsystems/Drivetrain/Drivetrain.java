@@ -219,13 +219,23 @@ public class Drivetrain extends SubsystemBase{
         };
     }
 
+    public double getTilt() {
+        double pitch = gyro.getPitch();
+        double roll = gyro.getRoll();
+        if ((pitch + roll) >= 0) {
+            return Math.sqrt(pitch * pitch + roll * roll);
+        } else {
+            return -Math.sqrt(pitch * pitch + roll * roll);
+        }
+    }
+
     public int secondsToTicks(double time) {
         return (int) (time * 50);
     }
 
     // Drive at fast speed until method below returns true
     public boolean getOnToChargeStation() {
-        if (gyro.getYaw() > onChargeStationDegree) {
+        if (getTilt() > onChargeStationDegree) {
             debounceCount++;
         }
         if (debounceCount > secondsToTicks(debounceTime)) {
@@ -237,7 +247,7 @@ public class Drivetrain extends SubsystemBase{
 
     // Drive at slow speed until level
     public boolean levelOnChargeStation() {
-        if (gyro.getYaw() < levelDegree) {
+        if (getTilt() < levelDegree) {
             debounceCount++;
         }
         if (debounceCount > secondsToTicks(debounceTime)) {
@@ -249,7 +259,7 @@ public class Drivetrain extends SubsystemBase{
 
    // Checks Balance on charge station
    public int checkBalance() {
-    if (Math.abs(gyro.getYaw()) <= levelDegree / 2) {
+    if (Math.abs(getTilt()) <= levelDegree / 2) {
         debounceCount++;
     }
     if (debounceCount > secondsToTicks(debounceTime)) {
@@ -257,10 +267,10 @@ public class Drivetrain extends SubsystemBase{
         // Read comments under initilization
         levelCheck = 0;
     }
-    if (gyro.getYaw() >= levelDegree) {
+    if (getTilt() >= levelDegree) {
         // Read comments under initilization
         levelCheck = 1;
-    } else if (gyro.getYaw() <= -levelDegree) {
+    } else if (getTilt() <= -levelDegree) {
         // Read comments under initilization
         levelCheck = -1;
     }
