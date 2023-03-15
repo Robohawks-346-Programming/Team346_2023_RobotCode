@@ -87,6 +87,7 @@ public class AutoBalance {
         return levelOn;
    }
 
+   // Checks Balance on charge station
    public int checkBalance() {
     if (Math.abs(getTilt()) <= levelDegree / 2) {
         debounceCount++;
