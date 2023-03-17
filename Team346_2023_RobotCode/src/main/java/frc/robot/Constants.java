@@ -84,6 +84,8 @@ public final class Constants {
   public static final double MAX_TURN_VELOCITY                        = 2;
   public static final double MAX_MOVE_VELOCITY_FAST                   = 3.5;
   public static final double MAX_TURN_VELOCITY_FAST                   = 3.5;
+  public static final double MAX_MOVE_VELOCITY_SLOW                   = 1;
+  public static final double MAX_TURN_VELOCITY_SLOW                   = 1;
   public static final boolean IS_FIELD_RELATIVE                       = true;
 
   public static final double DRIVE_P                                  = 0.1;
