@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.commands.Drivetrain.DriveForTime;
 import frc.robot.commands.Drivetrain.AutoDriveUp;
-import frc.robot.commands.Drivetrain.JoystickDriveSlowAutoBalance;
 import frc.robot.commands.Intake.DeployIntakeIn;
 import frc.robot.commands.Intake.RunIntakeOut;
 
@@ -22,7 +21,7 @@ public class AutoBalance extends SequentialCommandGroup {
         addCommands(
             new SequentialCommandGroup(
                 new AutoDriveUp(),
-                new JoystickDriveSlowAutoBalance(null, 0, 0.1, 0)
+                new AutoBalance()
             )
         );
     }
