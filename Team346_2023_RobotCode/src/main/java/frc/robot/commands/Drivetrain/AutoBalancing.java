@@ -9,13 +9,13 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.Drivetrain.Drivetrain;
 
 /** An example command that uses an example subsystem. */
-public class AutoBalance  extends CommandBase {
+public class AutoBalancing  extends CommandBase {
 
   ChassisSpeeds positiveVelocity;
   ChassisSpeeds negativeVelocity;
   double x;
 
-  public AutoBalance() {
+  public AutoBalancing() {
     x = Constants.MAX_MOVE_VELOCITY_SLOW;
     positiveVelocity = Constants.IS_FIELD_RELATIVE ? ChassisSpeeds.fromFieldRelativeSpeeds(x, 0, 0, RobotContainer.drivetrain.getHeading()) 
     : new ChassisSpeeds(x, 0, 0);
@@ -31,15 +31,14 @@ public class AutoBalance  extends CommandBase {
   @Override
   public void execute() {
 
-    while (RobotContainer.drivetrain.checkBalance() != 0) {
       if (RobotContainer.drivetrain.checkBalance() == -1) {
-        RobotContainer.drivetrain.drive(negativeVelocity, true);
+        ;//RobotContainer.drivetrain.drive(negativeVelocity, true);
       } else if (RobotContainer.drivetrain.checkBalance() == 1) {
-        RobotContainer.drivetrain.drive(positiveVelocity, true);
+        ;//RobotContainer.drivetrain.drive(positiveVelocity, true);
       } else {
-        RobotContainer.drivetrain.brake();
+        ;//RobotContainer.drivetrain.brake();
       }
-    }
+    
 
     RobotContainer.drivetrain.brake();
   }

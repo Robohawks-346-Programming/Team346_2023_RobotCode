@@ -103,6 +103,7 @@ public class Drivetrain extends SubsystemBase{
         SmartDashboard.putNumber("Wheel Encoder", frontRight.getMetersDriven());
         SmartDashboard.putNumber("Back right encoder", backRight.getPosition().angle.getDegrees());
         SmartDashboard.putNumber("Back left encoder", backLeft.getPosition().angle.getDegrees());
+        SmartDashboard.putNumber("Balance Value", checkBalance());
 
     }
     
@@ -259,18 +260,20 @@ public class Drivetrain extends SubsystemBase{
 
    // Checks Balance on charge station
    public int checkBalance() {
-    if (Math.abs(getTilt()) <= levelDegree / 2) {
+    if (Math.abs(getTilt()) < levelDegree) {   //(Math.abs(getTilt()) <= levelDegree / 2)
         debounceCount++;
     }
     if (debounceCount > secondsToTicks(debounceTime)) {
-        debounceCount = 0;
+        //debounceCount = 0;
         // Read comments under initilization
         levelCheck = 0;
     }
     if (getTilt() >= levelDegree) {
+        debounceCount = 0;
         // Read comments under initilization
         levelCheck = 1;
     } else if (getTilt() <= -levelDegree) {
+        debounceCount = 0;
         // Read comments under initilization
         levelCheck = -1;
     }
