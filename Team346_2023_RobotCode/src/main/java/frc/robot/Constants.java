@@ -30,7 +30,7 @@ public final class Constants {
 
   // Motor IDs
   public static final int ARM_MOTOR_ID                                = 12;
-  public static final int INTAKE_MOTOR_ID                             = 40;
+  public static final int INTAKE_MOTOR_ID                             = 41;
   public static final int GRABBER_1_MOTOR_ID                          = 0;
   public static final int GRABBER_2_MOTOR_ID                          = 0;
 
