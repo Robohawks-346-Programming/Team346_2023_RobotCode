@@ -36,10 +36,12 @@ import java.util.HashMap;
 import java.util.function.DoubleSupplier;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -70,6 +72,7 @@ public class RobotContainer {
   public static final Auto1 auto1 = new Auto1();
   public static final Auto2 auto2 = new Auto2();
   public static final Auto3 auto3 = new Auto3();
+  SendableChooser<Command> autoChooser = new SendableChooser<Command>();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public static final JoystickButton BUTTON_1 = new JoystickButton(operatorControl, 1),
@@ -115,7 +118,7 @@ public class RobotContainer {
     // SmartDashboard.putString("Auto Selector", "None");
 
     // Configure the trigger bindings
-    configureBindings();
+    configureButtonBindings();
 
     drivetrain.setDefaultCommand(new JoystickDrive(drivetrain, xAxis, yAxis, thetaAxis));
   }
@@ -134,7 +137,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  private void configureBindings() {
+  private void configureButtonBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is
@@ -168,26 +171,17 @@ public class RobotContainer {
 
   }
 
+
+  private void configureAutoPaths() {
+    autoChooser.addOption("1 Cube and Move", auto1);
+    autoChooser.setDefaultOption("1 Cube and Move", auto1);
+  }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-
-    // var group = PathPlanner.loadPathGroup(
-    //     "3 cube + 1",
-    //     new PathConstraints(2, 2));
-
-    // return autoBuilder.fullAuto(group);
-
-    var group = PathPlanner.loadPathGroup("2 Cube New", 2, 2);
-    Command path1 = RobotContainer.autoBuilder.followPath(group.get(0));
-    Command path2 = RobotContainer.autoBuilder.followPath(group.get(1));
-    return new SequentialCommandGroup(
-      path1,
-      new InstantCommand(RobotContainer.drivetrain::brake),
-      path2,
-      new InstantCommand(RobotContainer.drivetrain::brake));
+    return autoChooser.getSelected();
   }
 }
