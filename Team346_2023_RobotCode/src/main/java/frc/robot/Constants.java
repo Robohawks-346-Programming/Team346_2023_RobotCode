@@ -35,13 +35,16 @@ public final class Constants {
   public static final int GRABBER_2_MOTOR_ID                          = 0;
 
   // Motor Speed
-  public static final double ARM_MOTOR_SPEED                          = 0.5;
+  public static final double ARM_MOTOR_SPEED_UP                       = 1;
+  public static final double ARM_MOTOR_SPEED_DOWN                     = 0.5;
   public static final double INTAKE_IN_MOTOR_SPEED                    = 0.75;
   public static final double INTAKE_OUT_SLOW_MOTOR_SPEED              = 0.5;
   public static final double INTAKE_OUT_FAST_MOTOR_SPEED              = 1;
   public static final double INTAKE_OUT_MANUAL_MOTOR_SPEED            = 0.75;
   public static final double GRAB_MOTOR_SPEED                         = 0.5;
   public static final double RELEASE_MOTOR_SPEED                      = -0.5;
+
+  public static final double ARM_GEAR_RATIO                           = 580; // 580 motor rev :1 arm rev
 
   // Arm Angles
   public static final double HOME_ARM_ANGLE                           = 12; //off vertical
@@ -76,43 +79,26 @@ public final class Constants {
   public static final int BACK_RIGHT_ENCODER_ID                       = 36;
   public static final double BACK_RIGHT_TURN_OFFSET                   = 0; // in degrees
 
+  // Drivetrain Velocities
   public static final double MAX_VELOCITY                             = 2;
-  public static final int MAX_VOLTAGE                                 = 12;
-  public static final int DRIVE_CURRENT_LIMIT                         = 60;
-  public static final int TURN_CURRENT_LIMIT                          = 25;
   public static final double MAX_MOVE_VELOCITY                        = 2;
   public static final double MAX_TURN_VELOCITY                        = 2;
   public static final double MAX_MOVE_VELOCITY_FAST                   = 3.5;
   public static final double MAX_TURN_VELOCITY_FAST                   = 3.5;
+
+  // Drivetrain Parameters
+  public static final int MAX_VOLTAGE                                 = 12;
+  public static final int DRIVE_CURRENT_LIMIT                         = 60;
+  public static final int TURN_CURRENT_LIMIT                          = 25;
   public static final boolean IS_FIELD_RELATIVE                       = true;
-
-  public static final double DRIVE_P                                  = 0.1;
-  public static final double DRIVE_I                                  = 0;
-  public static final double DRIVE_D                                  = 0;
-  public static final double DRIVE_FF                                 = 2.96;
-
-  public static final double TURN_P                                   = 0.01;
-  public static final double TURN_I                                   = 0;
-  public static final double TURN_D                                   = 0.005;
-  public static final double TURN_FF                                  = 0;
-
-  public static final int DRIVER_CONTROLLER_PORT                      = 0;
-  public static final int OPERATOR_CONTROLLER_PORT                    = 1;
-  public static final int MANUAL_OPERATOR_CONTROLLER_PORT             = 1;
-  public static final int GRABBER_LASER_BREAK_PORT                    = 0;
-  public static final int INTAKE_LASER_BREAK_PORT                     = 2;
-  public static final int LED_1_PWM_PORT                              = 9;
-  public static final int LED_2_PWM_PORT                              = 0;
-
-
   public static final double OFFSET                                   = 180.0;
-
   public static final double DRIVETRAIN_TRACKWIDTH_METERS             = 0.8128; //32 in
   public static final double DRIVETRAIN_WHEELBASE_METERS              = 0.7112; //28 in
   public static final double DRIVETRAIN_GEAR_RATIO                    = 5.12; //For L2 Module
   public static final double WHEEL_DIAMETER                           = 0.09398; // 3.7 in
   public static final double DRIVE_CONVERSION                         = (WHEEL_DIAMETER * Math.PI) / DRIVETRAIN_GEAR_RATIO;
   public static final double TURN_CONVERSION                          = 12.8;
+  
   public static final SwerveDriveKinematics DRIVE_KINEMATICS          = 
       new SwerveDriveKinematics(
           new Translation2d(DRIVETRAIN_WHEELBASE_METERS/ 2.0, DRIVETRAIN_TRACKWIDTH_METERS / 2.0), // front left
@@ -121,9 +107,33 @@ public final class Constants {
           new Translation2d(-DRIVETRAIN_WHEELBASE_METERS/ 2.0, -DRIVETRAIN_TRACKWIDTH_METERS / 2.0) // back right
       );
 
-  public static final double ARM_GEAR_RATIO                           = 580; // 580 motor rev :1 arm rev
+
+  // Drive PIDs
+  public static final double DRIVE_P                                  = 0.1;
+  public static final double DRIVE_I                                  = 0;
+  public static final double DRIVE_D                                  = 0;
+  public static final double DRIVE_FF                                 = 2.96;
+
+  // Turn PIDs
+  public static final double TURN_P                                   = 0.01;
+  public static final double TURN_I                                   = 0;
+  public static final double TURN_D                                   = 0.005;
+  public static final double TURN_FF                                  = 0;
+
+  // Controller Ports
+  public static final int DRIVER_CONTROLLER_PORT                      = 0;
+  public static final int OPERATOR_CONTROLLER_PORT                    = 1;
+  public static final int MANUAL_OPERATOR_CONTROLLER_PORT             = 1;
+
+  // Laser Break Ports
+  public static final int GRABBER_LASER_BREAK_PORT                    = 0;
+  public static final int INTAKE_LASER_BREAK_PORT                     = 2;
+
+  // LED Ports
+  public static final int LED_1_PWM_PORT                              = 9;
+  public static final int LED_2_PWM_PORT                              = 0;
   
-  // vision processor constants: Need to be adjusted for actual values - distance is always measured in meters for vision processor
+  // Vision Processor 
   public static final double END_DISTANCE = 2;                                  // the distance we want the robot to be from the target
   public static final double END_ANGLE = 2;                                     // the angle we want the robot to have from the target
   public static final double END_DISTANCE_THRESHOLD = 1;                       // the acceptable margin of error for distance from target

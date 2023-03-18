@@ -16,7 +16,6 @@ public class Arm extends SubsystemBase {
     private static CANSparkMax rotationMotor;
     private static DoubleSolenoid brakeSolenoid;
     private static RelativeEncoder rotationEncoder;
-    private boolean arm1Value, arm2Value;
 
     double armDegreesPerMotorRev;
     
@@ -29,27 +28,12 @@ public class Arm extends SubsystemBase {
         armDegreesPerMotorRev = 360/Constants.ARM_GEAR_RATIO;
         
         rotationEncoder.setPositionConversionFactor(armDegreesPerMotorRev);
-
-        arm1Value = false;
-        arm2Value = false;
         rotationMotor.setInverted(true);
     }
 
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Arm Degrees", getRotationEncoder());
-        SmartDashboard.putBoolean("Arm 1 value", arm1Value);
-        SmartDashboard.putBoolean("Arm 2 Value", arm2Value);
-    }
-
-    // Rotate arm up
-    public void RotateUp() {
-        rotationMotor.set(Constants.ARM_MOTOR_SPEED);
-    }
-
-    // Rotate arm down
-    public void RotateDown() {
-        rotationMotor.set(-Constants.ARM_MOTOR_SPEED);
     }
 
     // Resetting Rotation encoders
@@ -64,11 +48,6 @@ public class Arm extends SubsystemBase {
     public void setRotationEncoder() {
         rotationEncoder.setPosition(Constants.HOME_ARM_ANGLE);
     }
-
-    // Alternative method to rotateUp, does not use while loop
-    public void ArmUp(double speed) {
-        rotationMotor.set(speed);
-    } 
 
     // Checks to see if the position has been reached
     public boolean isAtPosition(double rev) {
@@ -94,11 +73,11 @@ public class Arm extends SubsystemBase {
     public void moveArm(double wantedPosition) {
         double currentPosition = rotationEncoder.getPosition();
         if (wantedPosition > currentPosition) {
-            rotationMotor.set(Constants.ARM_MOTOR_SPEED);
+            rotationMotor.set(Constants.ARM_MOTOR_SPEED_UP);
         }
 
         else if (wantedPosition < currentPosition) {
-            rotationMotor.set(-Constants.ARM_MOTOR_SPEED);
+            rotationMotor.set(-Constants.ARM_MOTOR_SPEED_DOWN);
         }
 
         else {

@@ -35,6 +35,7 @@ import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -60,6 +61,7 @@ public class RobotContainer {
   public static final Joystick operatorControl = new Joystick(Constants.OPERATOR_CONTROLLER_PORT);
   public static final Auto1 auto1 = new Auto1();
   public static final Auto2 auto2 = new Auto2();
+  SendableChooser<Command> autoChooser = new SendableChooser<Command>();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public static final JoystickButton BUTTON_1 = new JoystickButton(operatorControl, 1),
@@ -104,7 +106,7 @@ public class RobotContainer {
     //SmartDashboard.putString("Auto Selector", "None");
 
     // Configure the trigger bindings
-    configureBindings();
+    configureButtonBindings();
 
     drivetrain.setDefaultCommand(new JoystickDrive(drivetrain, xAxis, yAxis, thetaAxis));
   }
@@ -118,7 +120,7 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  private void configureBindings() {
+  private void configureButtonBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
@@ -146,6 +148,12 @@ public class RobotContainer {
 
   }
 
+  private void configureAutoPaths() {
+    autoChooser.addOption("1 Cube Out", auto1);
+    autoChooser.addOption("1 Cube No Move", auto2);
+    //autoChooser.setDefaultOption("1 Cube Out", auto1);
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -153,21 +161,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return auto1;
-    // String val = SmartDashboard.getString("Auto Selector", "Error");
-
-    // if (val == "Error") {
-    //   return new PrintCommand("Bad Auto");
-    // }
-    // else if (val == "Auto1") {
-    //   return auto1;
-    // }
-    // else if (val == "Auto2") {
-    //   return auto2;
-    // }
-    // else {
-    //   return new PrintCommand("no auto or unrecognized auto");
-    // }
+    return autoChooser.getSelected();
     
   }
 }
