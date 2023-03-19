@@ -11,9 +11,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.Constants;
 public class VisionProcessor extends SubsystemBase {
-    private static DoubleSolenoid limelightSolenoid;
     public VisionProcessor() {
-        limelightSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.LIMELIGHT_OUT_PNEUMATIC_CHANNEL, Constants.LIMELIGHT_IN_PNEUMATIC_CHANNEL);
     }
     //Variables:
     NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelightTable"); // creates network table object
@@ -60,11 +58,4 @@ public class VisionProcessor extends SubsystemBase {
         return (Math.abs(distanceFromTarget() - Constants.END_DISTANCE) <= Constants.END_DISTANCE_THRESHOLD);
     }
 
-    public void limelightExtend() {
-        limelightSolenoid.set(Value.kForward);
-    }
-
-    public void limelightRetract() {
-        limelightSolenoid.set(Value.kReverse);
-    }
 }

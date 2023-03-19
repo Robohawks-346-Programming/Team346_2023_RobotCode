@@ -31,7 +31,6 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     CameraServer.startAutomaticCapture();
-    RobotContainer.grabber.Grab();
   }
 
   /**
@@ -53,10 +52,8 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    RobotContainer.grabber.Grab();
     RobotContainer.intake.retractIntake();
-    RobotContainer.visionProcessor.limelightRetract();
-  }
+    }
 
   @Override
   public void disabledPeriodic() {}
@@ -87,13 +84,11 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    //RobotContainer.drivetrain.zeroHeading();
-    //RobotContainer.drivetrain.resetOdometry(new Pose2d());
+    RobotContainer.drivetrain.zeroHeading();
+    RobotContainer.drivetrain.resetOdometry(new Pose2d());
     RobotContainer.visionProcessor.changePipeline(2);
     RobotContainer.arm.setRotationEncoder();
-    RobotContainer.grabber.Grab();
     RobotContainer.intake.retractIntake();
-    //RobotContainer.visionProcessor.limelightExtend();
   }
 
   /** This function is called periodically during operator control. */

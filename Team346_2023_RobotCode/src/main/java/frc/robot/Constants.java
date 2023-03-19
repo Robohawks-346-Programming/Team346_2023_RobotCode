@@ -31,8 +31,8 @@ public final class Constants {
   // Motor IDs
   public static final int ARM_MOTOR_ID                                = 12;
   public static final int INTAKE_MOTOR_ID                             = 41;
-  public static final int GRABBER_1_MOTOR_ID                          = 0;
-  public static final int GRABBER_2_MOTOR_ID                          = 0;
+  public static final int GRABBER_1_MOTOR_ID                          = 51;
+  public static final int GRABBER_2_MOTOR_ID                          = 52;
 
   // Motor Speed
   public static final double ARM_MOTOR_SPEED_UP                       = 1;
@@ -41,8 +41,9 @@ public final class Constants {
   public static final double INTAKE_OUT_SLOW_MOTOR_SPEED              = 0.5;
   public static final double INTAKE_OUT_FAST_MOTOR_SPEED              = 1;
   public static final double INTAKE_OUT_MANUAL_MOTOR_SPEED            = 0.75;
-  public static final double GRAB_MOTOR_SPEED                         = 0.5;
-  public static final double RELEASE_MOTOR_SPEED                      = -0.5;
+  public static final double GRAB_MOTOR_SPEED                         = 0.75;
+  public static final double RELEASE_MOTOR_SPEED                      = 0.5;
+  public static final double RELEASE_FAST_MOTOR_SPEED                 = 0.8;
 
   public static final double ARM_GEAR_RATIO                           = 580; // 580 motor rev :1 arm rev
 

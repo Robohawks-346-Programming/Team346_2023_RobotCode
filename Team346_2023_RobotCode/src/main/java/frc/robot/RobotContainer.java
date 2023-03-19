@@ -9,6 +9,7 @@ import frc.robot.commands.Auto2;
 import frc.robot.commands.Drivetrain.JoystickDrive;
 import frc.robot.commands.Drivetrain.JoystickDriveFast;
 import frc.robot.commands.Drivetrain.JoystickDriveReverse;
+import frc.robot.commands.Grabber.Grab;
 import frc.robot.commands.Intake.DeployIntakeIn;
 import frc.robot.commands.Intake.DeployIntakeSlowOut;
 import frc.robot.commands.Intake.RunIntakeOut;
@@ -17,6 +18,7 @@ import frc.robot.commands.LED.LEDCube;
 import frc.robot.commands.Intake.DeployIntakeFastOut;
 import frc.robot.commands.States.Deliver;
 import frc.robot.commands.States.Level1Config;
+import frc.robot.commands.States.Level1Deliver;
 import frc.robot.commands.States.Level1Retract;
 import frc.robot.commands.States.Level2Config;
 import frc.robot.commands.States.Level3Config;
@@ -81,9 +83,9 @@ public class RobotContainer {
     BUTTON_15 = new JoystickButton(operatorControl, 15),
     BUTTON_16 = new JoystickButton(operatorControl, 16);
 
-    public DoubleSupplier xAxis = () -> (driverControl.getLeftY());
-    public DoubleSupplier yAxis = () -> (driverControl.getLeftX());
-    public DoubleSupplier thetaAxis = () -> (driverControl.getRightX());
+    public DoubleSupplier xAxis = () -> (-driverControl.getLeftY());
+    public DoubleSupplier yAxis = () -> (-driverControl.getLeftX());
+    public DoubleSupplier thetaAxis = () -> (-driverControl.getRightX());
 
     static HashMap<String, Command> eventMap = new HashMap<>();
 
@@ -129,18 +131,18 @@ public class RobotContainer {
     new JoystickButton(driverControl, Button.kR2.value).whileTrue(new JoystickDriveFast(drivetrain, xAxis, yAxis, thetaAxis));
     new JoystickButton(driverControl, Button.kL1.value).onTrue(new JoystickDrive(drivetrain, xAxis, yAxis, thetaAxis));
     new JoystickButton(driverControl, Button.kL2.value).whileTrue(new JoystickDriveReverse(drivetrain, xAxis, yAxis, thetaAxis));
-    new JoystickButton(driverControl, Button.kShare.value).onTrue(new InstantCommand(visionProcessor::limelightRetract));
 
-    BUTTON_2.onTrue(new Level1Config());
+    BUTTON_1.onTrue(new StartingConfig());
+    BUTTON_2.whileTrue(new Grab());
     BUTTON_3.onTrue(new Level2Config());
     BUTTON_4.onTrue(new Level3Config());
     BUTTON_6.whileTrue(new LEDCone());
     BUTTON_7.whileTrue(new LEDCube());
-    BUTTON_8.onTrue(new StartingConfig());
-    BUTTON_9.onTrue(new Level1Retract());
-    BUTTON_10.onTrue(new Deliver());
-    BUTTON_11.onTrue(new SubstationRetract());
-    BUTTON_12.onTrue(new SubstationConfig());
+    //BUTTON_8.onTrue(new StartingConfig());
+    BUTTON_9.whileTrue(new Level1Deliver());
+    BUTTON_10.whileTrue(new Deliver());
+    //BUTTON_11.onTrue(new SubstationRetract());
+    //BUTTON_12.onTrue(new SubstationConfig());
     BUTTON_13.whileTrue(new DeployIntakeIn());
     BUTTON_14.whileTrue(new DeployIntakeFastOut());
     BUTTON_15.whileTrue(new DeployIntakeSlowOut());

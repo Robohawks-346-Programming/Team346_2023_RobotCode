@@ -30,8 +30,8 @@ public class Grabber extends SubsystemBase {
     }
     // Retracts Pneumatic part of the Grabber
     public void Grab() {
-        grabberMotor1.set(Constants.GRAB_MOTOR_SPEED);
-        grabberMotor2.set(Constants.GRAB_MOTOR_SPEED);
+        grabberMotor1.set(-Constants.GRAB_MOTOR_SPEED);
+        grabberMotor2.set(-Constants.GRAB_MOTOR_SPEED);
         grabberValue = true;
     }
 
@@ -40,6 +40,11 @@ public class Grabber extends SubsystemBase {
         grabberMotor1.set(speed1);
         grabberMotor2.set(speed2);
         grabberValue = false;
+    }
+
+    public void stopMotor() {
+        grabberMotor1.set(0);
+        grabberMotor2.set(0);
     }
 
     public boolean getLaserBreakValue() {
