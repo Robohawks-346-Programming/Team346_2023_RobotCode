@@ -18,8 +18,8 @@ import frc.robot.commands.LED.LEDCone;
 import frc.robot.commands.LED.LEDCube;
 import frc.robot.commands.Intake.DeployIntakeFastOut;
 import frc.robot.commands.States.Deliver;
+import frc.robot.commands.States.DeliverFast;
 import frc.robot.commands.States.Level1Config;
-import frc.robot.commands.States.Level1Deliver;
 import frc.robot.commands.States.Level1Retract;
 import frc.robot.commands.States.Level2Config;
 import frc.robot.commands.States.Level3Config;
@@ -44,7 +44,11 @@ import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -71,7 +75,6 @@ public class RobotContainer {
   public static final Joystick operatorControl = new Joystick(Constants.OPERATOR_CONTROLLER_PORT);
   public static final Auto1 auto1 = new Auto1();
   public static final Auto2 auto2 = new Auto2();
-  public static final Auto3 auto3 = new Auto3();
   SendableChooser<Command> autoChooser = new SendableChooser<Command>();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -157,8 +160,8 @@ public class RobotContainer {
     BUTTON_6.whileTrue(new LEDCone());
     BUTTON_7.whileTrue(new LEDCube());
     //BUTTON_8.onTrue(new StartingConfig());
-    BUTTON_9.whileTrue(new Level1Deliver());
-    BUTTON_10.whileTrue(new Deliver());
+    BUTTON_9.whileTrue(new Deliver());
+    BUTTON_10.whileTrue(new DeliverFast());
     //BUTTON_11.onTrue(new SubstationRetract());
     //BUTTON_12.onTrue(new SubstationConfig());
     BUTTON_13.whileTrue(new DeployIntakeIn());
@@ -168,15 +171,46 @@ public class RobotContainer {
 
   }
 
-  private void configureAutoPaths() {
+  public void configureAutoPaths() {
     autoChooser.addOption("1 Cube Out", auto1);
     autoChooser.addOption("1 Cube No Move", auto2);
     //autoChooser.setDefaultOption("1 Cube Out", auto1);
+    var group = PathPlanner.loadPathGroup("2 Cube Left", 1, 1);
+    Command path1 = RobotContainer.autoBuilder.followPath(group.get(0));
+    Command path2 = RobotContainer.autoBuilder.followPath(group.get(1));
+    Command auto3 = 
+        new SequentialCommandGroup(
+            new Level3Config(),
+            new ParallelDeadlineGroup(new WaitCommand(0.5), 
+              new Deliver()),
+            new ParallelRaceGroup(
+              new SequentialCommandGroup(new StartingConfig(), new DeployIntakeIn()),
+                path1),
+            path2,
+            new ParallelDeadlineGroup(new WaitCommand(1), new RunIntakeOut()));
+    autoChooser.addOption("2 Cube Left", auto3);
+
   }
 
 
     // An example command will be run in autonomous
-  public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
+  public Command getAutonomousCommand() {    
+    var group = PathPlanner.loadPathGroup("2 Cube Left", 1, 1);
+    Command path1 = RobotContainer.autoBuilder.followPath(group.get(0));
+    Command path2 = RobotContainer.autoBuilder.followPath(group.get(1));
+    Command auto3 = 
+        new SequentialCommandGroup(
+            new Level3Config(),
+            new ParallelDeadlineGroup(new WaitCommand(0.5), 
+              new DeliverFast()),
+            new ParallelRaceGroup(
+              new SequentialCommandGroup(new StartingConfig(), new DeployIntakeIn()),
+                path1),
+            new InstantCommand(drivetrain::brake),
+            path2,
+            new InstantCommand(drivetrain::brake),
+            new ParallelDeadlineGroup(new WaitCommand(1), new RunIntakeOut()));
+
+  return auto3;
   }
 }

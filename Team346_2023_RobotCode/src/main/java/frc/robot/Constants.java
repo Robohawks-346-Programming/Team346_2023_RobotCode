@@ -22,8 +22,8 @@ public final class Constants {
   // Pneumatic Channels
   public static final int INTAKE_OUT_PNEUMATIC_ID                     = 14;
   public static final int INTAKE_IN_PNEUMATIC_ID                      = 1;
-  public static final int BRAKE_OUT_PNEUMATIC_ID                      = 11;
-  public static final int BRAKE_IN_PNEUMATIC_ID                       = 4;
+  public static final int BRAKE_OUT_PNEUMATIC_ID                      = 4;
+  public static final int BRAKE_IN_PNEUMATIC_ID                       = 11;
   public static final int LIMELIGHT_IN_PNEUMATIC_CHANNEL              = 5;
   public static final int LIMELIGHT_OUT_PNEUMATIC_CHANNEL             = 10;
   

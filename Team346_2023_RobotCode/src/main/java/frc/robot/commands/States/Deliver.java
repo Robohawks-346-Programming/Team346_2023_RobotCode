@@ -5,7 +5,6 @@ import frc.robot.commands.Arm.MoveArm;
 import frc.robot.commands.Grabber.Release;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 /** An example command that uses an example subsystem. */
 public class Deliver extends SequentialCommandGroup {
@@ -20,7 +19,7 @@ public class Deliver extends SequentialCommandGroup {
     addCommands(
       new ParallelCommandGroup(
         new SequentialCommandGroup(
-          new Release(Constants.RELEASE_FAST_MOTOR_SPEED, Constants.RELEASE_FAST_MOTOR_SPEED)
+          new Release(Constants.RELEASE_MOTOR_SPEED, Constants.RELEASE_MOTOR_SPEED)
         )
       )
       
