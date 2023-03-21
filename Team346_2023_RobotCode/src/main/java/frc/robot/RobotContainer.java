@@ -42,6 +42,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -178,27 +179,7 @@ public class RobotContainer {
     var group = PathPlanner.loadPathGroup("2 Cube Left", 1, 1);
     Command path1 = RobotContainer.autoBuilder.followPath(group.get(0));
     Command path2 = RobotContainer.autoBuilder.followPath(group.get(1));
-    Command auto3 = 
-        new SequentialCommandGroup(
-            new Level3Config(),
-            new ParallelDeadlineGroup(new WaitCommand(0.5), 
-              new Deliver()),
-            new ParallelRaceGroup(
-              new SequentialCommandGroup(new StartingConfig(), new DeployIntakeIn()),
-                path1),
-            path2,
-            new ParallelDeadlineGroup(new WaitCommand(1), new RunIntakeOut()));
-    autoChooser.addOption("2 Cube Left", auto3);
-
-  }
-
-
-    // An example command will be run in autonomous
-  public Command getAutonomousCommand() {    
-    var group = PathPlanner.loadPathGroup("2 Cube Left", 1, 1);
-    Command path1 = RobotContainer.autoBuilder.followPath(group.get(0));
-    Command path2 = RobotContainer.autoBuilder.followPath(group.get(1));
-    Command auto3 = 
+    Command auto4 = 
         new SequentialCommandGroup(
             new Level3Config(),
             new ParallelDeadlineGroup(new WaitCommand(0.5), 
@@ -210,7 +191,13 @@ public class RobotContainer {
             path2,
             new InstantCommand(drivetrain::brake),
             new ParallelDeadlineGroup(new WaitCommand(1), new RunIntakeOut()));
+    //autoChooser.addOption("2 Cube Left", auto3);
+    SmartDashboard.putData("autoChooser", autoChooser);
+  }
 
-  return auto3;
+
+    // An example command will be run in autonomous
+  public Command getAutonomousCommand() {    
+    return autoChooser.getSelected();
   }
 }
