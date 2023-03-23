@@ -91,8 +91,8 @@ public final class Constants {
   public static final int MAX_VOLTAGE                                 = 12;
   public static final int DRIVE_CURRENT_LIMIT                         = 60;
   public static final int TURN_CURRENT_LIMIT                          = 25;
-  public static final double MAX_MOVE_VELOCITY_SLOW                   = 1;
-  public static final double MAX_TURN_VELOCITY_SLOW                   = 1;
+  public static final double MAX_MOVE_VELOCITY_SLOW                   = 0.4;
+  public static final double MAX_TURN_VELOCITY_SLOW                   = 0.4;
   public static final boolean IS_FIELD_RELATIVE                       = true;
   public static final double OFFSET                                   = 180.0;
   public static final double DRIVETRAIN_TRACKWIDTH_METERS             = 0.8128; //32 in

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.commands.Drivetrain.DriveForTime;
+import frc.robot.commands.Drivetrain.TurnAround;
 import frc.robot.commands.Intake.DeployIntakeIn;
 import frc.robot.commands.Intake.RunIntakeOut;
 import frc.robot.commands.States.DeliverFast;
@@ -37,9 +38,12 @@ public class Auto3 extends SequentialCommandGroup {
                     new DeliverFast()),
                 new ParallelRaceGroup(
                     new SequentialCommandGroup(new StartingConfig(), new DeployIntakeIn()),
-                    new DriveForTime(RobotContainer.drivetrain, 0.5, 0, 0)),
+                    new ParallelDeadlineGroup(new WaitCommand(5), 
+                        new DriveForTime(RobotContainer.drivetrain, -0.5, 0, 0))),
                 new InstantCommand(RobotContainer.drivetrain::brake),
-                new DriveForTime(RobotContainer.drivetrain, -0.5, 0, 0),
+                new TurnAround(RobotContainer.drivetrain),
+                new ParallelDeadlineGroup(new WaitCommand(5), 
+                    new DriveForTime(RobotContainer.drivetrain, 0.5, 0, 0)),
                 new InstantCommand(RobotContainer.drivetrain::brake),
                 new ParallelDeadlineGroup(new WaitCommand(1), new RunIntakeOut())
 

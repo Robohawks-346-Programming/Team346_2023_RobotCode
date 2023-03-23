@@ -91,7 +91,9 @@ public class Drivetrain extends SubsystemBase{
         // seconds
         // Reduces the impact of sensor noice, but too high can make the auto run
         // slower, default = 0.2
-        debounceTime = 0.2;
+        debounceTime = 0.5;
+        onChargeStation = false;
+
     }
     @Override
     public void periodic() {
@@ -99,11 +101,17 @@ public class Drivetrain extends SubsystemBase{
         SmartDashboard.putNumber("x", odometry.getPoseMeters().getX());
         SmartDashboard.putNumber("y", odometry.getPoseMeters().getY());
         SmartDashboard.putNumber("theta", odometry.getPoseMeters().getRotation().getDegrees());
-        SmartDashboard.putNumber("Gyro Angle", getHeading().getDegrees());
+        SmartDashboard.putNumber("Gyro Heading", getHeading().getDegrees());
+        SmartDashboard.putNumber("Gyro Pitch()", gyro.getPitch());
+        SmartDashboard.putNumber("Gyro Roll()", gyro.getRoll());
+        SmartDashboard.putNumber("Tilt", getTilt());
         SmartDashboard.putNumber("Wheel Encoder", frontRight.getMetersDriven());
         SmartDashboard.putNumber("Back right encoder", backRight.getPosition().angle.getDegrees());
         SmartDashboard.putNumber("Back left encoder", backLeft.getPosition().angle.getDegrees());
-        SmartDashboard.putNumber("Balance Value", checkBalance());
+        SmartDashboard.putNumber("Y Acceleration", getAcceleration());
+        //SmartDashboard.putNumber("Balance Value", checkBalance());
+        //SmartDashboard.putBoolean("OnChargeStation", getOnToChargeStation());
+        SmartDashboard.putNumber("Gyro Yaw", getYaw());
 
     }
     
@@ -236,19 +244,23 @@ public class Drivetrain extends SubsystemBase{
 
     // Drive at fast speed until method below returns true
     public boolean getOnToChargeStation() {
-        if (getTilt() > onChargeStationDegree) {
+        if ((gyro.getPitch() < -9) && (gyro.getPitch() > -15)) {
             debounceCount++;
         }
         if (debounceCount > secondsToTicks(debounceTime)) {
+            //System.out.println("true");
             debounceCount = 0;
             onChargeStation = true;
+        }
+        else {
+            //System.out.println("false");
         }
         return onChargeStation;
     }
 
     // Drive at slow speed until level
     public boolean levelOnChargeStation() {
-        if (getTilt() < levelDegree) {
+        if (getTilt() > levelDegree) {
             debounceCount++;
         }
         if (debounceCount > secondsToTicks(debounceTime)) {
@@ -264,19 +276,27 @@ public class Drivetrain extends SubsystemBase{
         debounceCount++;
     }
     if (debounceCount > secondsToTicks(debounceTime)) {
-        //debounceCount = 0;
+        debounceCount = 0;
         // Read comments under initilization
         levelCheck = 0;
     }
     if (getTilt() >= levelDegree) {
         debounceCount = 0;
         // Read comments under initilization
-        levelCheck = 1;
-    } else if (getTilt() <= -levelDegree) {
+        levelCheck = -1;
+    } else if (getTilt() < -levelDegree) {
         debounceCount = 0;
         // Read comments under initilization
-        levelCheck = -1;
+        levelCheck = 1;
     }
     return levelCheck;
+   }
+
+   public double getAcceleration() {
+    return Math.abs(gyro.getWorldLinearAccelY());
+   }
+
+   public double getYaw() {
+    return gyro.getYaw();
    }
 }

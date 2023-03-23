@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.commands.Auto1;
 import frc.robot.commands.Auto2;
 import frc.robot.commands.Auto3;
+import frc.robot.commands.AutoBalance;
 import frc.robot.commands.Drivetrain.JoystickDrive;
 import frc.robot.commands.Drivetrain.JoystickDriveFast;
 import frc.robot.commands.Drivetrain.JoystickDriveReverse;
@@ -76,6 +77,8 @@ public class RobotContainer {
   public static final Joystick operatorControl = new Joystick(Constants.OPERATOR_CONTROLLER_PORT);
   public static final Auto1 auto1 = new Auto1();
   public static final Auto2 auto2 = new Auto2();
+  public static final Auto3 auto3 = new Auto3();
+  public static final AutoBalance autoBalance = new AutoBalance();
   SendableChooser<Command> autoChooser = new SendableChooser<Command>();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -149,18 +152,19 @@ public class RobotContainer {
     // pressed,
     // cancelling on release.
     new JoystickButton(driverControl, Button.kOptions.value).onTrue(new InstantCommand(drivetrain::resetEncoders));
+    new JoystickButton(driverControl, Button.kShare.value).onTrue(new InstantCommand(drivetrain::zeroHeading));
     new JoystickButton(driverControl, Button.kR2.value)
         .whileTrue(new JoystickDriveFast(drivetrain, xAxis, yAxis, thetaAxis));
     new JoystickButton(driverControl, Button.kL1.value).onTrue(new JoystickDrive(drivetrain, xAxis, yAxis, thetaAxis));
     new JoystickButton(driverControl, Button.kL2.value).whileTrue(new JoystickDriveReverse(drivetrain, xAxis, yAxis, thetaAxis));
 
-    BUTTON_1.onTrue(new StartingConfig());
+    //BUTTON_1.onTrue(new StartingConfig());
     BUTTON_2.whileTrue(new Grab());
     BUTTON_3.onTrue(new Level2Config());
     BUTTON_4.onTrue(new Level3Config());
     BUTTON_6.whileTrue(new LEDCone());
     BUTTON_7.whileTrue(new LEDCube());
-    //BUTTON_8.onTrue(new StartingConfig());
+    BUTTON_8.onTrue(new StartingConfig());
     BUTTON_9.whileTrue(new Deliver());
     BUTTON_10.whileTrue(new DeliverFast());
     //BUTTON_11.onTrue(new SubstationRetract());
@@ -176,22 +180,25 @@ public class RobotContainer {
     autoChooser.addOption("1 Cube Out", auto1);
     autoChooser.addOption("1 Cube No Move", auto2);
     //autoChooser.setDefaultOption("1 Cube Out", auto1);
-    var group = PathPlanner.loadPathGroup("2 Cube Left", 1, 1);
-    Command path1 = RobotContainer.autoBuilder.followPath(group.get(0));
-    Command path2 = RobotContainer.autoBuilder.followPath(group.get(1));
-    Command auto4 = 
-        new SequentialCommandGroup(
-            new Level3Config(),
-            new ParallelDeadlineGroup(new WaitCommand(0.5), 
-              new DeliverFast()),
-            new ParallelRaceGroup(
-              new SequentialCommandGroup(new StartingConfig(), new DeployIntakeIn()),
-                path1),
-            new InstantCommand(drivetrain::brake),
-            path2,
-            new InstantCommand(drivetrain::brake),
-            new ParallelDeadlineGroup(new WaitCommand(1), new RunIntakeOut()));
+    // var group = PathPlanner.loadPathGroup("2 Cube Left", 1, 1);
+    // Command path1 = RobotContainer.autoBuilder.followPath(group.get(0));
+    // Command path2 = RobotContainer.autoBuilder.followPath(group.get(1));
+    // Command auto4 = 
+    //     new SequentialCommandGroup(
+    //         new Level3Config(),
+    //         new ParallelDeadlineGroup(new WaitCommand(0.5), 
+    //           new DeliverFast()),
+    //         new ParallelRaceGroup(
+    //           new SequentialCommandGroup(new StartingConfig(), new DeployIntakeIn()),
+    //             path1),
+    //         new InstantCommand(drivetrain::brake),
+    //         path2,
+    //         new InstantCommand(drivetrain::brake),
+    //         new ParallelDeadlineGroup(new WaitCommand(1), new RunIntakeOut()));
     //autoChooser.addOption("2 Cube Left", auto3);
+
+    autoChooser.addOption("2 Cube", auto3);
+    autoChooser.addOption("Auto Balance", autoBalance);
     SmartDashboard.putData("autoChooser", autoChooser);
   }
 

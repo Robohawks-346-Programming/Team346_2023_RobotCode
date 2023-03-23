@@ -1,27 +1,28 @@
 package frc.robot.commands;
 
-import com.pathplanner.lib.PathConstraints;
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
-
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
-import frc.robot.commands.Drivetrain.DriveForTime;
+import frc.robot.commands.Drivetrain.AutoBalancing;
 import frc.robot.commands.Drivetrain.AutoDriveUp;
-import frc.robot.commands.Intake.DeployIntakeIn;
-import frc.robot.commands.Intake.RunIntakeOut;
+import frc.robot.commands.Drivetrain.DriveForTime;
+import frc.robot.commands.Drivetrain.TurnAround;
 
 public class AutoBalance extends SequentialCommandGroup {
 
     public AutoBalance() {
         addCommands(
             new SequentialCommandGroup(
-                new AutoDriveUp(),
-                new AutoBalance()
+                // new ParallelDeadlineGroup (new WaitCommand(2), new DriveForTime(RobotContainer.drivetrain, -0.5, 0, 0)),
+                // new ParallelDeadlineGroup (new WaitCommand(3), new DriveForTime(RobotContainer.drivetrain, -0.3, 0, 0))
+                new TurnAround(RobotContainer.drivetrain)
+                //new AutoDriveUp(),
+                //new AutoBalancing(RobotContainer.drivetrain, 1, 0, 0),
+                //new ParallelDeadlineGroup(new WaitCommand(2), 
+                //new DriveForTime(RobotContainer.drivetrain, -0.25, 0, 0)),
+                //new InstantCommand(RobotContainer.drivetrain::brake)
             )
         );
     }
