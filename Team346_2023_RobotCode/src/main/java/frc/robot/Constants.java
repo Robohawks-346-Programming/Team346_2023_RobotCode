@@ -43,7 +43,7 @@ public final class Constants {
   public static final double INTAKE_OUT_MANUAL_MOTOR_SPEED            = 0.75;
   public static final double GRAB_MOTOR_SPEED                         = 0.75;
   public static final double RELEASE_MOTOR_SPEED                      = 0.5;
-  public static final double RELEASE_FAST_MOTOR_SPEED                 = 0.8;
+  public static final double RELEASE_FAST_MOTOR_SPEED                 = 0.6;
 
   public static final double ARM_GEAR_RATIO                           = 580; // 580 motor rev :1 arm rev
 

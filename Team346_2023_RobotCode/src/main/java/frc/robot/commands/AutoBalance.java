@@ -17,7 +17,6 @@ public class AutoBalance extends SequentialCommandGroup {
             new SequentialCommandGroup(
                 // new ParallelDeadlineGroup (new WaitCommand(2), new DriveForTime(RobotContainer.drivetrain, -0.5, 0, 0)),
                 // new ParallelDeadlineGroup (new WaitCommand(3), new DriveForTime(RobotContainer.drivetrain, -0.3, 0, 0))
-                new TurnAround(RobotContainer.drivetrain)
                 //new AutoDriveUp(),
                 //new AutoBalancing(RobotContainer.drivetrain, 1, 0, 0),
                 //new ParallelDeadlineGroup(new WaitCommand(2), 
