@@ -15,6 +15,7 @@ public class TurnAround extends CommandBase {
   Drivetrain drivetrain;
   double x,y,theta;
   double currentHeading;
+  int direction;
 
   public TurnAround(Drivetrain drivetrain) {
     this.drivetrain = drivetrain;
@@ -30,10 +31,16 @@ public class TurnAround extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println(currentHeading);
-    ChassisSpeeds velocity = Constants.IS_FIELD_RELATIVE ? ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 1, drivetrain.getHeading()) 
-      : new ChassisSpeeds(0, 0, 1);
+    if (currentHeading >= -180) {
+      direction = 1;
+    }
+    else {
+      direction = -1;
+    }
+    //System.out.println(currentHeading);
 
+    ChassisSpeeds velocity = Constants.IS_FIELD_RELATIVE ? ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, direction, drivetrain.getHeading()) 
+      : new ChassisSpeeds(0, 0, direction);
     drivetrain.drive(velocity, true);
   }
 
@@ -46,6 +53,14 @@ public class TurnAround extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (RobotContainer.drivetrain.getHeading().getDegrees() >= (currentHeading + 180));
+    if (currentHeading > -180) {
+      return (RobotContainer.drivetrain.getHeading().getDegrees() <= (currentHeading - 180));
+    }
+    else if(currentHeading < -180) {
+      return (RobotContainer.drivetrain.getHeading().getDegrees() >= (currentHeading + 180));
+    }
+    else {
+      return (RobotContainer.drivetrain.getHeading().getDegrees() <= (currentHeading - 179));
+    }
   }
 }

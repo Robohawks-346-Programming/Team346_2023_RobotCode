@@ -10,6 +10,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -24,6 +26,7 @@ public class Drivetrain extends SubsystemBase{
     private boolean onChargeStation = false;
     private boolean levelOn = false;
     private int levelCheck = 2;
+    private Compressor compressor;
     // 1 means need to move forward slowly
     // -1 meand need to move backward slowly
     // 2 is initliazation
@@ -69,6 +72,7 @@ public class Drivetrain extends SubsystemBase{
         
         odometry = new SwerveDriveOdometry(Constants.DRIVE_KINEMATICS, getHeading(), getModulePositions());
 
+        compressor = new Compressor(PneumaticsModuleType.REVPH);
         for( SwerveModule module : modules) {
             module.resetDistance();
         }
@@ -105,7 +109,7 @@ public class Drivetrain extends SubsystemBase{
         SmartDashboard.putNumber("Gyro Pitch()", gyro.getPitch());
         SmartDashboard.putNumber("Gyro Roll()", gyro.getRoll());
         SmartDashboard.putNumber("Tilt", getTilt());
-        SmartDashboard.putNumber("Wheel Encoder", frontRight.getMetersDriven());
+        SmartDashboard.putNumber("Wheel Encoder", getFrontLeftEncoder());
         SmartDashboard.putNumber("Back right encoder", backRight.getPosition().angle.getDegrees());
         SmartDashboard.putNumber("Back left encoder", backLeft.getPosition().angle.getDegrees());
         SmartDashboard.putNumber("Y Acceleration", getAcceleration());
@@ -299,4 +303,20 @@ public class Drivetrain extends SubsystemBase{
    public double getYaw() {
     return gyro.getYaw();
    }
+
+   public void enableCompressor() {
+    compressor.enableDigital();
+  }
+
+  public void disableCompressor() {
+    compressor.disable();
+  }
+
+  public double getFrontLeftEncoder() {
+    return Math.abs(frontLeft.getDistance());
+  }
+
+  public void resetFrontLeftDistance() {
+    frontLeft.resetDistance();
+  }
 }

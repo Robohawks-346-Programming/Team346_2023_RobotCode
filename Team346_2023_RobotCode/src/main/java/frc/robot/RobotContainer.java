@@ -7,6 +7,10 @@ package frc.robot;
 import frc.robot.commands.Auto1;
 import frc.robot.commands.Auto2;
 import frc.robot.commands.Auto3;
+import frc.robot.commands.Auto4;
+import frc.robot.commands.Auto5;
+import frc.robot.commands.Auto6;
+import frc.robot.commands.Auto7;
 import frc.robot.commands.AutoBalance;
 import frc.robot.commands.Drivetrain.JoystickDrive;
 import frc.robot.commands.Drivetrain.JoystickDriveFast;
@@ -33,14 +37,19 @@ import frc.robot.subsystems.Grabber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.VisionProcessor;
+
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.function.DoubleSupplier;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
+
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -78,8 +87,13 @@ public class RobotContainer {
   public static final Auto1 auto1 = new Auto1();
   public static final Auto2 auto2 = new Auto2();
   public static final Auto3 auto3 = new Auto3();
+  public static final Auto4 auto4 = new Auto4();
+  public static final Auto5 auto5 = new Auto5();
+  public static final Auto6 auto6 = new Auto6();
+  public static final Auto7 auto7 = new Auto7();
   public static final AutoBalance autoBalance = new AutoBalance();
   SendableChooser<Command> autoChooser = new SendableChooser<Command>();
+  
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public static final JoystickButton BUTTON_1 = new JoystickButton(operatorControl, 1),
@@ -155,6 +169,8 @@ public class RobotContainer {
     new JoystickButton(driverControl, Button.kShare.value).onTrue(new InstantCommand(drivetrain::zeroHeading));
     new JoystickButton(driverControl, Button.kR2.value)
         .whileTrue(new JoystickDriveFast(drivetrain, xAxis, yAxis, thetaAxis));
+    new JoystickButton(driverControl, Button.kR2.value).whileTrue(new InstantCommand(drivetrain::disableCompressor));
+    new JoystickButton(driverControl, Button.kR2.value).whileFalse(new InstantCommand(drivetrain::enableCompressor));
     new JoystickButton(driverControl, Button.kL1.value).onTrue(new JoystickDrive(drivetrain, xAxis, yAxis, thetaAxis));
     new JoystickButton(driverControl, Button.kL2.value).whileTrue(new JoystickDriveReverse(drivetrain, xAxis, yAxis, thetaAxis));
 
@@ -177,8 +193,8 @@ public class RobotContainer {
   }
 
   public void configureAutoPaths() {
-    autoChooser.addOption("1 Cube Out", auto1);
-    autoChooser.addOption("1 Cube No Move", auto2);
+    //autoChooser.addOption("1 Cube Out", auto1);
+    //autoChooser.addOption("1 Cube No Move", auto2);
     //autoChooser.setDefaultOption("1 Cube Out", auto1);
     // var group = PathPlanner.loadPathGroup("2 Cube Left", 1, 1);
     // Command path1 = RobotContainer.autoBuilder.followPath(group.get(0));
@@ -197,8 +213,13 @@ public class RobotContainer {
     //         new ParallelDeadlineGroup(new WaitCommand(1), new RunIntakeOut()));
     //autoChooser.addOption("2 Cube Left", auto3);
 
-    autoChooser.addOption("2 Cube", auto3);
-    autoChooser.addOption("Auto Balance", autoBalance);
+    autoChooser.addOption("2 Cube Blue", auto3);
+    autoChooser.addOption("2 Cube Red", auto5);
+    //autoChooser.addOption("Auto Balance", autoBalance);
+    autoChooser.addOption("AutoBalanceNew", auto4);
+    autoChooser.addOption("2 Cube Blue Conduit", auto6);
+    autoChooser.addOption("2 Cube Blue New", auto7);
+    autoChooser.setDefaultOption("2 Cube Red", auto5);
     SmartDashboard.putData("autoChooser", autoChooser);
   }
 

@@ -16,9 +16,9 @@ import frc.robot.commands.States.DeliverFast;
 import frc.robot.commands.States.Level3Config;
 import frc.robot.commands.States.StartingConfig;
 
-public class Auto3 extends SequentialCommandGroup {
+public class Auto6 extends SequentialCommandGroup {
 
-    public Auto3() {
+    public Auto6() {
         addCommands(
             // new SequentialCommandGroup(
             //     new Level3Config(),
@@ -41,13 +41,9 @@ public class Auto3 extends SequentialCommandGroup {
                 new ParallelRaceGroup(
                     new SequentialCommandGroup(new StartingConfig(), new DeployIntakeIn()),
                     new ParallelDeadlineGroup(new WaitCommand(5), 
-                        new DriveForTime(RobotContainer.drivetrain, -0.5, -0.01, 0))),
+                        new DriveForTime(RobotContainer.drivetrain, -0.5, 0.01, 0))),
                 new InstantCommand(RobotContainer.drivetrain::brake),
-                new ParallelDeadlineGroup (new WaitCommand(1.4), new DriveForTime(RobotContainer.drivetrain, 0, 0, 1)),
-                new ParallelDeadlineGroup(new WaitCommand(5.1), 
-                    new DriveForTime(RobotContainer.drivetrain, 0.5, -0.05, 0)),
-                new InstantCommand(RobotContainer.drivetrain::brake),
-                new ParallelDeadlineGroup(new WaitCommand(1), new RunIntakeOut())
+                new ParallelDeadlineGroup (new WaitCommand(1.4), new DriveForTime(RobotContainer.drivetrain, 0, 0, 1))
 
             )
         );

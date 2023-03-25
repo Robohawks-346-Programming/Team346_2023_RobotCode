@@ -42,8 +42,9 @@ public final class Constants {
   public static final double INTAKE_OUT_FAST_MOTOR_SPEED              = 1;
   public static final double INTAKE_OUT_MANUAL_MOTOR_SPEED            = 0.75;
   public static final double GRAB_MOTOR_SPEED                         = 0.75;
-  public static final double RELEASE_MOTOR_SPEED                      = 0.5;
-  public static final double RELEASE_FAST_MOTOR_SPEED                 = 0.6;
+  public static final double RELEASE_MOTOR_SPEED                      = 0.45;
+  public static final double RELEASE_FAST_MOTOR_SPEED_1               = 0.6;
+  public static final double RELEASE_FAST_MOTOR_SPEED_2               = 0.5;
 
   public static final double ARM_GEAR_RATIO                           = 580; // 580 motor rev :1 arm rev
 
@@ -84,8 +85,8 @@ public final class Constants {
   public static final double MAX_VELOCITY                             = 2;
   public static final double MAX_MOVE_VELOCITY                        = 2;
   public static final double MAX_TURN_VELOCITY                        = 2;
-  public static final double MAX_MOVE_VELOCITY_FAST                   = 3.5;
-  public static final double MAX_TURN_VELOCITY_FAST                   = 3.5;
+  public static final double MAX_MOVE_VELOCITY_FAST                   = 4.5;
+  public static final double MAX_TURN_VELOCITY_FAST                   = 4.5;
 
   // Drivetrain Parameters
   public static final int MAX_VOLTAGE                                 = 12;

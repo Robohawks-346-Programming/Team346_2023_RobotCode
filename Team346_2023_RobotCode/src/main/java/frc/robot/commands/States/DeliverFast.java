@@ -20,7 +20,7 @@ public class DeliverFast extends SequentialCommandGroup {
     addCommands(
       new ParallelCommandGroup(
         new SequentialCommandGroup(
-          new Release(Constants.RELEASE_FAST_MOTOR_SPEED, Constants.RELEASE_FAST_MOTOR_SPEED)
+          new Release(Constants.RELEASE_FAST_MOTOR_SPEED_1, Constants.RELEASE_FAST_MOTOR_SPEED_2)
         )
       )
       
