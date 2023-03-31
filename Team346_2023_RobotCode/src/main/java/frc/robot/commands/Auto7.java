@@ -42,11 +42,11 @@ public class Auto7 extends SequentialCommandGroup {
                 new ParallelDeadlineGroup(
                     new SequentialCommandGroup(new StartingConfig(), new DeployIntakeIn()),
                     new ParallelDeadlineGroup(new WaitCommand(5), 
-                    new DriveForEncoderDistance(RobotContainer.drivetrain, -0.5, -0.01, 0, 5))),    // Measure out distances
+                    new DriveForEncoderDistance(RobotContainer.drivetrain, -0.5, -0.01, 0, 4.5974))),    // Measure out distances
                 new InstantCommand(RobotContainer.drivetrain::brake),
                 new ParallelDeadlineGroup (new WaitCommand(1.4), new DriveForTime(RobotContainer.drivetrain, 0, 0, 1)),
                 new ParallelDeadlineGroup(new WaitCommand(5.1), 
-                new DriveForEncoderDistance(RobotContainer.drivetrain, 0.5, -0.01, 0, 4.8768))),
+                new DriveForEncoderDistance(RobotContainer.drivetrain, 0.5, -0.01, 0, 4.826))),
                 new InstantCommand(RobotContainer.drivetrain::brake),
                 new ParallelDeadlineGroup(new WaitCommand(1), new RunIntakeOut())
 

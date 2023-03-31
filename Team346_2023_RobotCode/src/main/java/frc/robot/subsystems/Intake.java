@@ -12,13 +12,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
-    private static DoubleSolenoid intakeSolenoid;
     private static CANSparkMax intakeMotor;
     private boolean intakeValue;
     private DigitalInput laserBreak;
     
     public Intake() {
-        intakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.INTAKE_OUT_PNEUMATIC_ID, Constants.INTAKE_IN_PNEUMATIC_ID);
         intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR_ID, MotorType.kBrushless);
 
         intakeValue = false;
@@ -33,13 +31,13 @@ public class Intake extends SubsystemBase {
     }
     // Extends Pneumatic part of the Intake
     public void extendIntake() {
-        intakeSolenoid.set(Value.kForward);
+        intakeMotor.set(Constants.INTAKE_OUT_FAST_MOTOR_SPEED);
         intakeValue = true;
     }
 
     // Retracts Pneumatic part of the Intake
     public void retractIntake() {
-        intakeSolenoid.set(Value.kReverse);
+        intakeMotor.set(Constants.INTAKE_IN_MOTOR_SPEED);
         intakeValue = false;
     }
 

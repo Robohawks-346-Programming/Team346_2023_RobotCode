@@ -24,13 +24,9 @@ import frc.robot.commands.LED.LEDCube;
 import frc.robot.commands.Intake.DeployIntakeFastOut;
 import frc.robot.commands.States.Deliver;
 import frc.robot.commands.States.DeliverFast;
-import frc.robot.commands.States.Level1Config;
-import frc.robot.commands.States.Level1Retract;
 import frc.robot.commands.States.Level2Config;
 import frc.robot.commands.States.Level3Config;
 import frc.robot.commands.States.StartingConfig;
-import frc.robot.commands.States.SubstationConfig;
-import frc.robot.commands.States.SubstationRetract;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain.*;
 import frc.robot.subsystems.Grabber;
@@ -38,29 +34,23 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.VisionProcessor;
 
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.function.DoubleSupplier;
-import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -87,7 +77,7 @@ public class RobotContainer {
   public static final Auto1 auto1 = new Auto1();
   public static final Auto2 auto2 = new Auto2();
   public static final Auto3 auto3 = new Auto3();
-  public static final Auto4 auto4 = new Auto4();
+  //public static final Auto4 auto4 = new Auto4();
   public static final Auto5 auto5 = new Auto5();
   public static final Auto6 auto6 = new Auto6();
   public static final Auto7 auto7 = new Auto7();
@@ -122,7 +112,7 @@ public class RobotContainer {
   public static SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
       drivetrain::getPose, // odometry position
       drivetrain::resetOdometry,
-      new PIDConstants(1,0,0),
+      new PIDConstants(0.01,0,0),
       new PIDConstants(1,0,0),
       speeds -> drivetrain.drive(speeds, true), // this sets the motor powers
       eventMap,
@@ -193,12 +183,12 @@ public class RobotContainer {
   }
 
   public void configureAutoPaths() {
-    //autoChooser.addOption("1 Cube Out", auto1);
-    //autoChooser.addOption("1 Cube No Move", auto2);
-    //autoChooser.setDefaultOption("1 Cube Out", auto1);
-    // var group = PathPlanner.loadPathGroup("2 Cube Left", 1, 1);
-    // Command path1 = RobotContainer.autoBuilder.followPath(group.get(0));
-    // Command path2 = RobotContainer.autoBuilder.followPath(group.get(1));
+    // autoChooser.addOption("1 Cube Out", auto1);
+    // autoChooser.addOption("1 Cube No Move", auto2);
+    // autoChooser.setDefaultOption("1 Cube Out", auto1);
+    var group = PathPlanner.loadPathGroup("TwoCubePart1", 1, 0.5);
+    Command path1 = RobotContainer.autoBuilder.followPath(group.get(0));
+    Command auto4 = new SequentialCommandGroup(path1, new InstantCommand(drivetrain::brake));
     // Command auto4 = 
     //     new SequentialCommandGroup(
     //         new Level3Config(),
@@ -211,19 +201,18 @@ public class RobotContainer {
     //         path2,
     //         new InstantCommand(drivetrain::brake),
     //         new ParallelDeadlineGroup(new WaitCommand(1), new RunIntakeOut()));
-    //autoChooser.addOption("2 Cube Left", auto3);
+    // autoChooser.addOption("2 Cube Left", auto3);
 
+    autoChooser.setDefaultOption("Path Planner", auto4);
     autoChooser.addOption("2 Cube Blue", auto3);
     autoChooser.addOption("2 Cube Red", auto5);
     //autoChooser.addOption("Auto Balance", autoBalance);
-    autoChooser.addOption("AutoBalanceNew", auto4);
+    //autoChooser.addOption("AutoBalanceNew", auto4);
     autoChooser.addOption("2 Cube Blue Conduit", auto6);
     autoChooser.addOption("2 Cube Blue New", auto7);
-    autoChooser.setDefaultOption("2 Cube Red", auto5);
+    // autoChooser.setDefaultOption("2 Cube Blue", auto3);
     SmartDashboard.putData("autoChooser", autoChooser);
   }
-
-
     // An example command will be run in autonomous
   public Command getAutonomousCommand() {    
     return autoChooser.getSelected();

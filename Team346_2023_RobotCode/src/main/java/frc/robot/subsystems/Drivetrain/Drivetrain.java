@@ -151,6 +151,8 @@ public class Drivetrain extends SubsystemBase{
         if(normalize) {
             normalDrive(swerveStates, speed);
         }
+        SmartDashboard.putNumber("DriveX", speed.vxMetersPerSecond);
+        SmartDashboard.putNumber("DriveY", speed.vyMetersPerSecond);
         setModuleState(swerveStates);
     }
 
