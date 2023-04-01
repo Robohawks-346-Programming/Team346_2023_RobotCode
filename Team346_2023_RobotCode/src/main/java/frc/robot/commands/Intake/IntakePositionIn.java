@@ -10,7 +10,7 @@ import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class IntakePneumaticIn extends CommandBase {
+public class IntakePositionIn extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
 
@@ -19,7 +19,7 @@ public class IntakePneumaticIn extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public IntakePneumaticIn() {
+  public IntakePositionIn() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -30,7 +30,7 @@ public class IntakePneumaticIn extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.intake.extendIntake();
+    RobotContainer.intake.moveIntake(Constants.INTAKE_IN_POSITION);
   }
 
   // Called once the command ends or is interrupted.
@@ -41,6 +41,6 @@ public class IntakePneumaticIn extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }

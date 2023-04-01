@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -16,6 +18,7 @@ public class Arm extends SubsystemBase {
     private static CANSparkMax rotationMotor;
     private static DoubleSolenoid brakeSolenoid;
     private static RelativeEncoder rotationEncoder;
+    private static SparkMaxPIDController rotationPIDController;
 
     double armDegreesPerMotorRev;
     
@@ -28,7 +31,18 @@ public class Arm extends SubsystemBase {
         armDegreesPerMotorRev = 360/Constants.ARM_GEAR_RATIO;
         
         rotationEncoder.setPositionConversionFactor(armDegreesPerMotorRev);
+        rotationEncoder.setPosition(Constants.HOME_ARM_ANGLE);
         rotationMotor.setInverted(true);
+
+        rotationPIDController = rotationMotor.getPIDController();
+        rotationPIDController.setP(Constants.ARM_P);
+        rotationPIDController.setI(Constants.ARM_I);
+        rotationPIDController.setD(Constants.ARM_D);
+
+        rotationPIDController.setOutputRange(-Constants.ARM_MOTOR_SPEED_DOWN, Constants.ARM_MOTOR_SPEED_UP);
+
+        rotationMotor.burnFlash();
+
     }
 
     @Override
@@ -83,5 +97,9 @@ public class Arm extends SubsystemBase {
         else {
             rotationMotor.set(0.0);
         }
+    }
+
+    public void moveArmToPosition(double wantedPosition) {
+        rotationPIDController.setReference(wantedPosition, ControlType.kPosition);
     }
 }

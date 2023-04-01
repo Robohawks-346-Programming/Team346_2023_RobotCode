@@ -29,7 +29,7 @@ public class DeployIntakeFastOut extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.intake.extendIntake();
+    RobotContainer.intake.moveIntake(Constants.INTAKE_OUT_POSITION);
     RobotContainer.intake.runIntake(-Constants.INTAKE_OUT_FAST_MOTOR_SPEED);
   }
 
@@ -37,7 +37,7 @@ public class DeployIntakeFastOut extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     RobotContainer.intake.stopIntake();
-    RobotContainer.intake.retractIntake();
+    RobotContainer.intake.moveIntake(Constants.INTAKE_IN_POSITION);
   }
 
   // Returns true when the command should end.

@@ -109,10 +109,14 @@ public class Drivetrain extends SubsystemBase{
         SmartDashboard.putNumber("Gyro Pitch()", gyro.getPitch());
         SmartDashboard.putNumber("Gyro Roll()", gyro.getRoll());
         SmartDashboard.putNumber("Tilt", getTilt());
-        SmartDashboard.putNumber("Front Right Wheel Encoder", getFrontRightEncoder());
-        SmartDashboard.putNumber("Front Left Wheel Encoder", getFrontLeftEncoder());
-        SmartDashboard.putNumber("Back Right Wheel Encoder", getBackRightEncoder());
-        SmartDashboard.putNumber("Back Left Wheel Encoder", getBackLeftEncoder());
+        SmartDashboard.putNumber("Front Right Delta", frontRight.getDelta());
+        SmartDashboard.putNumber("Front Left Delta", frontLeft.getDelta());
+        SmartDashboard.putNumber("Back Right Delta", backRight.getDelta());
+        SmartDashboard.putNumber("Back Left Delta", backLeft.getDelta());
+        SmartDashboard.putNumber("Back Left State Angle", backLeft.getStateAngle());
+        SmartDashboard.putNumber("Back Right State Angle", backRight.getStateAngle());
+        SmartDashboard.putNumber("Front Left State Angle", frontLeft.getStateAngle());
+        SmartDashboard.putNumber("Front Right State Angle", frontRight.getStateAngle());
         SmartDashboard.putNumber("Back right encoder", backRight.getPosition().angle.getDegrees());
         SmartDashboard.putNumber("Back left encoder", backLeft.getPosition().angle.getDegrees());
         SmartDashboard.putNumber("Y Acceleration", getAcceleration());

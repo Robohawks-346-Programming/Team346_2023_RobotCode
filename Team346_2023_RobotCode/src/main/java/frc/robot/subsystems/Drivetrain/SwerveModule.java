@@ -32,6 +32,8 @@ public class SwerveModule extends SubsystemBase{
 
     SparkMaxPIDController driveController, turnController;
 
+    double wantedDelta, wantedAngle;
+
     public SwerveModule(
                         int driveMotorID,
                         int turnMotorID,
@@ -99,6 +101,7 @@ public class SwerveModule extends SubsystemBase{
      
     public void setState(SwerveModuleState state) {
         Rotation2d currentAngle = Rotation2d.fromDegrees(turnEncoder.getPosition());
+        wantedAngle = state.angle.getDegrees();
         double delta = deltaAdjustedAngle(state.angle.getDegrees(), currentAngle.getDegrees());
         // double currentAngle = turnEncoder.getPosition();
         // double delta = deltaAdjustedAngle(state.angle.getDegrees(), currentAngle);
@@ -109,7 +112,7 @@ public class SwerveModule extends SubsystemBase{
             driveOutput *= -1;
             delta -= Math.signum(delta) * 180;
         }
-
+        wantedDelta = delta;
         adjustedAngle = Rotation2d.fromDegrees(delta + currentAngle.getDegrees());
 
         SmartDashboard.putNumber("Commanded Velocity", velocityInput);
@@ -117,6 +120,13 @@ public class SwerveModule extends SubsystemBase{
 
         turnController.setReference(adjustedAngle.getDegrees(), ControlType.kPosition);
         driveController.setReference(driveOutput, ControlType.kVelocity, 0, Constants.DRIVE_FF * driveOutput);
+    }
+
+    public double getDelta() {
+        return wantedDelta;
+    }
+    public double getStateAngle() {
+        return wantedAngle;
     }
 
     public double getDistance() {

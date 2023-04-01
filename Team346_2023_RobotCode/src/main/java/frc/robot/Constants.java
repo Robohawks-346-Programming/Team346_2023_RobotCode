@@ -31,12 +31,15 @@ public final class Constants {
   // Motor IDs
   public static final int ARM_MOTOR_ID                                = 12;
   public static final int INTAKE_MOTOR_ID                             = 41;
+  public static final int INTAKE_ROTATION_MOTOR_ID                    = 0; //Need to change once spark is added
   public static final int GRABBER_1_MOTOR_ID                          = 51;
   public static final int GRABBER_2_MOTOR_ID                          = 52;
 
   // Motor Speed
   public static final double ARM_MOTOR_SPEED_UP                       = 1;
   public static final double ARM_MOTOR_SPEED_DOWN                     = 0.5;
+  public static final double INTAKE_MOVE_OUT_MOTOR_SPEED              = 0.5;
+  public static final double INTAKE_MOVE_IN_MOTOR_SPEED               = 0.5;
   public static final double INTAKE_IN_MOTOR_SPEED                    = 0.75;
   public static final double INTAKE_OUT_SLOW_MOTOR_SPEED              = 0.5;
   public static final double INTAKE_OUT_FAST_MOTOR_SPEED              = 1;
@@ -46,9 +49,10 @@ public final class Constants {
   public static final double RELEASE_FAST_MOTOR_SPEED_1               = 0.7;
   public static final double RELEASE_FAST_MOTOR_SPEED_2               = 0.7;
 
+
+  // Arm Constants
   public static final double ARM_GEAR_RATIO                           = 580; // 580 motor rev :1 arm rev
 
-  // Arm Angles
   public static final double HOME_ARM_ANGLE                           = 12; //off vertical
   public static final double LEVEL_1_ARM_ANGLE                        = 28; //off vertical
   public static final double ROTATE_UP_LEVEL_1_ARM_ANGLE              = 25; //off vertical
@@ -57,6 +61,20 @@ public final class Constants {
   public static final double SUBSTATION_ARM_ANGLE                     = 81; //off vertical
   public static final double ARM_ANGLE_THRESHOLD                      = 0.5; // in degrees
 
+  public static final double ARM_P                                    = 0;
+  public static final double ARM_I                                    = 0;
+  public static final double ARM_D                                    = 0;
+
+
+  // Intake Constants
+  public static final double INTAKE_POSITION_THRESHOLD                = 0.5; // in motor revolutions
+  public static final double INTAKE_OUT_POSITION                      = 85.22; // in motor rev
+  public static final double INTAKE_IN_POSITION                       = 0.0;
+
+  public static final double INTAKE_P                                 = 0;
+  public static final double INTAKE_I                                 = 0;
+  public static final double INTAKE_D                                 = 0;
+  
   // Front left Swerve Module
   public static final int FRONT_LEFT_DRIVE_ID                         = 21;
   public static final int FRONT_LEFT_TURN_ID                          = 22;
