@@ -31,13 +31,13 @@ public class Intake extends SubsystemBase {
     }
     // Extends Pneumatic part of the Intake
     public void extendIntake() {
-        intakeMotor.set(Constants.INTAKE_OUT_FAST_MOTOR_SPEED);
+        //intakeMotor.set(Constants.INTAKE_OUT_FAST_MOTOR_SPEED);
         intakeValue = true;
     }
 
     // Retracts Pneumatic part of the Intake
     public void retractIntake() {
-        intakeMotor.set(Constants.INTAKE_IN_MOTOR_SPEED);
+        //intakeMotor.set(Constants.INTAKE_IN_MOTOR_SPEED);
         intakeValue = false;
     }
 

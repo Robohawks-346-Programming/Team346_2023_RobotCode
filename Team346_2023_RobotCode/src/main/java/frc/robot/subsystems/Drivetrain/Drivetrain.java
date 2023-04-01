@@ -109,10 +109,14 @@ public class Drivetrain extends SubsystemBase{
         SmartDashboard.putNumber("Gyro Pitch()", gyro.getPitch());
         SmartDashboard.putNumber("Gyro Roll()", gyro.getRoll());
         SmartDashboard.putNumber("Tilt", getTilt());
-        SmartDashboard.putNumber("Wheel Encoder", getFrontLeftEncoder());
+        SmartDashboard.putNumber("Front Right Wheel Encoder", getFrontRightEncoder());
+        SmartDashboard.putNumber("Front Left Wheel Encoder", getFrontLeftEncoder());
+        SmartDashboard.putNumber("Back Right Wheel Encoder", getBackRightEncoder());
+        SmartDashboard.putNumber("Back Left Wheel Encoder", getBackLeftEncoder());
         SmartDashboard.putNumber("Back right encoder", backRight.getPosition().angle.getDegrees());
         SmartDashboard.putNumber("Back left encoder", backLeft.getPosition().angle.getDegrees());
         SmartDashboard.putNumber("Y Acceleration", getAcceleration());
+        SmartDashboard.putNumber("Front Left Meters Driven", getFrontLeftMetersDriven());
         //SmartDashboard.putNumber("Balance Value", checkBalance());
         //SmartDashboard.putBoolean("OnChargeStation", getOnToChargeStation());
         SmartDashboard.putNumber("Gyro Yaw", getYaw());
@@ -153,6 +157,7 @@ public class Drivetrain extends SubsystemBase{
         }
         SmartDashboard.putNumber("DriveX", speed.vxMetersPerSecond);
         SmartDashboard.putNumber("DriveY", speed.vyMetersPerSecond);
+        SmartDashboard.putNumber("DriveTheta", speed.omegaRadiansPerSecond);
         setModuleState(swerveStates);
     }
 
@@ -315,10 +320,27 @@ public class Drivetrain extends SubsystemBase{
   }
 
   public double getFrontLeftEncoder() {
-    return Math.abs(frontLeft.getDistance());
+    return (frontLeft.turnAngleRadians());
+  }
+
+  public double getFrontRightEncoder() {
+    return (frontRight.turnAngleRadians());
+  }
+
+  public double getBackLeftEncoder() {
+    return (backLeft.turnAngleRadians());
+  }
+
+  public double getBackRightEncoder() {
+    return (backRight.turnAngleRadians());
   }
 
   public void resetFrontLeftDistance() {
     frontLeft.resetDistance();
   }
+
+  public double getFrontLeftMetersDriven() {
+    return Math.abs(frontLeft.getMetersDriven());
+  }
+  
 }

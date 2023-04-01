@@ -15,10 +15,10 @@ public class AutoBalance extends SequentialCommandGroup {
     public AutoBalance() {
         addCommands(
             new SequentialCommandGroup(
-                new ParallelDeadlineGroup (new WaitCommand(2), new DriveForTime(RobotContainer.drivetrain, 0.7, 0, 0)),
-                new ParallelDeadlineGroup (new WaitCommand(3), new DriveForTime(RobotContainer.drivetrain, 0.3, 0, 0)),
-                //new AutoDriveUp(),
-                new AutoBalancing(RobotContainer.drivetrain, 1, 0, 0)
+                // new ParallelDeadlineGroup (new WaitCommand(2), new DriveForTime(RobotContainer.drivetrain, 0.7, 0, 0)),
+                // new ParallelDeadlineGroup (new WaitCommand(3), new DriveForTime(RobotContainer.drivetrain, 0.3, 0, 0)),
+                new AutoDriveUp()
+                //new AutoBalancing(RobotContainer.drivetrain, 0.5, 0, 0)
                 //new ParallelDeadlineGroup(new WaitCommand(2), 
                 //new DriveForTime(RobotContainer.drivetrain, -0.25, 0, 0)),
                 //new InstantCommand(RobotContainer.drivetrain::brake)

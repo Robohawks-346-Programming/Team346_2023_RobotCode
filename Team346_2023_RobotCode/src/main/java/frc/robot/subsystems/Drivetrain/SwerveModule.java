@@ -168,11 +168,15 @@ public class SwerveModule extends SubsystemBase{
     };
     
 
-    private Rotation2d getTurnAngle() {
+    public Rotation2d getTurnAngle() {
         return new Rotation2d(turnAngleRadians());
     }
 
     public double turnAngleRadians() {
         return encoderOffset + (turnEncoder.getPosition() * 2 * Math.PI); 
+    }
+
+    public double getCANCoderPosition() {
+       return turningCANCoder.getPosition();
     }
 }

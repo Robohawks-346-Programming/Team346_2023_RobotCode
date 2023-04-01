@@ -26,12 +26,12 @@ public class AutoDriveUp  extends CommandBase {
   @Override
   public void execute() {
 
-    // ChassisSpeeds velocity = Constants.IS_FIELD_RELATIVE ? ChassisSpeeds.fromFieldRelativeSpeeds(x, 0, 0, drivetrain.getHeading()) 
-    //   : new ChassisSpeeds(x, 0, 0);
+    
+    if (!RobotContainer.drivetrain.getOnToChargeStation()) {
+      ChassisSpeeds velocity = Constants.IS_FIELD_RELATIVE ? ChassisSpeeds.fromFieldRelativeSpeeds(x, 0, 0, drivetrain.getHeading()) 
+      : new ChassisSpeeds(x, 0, 0);
 
-    // drivetrain.drive(velocity, true);
-    if (RobotContainer.drivetrain.getOnToChargeStation()) {
-      System.out.println("command works");
+      drivetrain.drive(velocity, true);
     }
   }
 
@@ -42,6 +42,6 @@ public class AutoDriveUp  extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;//RobotContainer.drivetrain.getOnToChargeStation();
+    return RobotContainer.drivetrain.getOnToChargeStation();
   }
 }

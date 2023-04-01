@@ -2,7 +2,10 @@ package frc.robot.commands.Drivetrain;
 
 import java.util.function.DoubleSupplier;
 
+import javax.swing.text.StyleContext.SmallAttributeSet;
+
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain.Drivetrain;
@@ -19,6 +22,7 @@ public class DriveForEncoderDistance extends CommandBase {
     this.x = x;
     this.y = y;
     this.theta = theta;
+    this.distance = distance;
     addRequirements(drivetrain);
   }
 
@@ -43,6 +47,8 @@ public class DriveForEncoderDistance extends CommandBase {
       : new ChassisSpeeds(vx, vy, omega);
 
     drivetrain.drive(velocity, true);
+    boolean debugging = drivetrain.getFrontLeftMetersDriven() >= distance;
+    SmartDashboard.putBoolean("debugging", debugging);
   }
 
   // Called once the command ends or is interrupted.
@@ -54,6 +60,6 @@ public class DriveForEncoderDistance extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return drivetrain.getFrontLeftEncoder() >= distance;
+    return (drivetrain.getFrontLeftMetersDriven() >= distance);
   }
 }

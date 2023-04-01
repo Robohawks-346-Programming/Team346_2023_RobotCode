@@ -26,11 +26,11 @@ public class AutoBalancing  extends CommandBase {
     this.y = y;
     this.theta = theta;
     addRequirements(drivetrain);
-    //x = Constants.MAX_MOVE_VELOCITY_SLOW;
-    // positiveVelocity = Constants.IS_FIELD_RELATIVE ? ChassisSpeeds.fromFieldRelativeSpeeds(x, 0, 0, RobotContainer.drivetrain.getHeading()) 
-    // : new ChassisSpeeds(x, 0, 0);
-    // negativeVelocity = Constants.IS_FIELD_RELATIVE ? ChassisSpeeds.fromFieldRelativeSpeeds(-x, 0, 0, RobotContainer.drivetrain.getHeading()) 
-    // : new ChassisSpeeds(-x, 0, 0);
+    x = Constants.MAX_MOVE_VELOCITY_SLOW;
+    positiveVelocity = Constants.IS_FIELD_RELATIVE ? ChassisSpeeds.fromFieldRelativeSpeeds(x, 0, 0, RobotContainer.drivetrain.getHeading()) 
+    : new ChassisSpeeds(x, 0, 0);
+    negativeVelocity = Constants.IS_FIELD_RELATIVE ? ChassisSpeeds.fromFieldRelativeSpeeds(-x, 0, 0, RobotContainer.drivetrain.getHeading()) 
+    : new ChassisSpeeds(-x, 0, 0);
   }
 
   // Called when the command is initially scheduled.
@@ -54,26 +54,17 @@ public class AutoBalancing  extends CommandBase {
       : new ChassisSpeeds(-vx, vy, omega);
 
       RobotContainer.drivetrain.drive(positiveVelocity, true);
-      // if(RobotContainer.drivetrain.checkBalance() == 1) {
-      //   RobotContainer.drivetrain.drive(positiveVelocity, true);
+      if(RobotContainer.drivetrain.checkBalance() == 1) {
+        RobotContainer.drivetrain.drive(positiveVelocity, true);
   
-      // }
-      // else if (RobotContainer.drivetrain.checkBalance() == -1){
-      //   RobotContainer.drivetrain.drive(negativeVelocity, true);
-      // }
-      // else {
-      //   RobotContainer.drivetrain.brake();
-      // }
-    // balance = RobotContainer.drivetrain.checkBalance();
-    //   if (balance == -1) {
-    //     System.out.println("backward");
-    //     RobotContainer.drivetrain.drive(negativeVelocity, true);
-    //   } else if (balance == 1) {
-    //     System.out.println("forward");
-    //     RobotContainer.drivetrain.drive(positiveVelocity, true);
-    //   } else {
-    //     //RobotContainer.drivetrain.brake();
-    //   }
+      }
+      else if (RobotContainer.drivetrain.checkBalance() == -1){
+        RobotContainer.drivetrain.drive(negativeVelocity, true);
+      }
+      else {
+        RobotContainer.drivetrain.brake();
+        balance = 0;
+      }
      }
 
   // Called once the command ends or is interrupted.
@@ -87,6 +78,6 @@ public class AutoBalancing  extends CommandBase {
   @Override
   public boolean isFinished() {
     //return RobotContainer.drivetrain.checkBalance() == 0;
-    return RobotContainer.drivetrain.getAcceleration() > 0.5;
+    return balance == 0;
   }
 }

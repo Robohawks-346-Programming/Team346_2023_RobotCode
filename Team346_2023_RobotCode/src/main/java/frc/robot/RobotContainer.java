@@ -11,6 +11,7 @@ import frc.robot.commands.Auto4;
 import frc.robot.commands.Auto5;
 import frc.robot.commands.Auto6;
 import frc.robot.commands.Auto7;
+import frc.robot.commands.Auto8;
 import frc.robot.commands.AutoBalance;
 import frc.robot.commands.Drivetrain.JoystickDrive;
 import frc.robot.commands.Drivetrain.JoystickDriveFast;
@@ -36,6 +37,8 @@ import frc.robot.subsystems.VisionProcessor;
 
 import java.util.HashMap;
 import java.util.function.DoubleSupplier;
+
+import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
@@ -81,6 +84,7 @@ public class RobotContainer {
   public static final Auto5 auto5 = new Auto5();
   public static final Auto6 auto6 = new Auto6();
   public static final Auto7 auto7 = new Auto7();
+  public static final Auto8 auto8 = new Auto8();
   public static final AutoBalance autoBalance = new AutoBalance();
   SendableChooser<Command> autoChooser = new SendableChooser<Command>();
   
@@ -107,16 +111,7 @@ public class RobotContainer {
     public DoubleSupplier yAxis = () -> (-driverControl.getLeftX());
     public DoubleSupplier thetaAxis = () -> (-driverControl.getRightX());
 
-  public static HashMap<String, Command> eventMap = new HashMap<>();
 
-  public static SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
-      drivetrain::getPose, // odometry position
-      drivetrain::resetOdometry,
-      new PIDConstants(0.01,0,0),
-      new PIDConstants(1,0,0),
-      speeds -> drivetrain.drive(speeds, true), // this sets the motor powers
-      eventMap,
-      drivetrain);
 
   // PathPlannerTrajectory path = PathPlanner.loadPath("MoveOnly", new
   // PathConstraints(1, 1));
@@ -186,9 +181,11 @@ public class RobotContainer {
     // autoChooser.addOption("1 Cube Out", auto1);
     // autoChooser.addOption("1 Cube No Move", auto2);
     // autoChooser.setDefaultOption("1 Cube Out", auto1);
-    var group = PathPlanner.loadPathGroup("TwoCubePart1", 1, 0.5);
-    Command path1 = RobotContainer.autoBuilder.followPath(group.get(0));
-    Command auto4 = new SequentialCommandGroup(path1, new InstantCommand(drivetrain::brake));
+    // PathConstraints constraints = new PathConstraints(1, 0.5);
+    // var path = PathPlanner.loadPath("TwoCubePart1", constraints, false);
+    // //var group = PathPlanner.loadPathGroup("TwoCubePart1", 1, 0.5);
+    // Command path1 = RobotContainer.autoBuilder.followPath(path);
+    // Command auto4 = new SequentialCommandGroup(path1, new InstantCommand(drivetrain::brake));
     // Command auto4 = 
     //     new SequentialCommandGroup(
     //         new Level3Config(),
@@ -203,10 +200,10 @@ public class RobotContainer {
     //         new ParallelDeadlineGroup(new WaitCommand(1), new RunIntakeOut()));
     // autoChooser.addOption("2 Cube Left", auto3);
 
-    autoChooser.setDefaultOption("Path Planner", auto4);
+    //autoChooser.setDefaultOption("Path Planner", auto4);
     autoChooser.addOption("2 Cube Blue", auto3);
     autoChooser.addOption("2 Cube Red", auto5);
-    //autoChooser.addOption("Auto Balance", autoBalance);
+    autoChooser.addOption("Auto Balance", autoBalance);
     //autoChooser.addOption("AutoBalanceNew", auto4);
     autoChooser.addOption("2 Cube Blue Conduit", auto6);
     autoChooser.addOption("2 Cube Blue New", auto7);
@@ -215,6 +212,21 @@ public class RobotContainer {
   }
     // An example command will be run in autonomous
   public Command getAutonomousCommand() {    
-    return autoChooser.getSelected();
-  }
+    // return autoChooser.getSelected();
+    var group1 = PathPlanner.loadPathGroup("2 Cube Part 1", new PathConstraints(1, 0.5));
+    var group2 = PathPlanner.loadPathGroup("2 Cube Left", new PathConstraints(2, 2));
+    var group3 = PathPlanner.loadPathGroup("3 cube", new PathConstraints(2, 0.75));
+    var group4 = PathPlanner.loadPathGroup("PID", new PathConstraints(0.5, 0.25));
+    HashMap<String, Command> eventMap = new HashMap<>();
+    SwerveAutoBuilder builder = new SwerveAutoBuilder(
+        drivetrain::getPose, // odometry position
+        drivetrain::resetOdometry,
+        new PIDConstants(0.05,0,0),
+        new PIDConstants(1,0,0),
+        speeds -> drivetrain.drive(speeds, true), // this sets the motor powers
+        eventMap,
+        drivetrain);
+        return builder.fullAuto(group2);
+  // }
+}
 }
