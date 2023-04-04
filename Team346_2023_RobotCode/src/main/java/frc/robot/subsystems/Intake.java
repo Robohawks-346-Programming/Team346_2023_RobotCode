@@ -7,6 +7,8 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -20,13 +22,15 @@ public class Intake extends SubsystemBase {
     private static CANSparkMax rotationMotor;
     private static RelativeEncoder rotationEncoder;
     private static SparkMaxPIDController rotationPIDController;
-    private boolean intakeValue;
     private DigitalInput laserBreak;
+    private SlewRateLimiter limiter;
     
     public Intake() {
         intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR_ID, MotorType.kBrushless);
         rotationMotor = new CANSparkMax(Constants.INTAKE_ROTATION_MOTOR_ID, MotorType.kBrushless);
         rotationMotor.setIdleMode(IdleMode.kBrake);
+        rotationMotor.setInverted(true);
+        rotationMotor.setSmartCurrentLimit(25);
 
         rotationEncoder = rotationMotor.getEncoder();
         rotationPIDController = rotationMotor.getPIDController();
@@ -40,9 +44,6 @@ public class Intake extends SubsystemBase {
 
         rotationPIDController.setOutputRange(-Constants.INTAKE_MOVE_IN_MOTOR_SPEED, Constants.INTAKE_MOVE_OUT_MOTOR_SPEED);
 
-
-        intakeValue = false;
-
         laserBreak = new DigitalInput(Constants.INTAKE_LASER_BREAK_PORT);
 
         rotationMotor.burnFlash();
@@ -50,33 +51,46 @@ public class Intake extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putBoolean("Intake Value", intakeValue);
         SmartDashboard.putBoolean("Intake laser", getLaserBreak());
+        SmartDashboard.putNumber("Intake Rev", getRotationEncoder());
     }
     
-    public void moveIntake(double wantedPosition) {
+    public void moveIntake(double wantedPosition, double currentPosition1) {
         double currentPosition = rotationEncoder.getPosition();
-        double difference = Math.abs(rotationEncoder.getPosition() - wantedPosition);
-        while(difference <= Constants.INTAKE_POSITION_THRESHOLD) {
-            if (wantedPosition > currentPosition) {
-                rotationMotor.set(Constants.INTAKE_MOVE_OUT_MOTOR_SPEED);
-            }
-
-            else if (wantedPosition < currentPosition) {
-                rotationMotor.set(-Constants.INTAKE_MOVE_IN_MOTOR_SPEED);
-            }
-
-            else {
-                rotationMotor.set(0.0);
-            }
+        if (wantedPosition > currentPosition) {
+            rotationMotor.set(lerpSpeed(currentPosition1, Constants.INTAKE_OUT_POSITION, Constants.INTAKE_MOVE_OUT_MOTOR_SPEED, Constants.INTAKE_MOVE_OUT_MOTOR_SPEED_FINAL));
         }
-        rotationMotor.set(0.0);
+
+        else if (wantedPosition < currentPosition) {
+            rotationMotor.set(-lerpSpeed(currentPosition1, Constants.INTAKE_IN_POSITION, Constants.INTAKE_MOVE_IN_MOTOR_SPEED, Constants.INTAKE_MOVE_IN_MOTOR_SPEED_FINAL));
+        }
+
+        else {
+            rotationMotor.set(0.0);
+        }
+    
+    }
+
+    public double lerpSpeed(double aI, double aF, double bI, double bF) {
+        return (bI * (aF - getRotationEncoder()) + bF * (getRotationEncoder() - aI)) / (aF - aI);
     }
 
     //Checks if intake is atWantedPosition
     public boolean isAtPosition(double wantedPosition) {
         double difference = Math.abs(rotationEncoder.getPosition() - wantedPosition);
         return(difference <= Constants.INTAKE_POSITION_THRESHOLD);
+    }
+
+    public void stopRotationMotor() {
+        rotationMotor.set(0);
+    }
+
+    public void resetIntakePosition() {
+        rotationEncoder.setPosition(0);
+    }
+
+    public double getRotationEncoder() {
+        return rotationEncoder.getPosition();
     }
 
     public void moveIntakeToPosition(double wantedPosition) {

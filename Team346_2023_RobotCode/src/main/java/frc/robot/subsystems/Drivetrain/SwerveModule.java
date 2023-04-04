@@ -162,6 +162,8 @@ public class SwerveModule extends SubsystemBase{
 
     public void resetEncoders() {
         turnEncoder.setPosition(turningCANCoder.getAbsolutePosition()- encoderOffset);
+        //turningCANCoder.setPosition(0);
+
         //turningCANCoder.configMagnetOffset(turningCANCoder.configGetMagnetOffset()- turningCANCoder.getAbsolutePosition());
     }
 

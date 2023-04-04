@@ -10,7 +10,7 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.Drivetrain.DriveForEncoderDistance;
 import frc.robot.commands.Drivetrain.DriveForTime;
 import frc.robot.commands.Drivetrain.TurnAround;
-import frc.robot.commands.Intake.DeployIntakeIn;
+import frc.robot.commands.Intake.RunIntakeIn;
 import frc.robot.commands.Intake.RunIntakeOut;
 import frc.robot.commands.States.Deliver;
 import frc.robot.commands.States.DeliverFast;
@@ -40,7 +40,7 @@ public class Auto7 extends SequentialCommandGroup {
                 new ParallelDeadlineGroup(new WaitCommand(0.25), 
                     new DeliverFast()),
                 new ParallelDeadlineGroup(
-                    new SequentialCommandGroup(new StartingConfig(), new DeployIntakeIn()),
+                    new SequentialCommandGroup(new StartingConfig(), new RunIntakeIn()),
                     new ParallelDeadlineGroup(new WaitCommand(5), 
                     new DriveForEncoderDistance(RobotContainer.drivetrain, -0.5, -0.01, 0, 4.5974))),    // Measure out distances
                 new InstantCommand(RobotContainer.drivetrain::brake),

@@ -26,8 +26,6 @@ public class Arm extends SubsystemBase {
         rotationMotor = new CANSparkMax(Constants.ARM_MOTOR_ID, MotorType.kBrushless);    
         rotationMotor.setIdleMode(IdleMode.kBrake);
         rotationEncoder = rotationMotor.getEncoder();
-        brakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.BRAKE_IN_PNEUMATIC_ID, Constants.BRAKE_OUT_PNEUMATIC_ID);
-
         armDegreesPerMotorRev = 360/Constants.ARM_GEAR_RATIO;
         
         rotationEncoder.setPositionConversionFactor(armDegreesPerMotorRev);
@@ -74,24 +72,18 @@ public class Arm extends SubsystemBase {
         rotationMotor.set(0.0);
     }
 
-    // Stops Rotation with Pneumatic Disc brake
-    public void armBrakeOn() {
-        brakeSolenoid.set(Value.kForward);
+    public double lerpSpeed(double aI, double aF, double bI, double bF) {
+        return (bI * (aF - getRotationEncoder()) + bF * (getRotationEncoder() - aI)) / (aF - aI);
     }
 
-    // Releases Disc brake
-    public void armBrakeOff() {
-        brakeSolenoid.set(Value.kReverse);
-    }
-
-    public void moveArm(double wantedPosition) {
+    public void moveArm(double wantedPosition, double currentDegree) {
         double currentPosition = rotationEncoder.getPosition();
         if (wantedPosition > currentPosition) {
-            rotationMotor.set(Constants.ARM_MOTOR_SPEED_UP);
+            rotationMotor.set(lerpSpeed(currentDegree, wantedPosition, Constants.ARM_MOTOR_SPEED_UP, Constants.ARM_MOTOR_SPEED_UP_FINAL));
         }
 
         else if (wantedPosition < currentPosition) {
-            rotationMotor.set(-Constants.ARM_MOTOR_SPEED_DOWN);
+            rotationMotor.set(-lerpSpeed(currentDegree, wantedPosition, Constants.ARM_MOTOR_SPEED_DOWN, Constants.ARM_MOTOR_SPEED_DOWN_FINAL));
         }
 
         else {

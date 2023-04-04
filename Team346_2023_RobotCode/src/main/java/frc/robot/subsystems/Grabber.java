@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -15,6 +16,8 @@ public class Grabber extends SubsystemBase {
     public Grabber() {
         grabberMotor1 = new CANSparkMax(Constants.GRABBER_1_MOTOR_ID, MotorType.kBrushless);
         grabberMotor2 = new CANSparkMax(Constants.GRABBER_2_MOTOR_ID, MotorType.kBrushless);
+        grabberMotor1.setIdleMode(IdleMode.kBrake);
+        grabberMotor2.setIdleMode(IdleMode.kBrake);
         laserBreak = new DigitalInput(Constants.GRABBER_LASER_BREAK_PORT);
 
     }

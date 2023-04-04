@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class MoveArm extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     private double level;
+    public double currentDegree;
 
   /**
    * Creates a new ExampleCommand.
@@ -27,20 +28,19 @@ public class MoveArm extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.arm.armBrakeOff();
+    currentDegree = RobotContainer.arm.getRotationEncoder();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.arm.moveArm(level);
+    RobotContainer.arm.moveArm(level, currentDegree);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     RobotContainer.arm.stopRotationMotor();
-    RobotContainer.arm.armBrakeOn();
   }
 
   // Returns true when the command should end.

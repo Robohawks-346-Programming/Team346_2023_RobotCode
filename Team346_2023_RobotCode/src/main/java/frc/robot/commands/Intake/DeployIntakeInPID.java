@@ -4,13 +4,13 @@ import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 
-public class DeployIntakeSlowOut extends SequentialCommandGroup {
+public class DeployIntakeInPID extends SequentialCommandGroup {
 
-    public DeployIntakeSlowOut() {
+    public DeployIntakeInPID() {
         addCommands(
             new SequentialCommandGroup(
-                new ParallelDeadlineGroup(new RunIntakeSlowOut(), new MoveIntake(Constants.INTAKE_OUT_POSITION)),
-                new MoveIntake(Constants.INTAKE_IN_POSITION)
+                new ParallelDeadlineGroup(new RunIntakeIn(), new MoveIntakePID(Constants.INTAKE_OUT_POSITION)),
+                new MoveIntakePID(Constants.INTAKE_IN_POSITION)
             )
         );
     }

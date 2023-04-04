@@ -10,7 +10,7 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.Drivetrain.DriveForEncoderDistance;
 import frc.robot.commands.Drivetrain.DriveForTime;
 import frc.robot.commands.Drivetrain.TurnAround;
-import frc.robot.commands.Intake.DeployIntakeIn;
+import frc.robot.commands.Intake.RunIntakeIn;
 import frc.robot.commands.Intake.RunIntakeOut;
 import frc.robot.commands.States.Deliver;
 import frc.robot.commands.States.DeliverFast;

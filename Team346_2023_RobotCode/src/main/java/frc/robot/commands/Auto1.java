@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.commands.Drivetrain.DriveForTime;
-import frc.robot.commands.Intake.DeployIntakeIn;
+import frc.robot.commands.Intake.RunIntakeIn;
 import frc.robot.commands.Intake.RunIntakeOut;
 
 public class Auto1 extends SequentialCommandGroup {
@@ -22,7 +22,7 @@ public class Auto1 extends SequentialCommandGroup {
                     new ParallelDeadlineGroup(new WaitCommand(0.1),
                         new InstantCommand(RobotContainer.drivetrain::brake)),
                             new ParallelDeadlineGroup(new WaitCommand(2.5),
-                                new DeployIntakeIn())
+                                new RunIntakeIn())
         )));
     }
 }

@@ -63,6 +63,7 @@ public class Robot extends TimedRobot {
     RobotContainer.drivetrain.zeroHeading();
     RobotContainer.drivetrain.resetOdometry(new Pose2d());
     RobotContainer.drivetrain.resetEncoders();
+    RobotContainer.intake.resetIntakePosition();
     RobotContainer.arm.setRotationEncoder();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
@@ -89,11 +90,14 @@ public class Robot extends TimedRobot {
     RobotContainer.drivetrain.resetOdometry(new Pose2d());
     RobotContainer.visionProcessor.changePipeline(2);
     RobotContainer.arm.setRotationEncoder();
+    RobotContainer.intake.resetIntakePosition();
   }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    RobotContainer.led.light();
+  }
 
   @Override
   public void testInit() {

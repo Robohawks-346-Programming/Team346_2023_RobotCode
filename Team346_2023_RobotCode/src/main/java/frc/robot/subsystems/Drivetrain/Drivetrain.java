@@ -26,7 +26,6 @@ public class Drivetrain extends SubsystemBase{
     private boolean onChargeStation = false;
     private boolean levelOn = false;
     private int levelCheck = 2;
-    private Compressor compressor;
     // 1 means need to move forward slowly
     // -1 meand need to move backward slowly
     // 2 is initliazation
@@ -72,7 +71,6 @@ public class Drivetrain extends SubsystemBase{
         
         odometry = new SwerveDriveOdometry(Constants.DRIVE_KINEMATICS, getHeading(), getModulePositions());
 
-        compressor = new Compressor(PneumaticsModuleType.REVPH);
         for( SwerveModule module : modules) {
             module.resetDistance();
         }
@@ -109,16 +107,16 @@ public class Drivetrain extends SubsystemBase{
         SmartDashboard.putNumber("Gyro Pitch()", gyro.getPitch());
         SmartDashboard.putNumber("Gyro Roll()", gyro.getRoll());
         SmartDashboard.putNumber("Tilt", getTilt());
-        SmartDashboard.putNumber("Front Right Delta", frontRight.getDelta());
-        SmartDashboard.putNumber("Front Left Delta", frontLeft.getDelta());
-        SmartDashboard.putNumber("Back Right Delta", backRight.getDelta());
-        SmartDashboard.putNumber("Back Left Delta", backLeft.getDelta());
-        SmartDashboard.putNumber("Back Left State Angle", backLeft.getStateAngle());
-        SmartDashboard.putNumber("Back Right State Angle", backRight.getStateAngle());
-        SmartDashboard.putNumber("Front Left State Angle", frontLeft.getStateAngle());
-        SmartDashboard.putNumber("Front Right State Angle", frontRight.getStateAngle());
-        SmartDashboard.putNumber("Back right encoder", backRight.getPosition().angle.getDegrees());
-        SmartDashboard.putNumber("Back left encoder", backLeft.getPosition().angle.getDegrees());
+        // SmartDashboard.putNumber("Front Right Delta", frontRight.getDelta());
+        // SmartDashboard.putNumber("Front Left Delta", frontLeft.getDelta());
+        // SmartDashboard.putNumber("Back Right Delta", backRight.getDelta());
+        // SmartDashboard.putNumber("Back Left Delta", backLeft.getDelta());
+        // SmartDashboard.putNumber("Back Left State Angle", backLeft.getStateAngle());
+        // SmartDashboard.putNumber("Back Right State Angle", backRight.getStateAngle());
+        // SmartDashboard.putNumber("Front Left State Angle", frontLeft.getStateAngle());
+        // SmartDashboard.putNumber("Front Right State Angle", frontRight.getStateAngle());
+        // SmartDashboard.putNumber("Back right encoder", backRight.getPosition().angle.getDegrees());
+        // SmartDashboard.putNumber("Back left encoder", backLeft.getPosition().angle.getDegrees());
         SmartDashboard.putNumber("Y Acceleration", getAcceleration());
         SmartDashboard.putNumber("Front Left Meters Driven", getFrontLeftMetersDriven());
         //SmartDashboard.putNumber("Balance Value", checkBalance());
@@ -314,14 +312,6 @@ public class Drivetrain extends SubsystemBase{
    public double getYaw() {
     return gyro.getYaw();
    }
-
-   public void enableCompressor() {
-    compressor.enableDigital();
-  }
-
-  public void disableCompressor() {
-    compressor.disable();
-  }
 
   public double getFrontLeftEncoder() {
     return (frontLeft.turnAngleRadians());

@@ -9,7 +9,7 @@ import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.commands.Drivetrain.DriveForTime;
 import frc.robot.commands.Drivetrain.TurnAround;
-import frc.robot.commands.Intake.DeployIntakeIn;
+import frc.robot.commands.Intake.RunIntakeIn;
 import frc.robot.commands.Intake.RunIntakeOut;
 import frc.robot.commands.States.Deliver;
 import frc.robot.commands.States.DeliverFast;
@@ -39,7 +39,7 @@ public class Auto3 extends SequentialCommandGroup {
                 new ParallelDeadlineGroup(new WaitCommand(0.25), 
                     new DeliverFast()),
                 new ParallelRaceGroup(
-                    new SequentialCommandGroup(new StartingConfig(), new DeployIntakeIn()),
+                    new SequentialCommandGroup(new StartingConfig(), new RunIntakeIn()),
                     new ParallelDeadlineGroup(new WaitCommand(5), 
                         new DriveForTime(RobotContainer.drivetrain, -0.5, -0.01, 0))),
                 new InstantCommand(RobotContainer.drivetrain::brake),
