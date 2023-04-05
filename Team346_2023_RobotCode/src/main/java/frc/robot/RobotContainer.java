@@ -121,6 +121,7 @@ public class RobotContainer {
 
     // Configure the trigger bindings
     configureButtonBindings();
+
     drivetrain.setDefaultCommand(new JoystickDrive(drivetrain, xAxis, yAxis, thetaAxis));
   }
 
@@ -182,138 +183,143 @@ public class RobotContainer {
         true,
         drivetrain);
 
-        var group1 = PathPlanner.loadPathGroup("2 Cube Open", new PathConstraints(2, 2));
-        Command path11 = builder.followPath(group1.get(0));
-        Command path12 = builder.followPath(group1.get(1));
-        Command twoCubeOpen = 
-        new SequentialCommandGroup(
-            new Level3Config(),
-            new ParallelDeadlineGroup(new WaitCommand(0.5), 
-              new DeliverFast()),
-            new ParallelRaceGroup(
-              new SequentialCommandGroup(new StartingConfig(), new DeployIntakeIn()),
-                path11),
-            new InstantCommand(drivetrain::brake),
-            path12,
-            new InstantCommand(drivetrain::brake),
-            new ParallelDeadlineGroup(new WaitCommand(1), new RunIntakeOut()));
+    //     var group1 = PathPlanner.loadPathGroup("TwoCubeOpen", new PathConstraints(1, 1));
+    //     Command path11 = builder.followPath(group1.get(0));
+    //     Command path12 = builder.followPath(group1.get(1));
+    //     Command twoCubeOpen = 
+    //     new SequentialCommandGroup(path11, path12); 
+    //     // new SequentialCommandGroup(
+    //     //     new Level3Config(),
+    //     //     new ParallelDeadlineGroup(new WaitCommand(0.5), 
+    //     //       new DeliverFast()),
+    //     //     new ParallelRaceGroup(
+    //     //       new SequentialCommandGroup(new StartingConfig(), new DeployIntakeIn()),
+    //     //         path11),
+    //     //     new InstantCommand(drivetrain::brake),
+    //     //     path12,
+    //     //     new InstantCommand(drivetrain::brake),
+    //     //     new ParallelDeadlineGroup(new WaitCommand(1), new RunIntakeOut()));
 
-          var group2 = PathPlanner.loadPathGroup("3 Cube Open", new PathConstraints(2, 3));
-          Command path21 = builder.followPath(group2.get(0));
-          Command path22 = builder.followPath(group2.get(1));
-          Command path23 = builder.followPath(group2.get(2));
-          Command path24 = builder.followPath(group2.get(3));
-          Command path25 = builder.followPath(group2.get(4));
-          Command threeCubeOpen = 
-          new SequentialCommandGroup(
-            new Level3Config(),
-            new ParallelDeadlineGroup(new WaitCommand(0.5), 
-              new DeliverFast()),
-            new ParallelRaceGroup(
-              new SequentialCommandGroup(new StartingConfig(), new DeployIntakeIn()),
-                path21),
-            new InstantCommand(drivetrain::brake),
-            path22,
-            new InstantCommand(drivetrain::brake),
-            new ParallelDeadlineGroup(new WaitCommand(0.5), new RunIntakeOut()),
-            new ParallelRaceGroup(
-              new DeployIntakeIn(),
-              path23),
-                new InstantCommand(drivetrain::brake),
-                path24,
-                new InstantCommand(drivetrain::brake),
-                new ParallelDeadlineGroup(new WaitCommand(0.5), new RunIntakeOut()),
-            new ParallelRaceGroup(
-                  new DeployIntakeIn(),
-                  path25)
-            );
+    //       var group2 = PathPlanner.loadPathGroup("ThreeCubeOpen", new PathConstraints(1, 1));
+    //       Command path21 = builder.followPath(group2.get(0));
+    //       Command path22 = builder.followPath(group2.get(1));
+    //       Command path23 = builder.followPath(group2.get(2));
+    //       Command path24 = builder.followPath(group2.get(3));
+    //       Command path25 = builder.followPath(group2.get(4));
+    //       Command threeCubeOpen = 
+    //       new SequentialCommandGroup(
+    //         new Level3Config(),
+    //         new ParallelDeadlineGroup(new WaitCommand(0.5), 
+    //           new DeliverFast()),
+    //         new ParallelRaceGroup(
+    //           new SequentialCommandGroup(new StartingConfig(), new DeployIntakeIn()),
+    //             path21),
+    //         new InstantCommand(drivetrain::brake),
+    //         path22,
+    //         new InstantCommand(drivetrain::brake),
+    //         new ParallelDeadlineGroup(new WaitCommand(0.5), new RunIntakeOut()),
+    //         new ParallelRaceGroup(
+    //           new DeployIntakeIn(),
+    //           path23),
+    //             new InstantCommand(drivetrain::brake),
+    //             path24,
+    //             new InstantCommand(drivetrain::brake),
+    //             new ParallelDeadlineGroup(new WaitCommand(0.5), new RunIntakeOut()),
+    //         new ParallelRaceGroup(
+    //               new DeployIntakeIn(),
+    //               path25)
+    //         );
 
-            var group3 = PathPlanner.loadPathGroup("2 Cube Open + Balance", new PathConstraints(2, 2));
-            Command path31 = builder.followPath(group3.get(0));
-            Command path32 = builder.followPath(group3.get(1));
-            Command path33 = builder.followPath(group3.get(2));
-            Command path34 = builder.followPath(group3.get(3));
-            Command twoCubeOpenBalance = 
-            new SequentialCommandGroup(
-            new Level3Config(),
-            new ParallelDeadlineGroup(new WaitCommand(0.5), 
-              new DeliverFast()),
-            new ParallelRaceGroup(
-              new SequentialCommandGroup(new StartingConfig(), new DeployIntakeIn()),
-                path31),
-            new InstantCommand(drivetrain::brake),
-            path32,
-            new InstantCommand(drivetrain::brake),
-            new ParallelDeadlineGroup(new WaitCommand(1), new RunIntakeOut()),
-            path33,
-            path34,
-            new AutoBalance());
+    //         var group3 = PathPlanner.loadPathGroup("TwoCubeOpen+Balance", new PathConstraints(2, 2));
+    //         Command path31 = builder.followPath(group3.get(0));
+    //         Command path32 = builder.followPath(group3.get(1));
+    //         Command path33 = builder.followPath(group3.get(2));
+    //         Command path34 = builder.followPath(group3.get(3));
+    //         Command twoCubeOpenBalance = 
+    //         new SequentialCommandGroup(
+    //         new Level3Config(),
+    //         new ParallelDeadlineGroup(new WaitCommand(0.5), 
+    //           new DeliverFast()),
+    //         new ParallelRaceGroup(
+    //           new SequentialCommandGroup(new StartingConfig(), new DeployIntakeIn()),
+    //             path31),
+    //         new InstantCommand(drivetrain::brake),
+    //         path32,
+    //         new InstantCommand(drivetrain::brake),
+    //         new ParallelDeadlineGroup(new WaitCommand(1), new RunIntakeOut()),
+    //         path33,
+    //         path34,
+    //         new AutoBalance());
 
-            var group4 = PathPlanner.loadPathGroup("2 Cube Conduit", new PathConstraints(2, 2));
-            Command path41 = builder.followPath(group4.get(0));
-            Command path42 = builder.followPath(group4.get(1));
-            Command twoCubeConduit =
-            new SequentialCommandGroup(
-            new Level3Config(),
-            new ParallelDeadlineGroup(new WaitCommand(0.5), 
-              new DeliverFast()),
-            new ParallelRaceGroup(
-              new SequentialCommandGroup(new StartingConfig(), new DeployIntakeIn()),
-                path41),
-            new InstantCommand(drivetrain::brake),
-            path42,
-            new InstantCommand(drivetrain::brake),
-            new ParallelDeadlineGroup(new WaitCommand(1), new RunIntakeOut()));
+    //         var group4 = PathPlanner.loadPathGroup("TwoCubeConduit", new PathConstraints(2, 2));
+    //         Command path41 = builder.followPath(group4.get(0));
+    //         Command path42 = builder.followPath(group4.get(1));
+    //         Command twoCubeConduit =
+    //         new SequentialCommandGroup(
+    //         new Level3Config(),
+    //         new ParallelDeadlineGroup(new WaitCommand(0.5), 
+    //           new DeliverFast()),
+    //         new ParallelRaceGroup(
+    //           new SequentialCommandGroup(new StartingConfig(), new DeployIntakeIn()),
+    //             path41),
+    //         new InstantCommand(drivetrain::brake),
+    //         path42,
+    //         new InstantCommand(drivetrain::brake),
+    //         new ParallelDeadlineGroup(new WaitCommand(1), new RunIntakeOut()));
 
-            var group5 = PathPlanner.loadPathGroup("3 Cube Open", new PathConstraints(2, 3));
-            Command path51 = builder.followPath(group5.get(0));
-            Command path52 = builder.followPath(group5.get(1));
-            Command path53 = builder.followPath(group5.get(2));
-            Command path54 = builder.followPath(group5.get(3));
-            Command path55 = builder.followPath(group5.get(4));
-            Command threeCubeConduit = 
-            new SequentialCommandGroup(
-            new Level3Config(),
-            new ParallelDeadlineGroup(new WaitCommand(0.5), 
-              new DeliverFast()),
-            new ParallelRaceGroup(
-              new SequentialCommandGroup(new StartingConfig(), new DeployIntakeIn()),
-                path51),
-            new InstantCommand(drivetrain::brake),
-            path52,
-            new InstantCommand(drivetrain::brake),
-            new ParallelDeadlineGroup(new WaitCommand(0.5), new RunIntakeOut()),
-            new ParallelRaceGroup(
-              new DeployIntakeIn(),
-              path53),
-                new InstantCommand(drivetrain::brake),
-                path54,
-                new InstantCommand(drivetrain::brake),
-                new ParallelDeadlineGroup(new WaitCommand(0.5), new RunIntakeOut()),
-            new ParallelRaceGroup(
-                  new DeployIntakeIn(),
-                  path55)
-            );
+    //         var group5 = PathPlanner.loadPathGroup("ThreeCubeOpen", new PathConstraints(2, 3));
+    //         Command path51 = builder.followPath(group5.get(0));
+    //         Command path52 = builder.followPath(group5.get(1));
+    //         Command path53 = builder.followPath(group5.get(2));
+    //         Command path54 = builder.followPath(group5.get(3));
+    //         Command path55 = builder.followPath(group5.get(4));
+    //         Command threeCubeConduit = 
+    //         new SequentialCommandGroup(
+    //         new Level3Config(),
+    //         new ParallelDeadlineGroup(new WaitCommand(0.5), 
+    //           new DeliverFast()),
+    //         new ParallelRaceGroup(
+    //           new SequentialCommandGroup(new StartingConfig(), new DeployIntakeIn()),
+    //             path51),
+    //         new InstantCommand(drivetrain::brake),
+    //         path52,
+    //         new InstantCommand(drivetrain::brake),
+    //         new ParallelDeadlineGroup(new WaitCommand(0.5), new RunIntakeOut()),
+    //         new ParallelRaceGroup(
+    //           new DeployIntakeIn(),
+    //           path53),
+    //             new InstantCommand(drivetrain::brake),
+    //             path54,
+    //             new InstantCommand(drivetrain::brake),
+    //             new ParallelDeadlineGroup(new WaitCommand(0.5), new RunIntakeOut()),
+    //         new ParallelRaceGroup(
+    //               new DeployIntakeIn(),
+    //               path55)
+    //         );
 
-            var group6 = PathPlanner.loadPathGroup("1 Cube Middle + Balance", 2, 3);
-            Command path61 = builder.followPathGroup(group6);
-            Command oneCubeMiddleBalance = 
-            new SequentialCommandGroup(
-            new Level3Config(),
-            new ParallelDeadlineGroup(new WaitCommand(0.5), 
-              new DeliverFast()),
-              new StartingConfig(),
-              path61,
-              new AutoBalance());
+    //         var group6 = PathPlanner.loadPathGroup("OneCubeMiddle+Balance", 2, 3);
+    //         Command path61 = builder.followPathGroup(group6);
+    //         Command oneCubeMiddleBalance = 
+    //         new SequentialCommandGroup(
+    //         new Level3Config(),
+    //         new ParallelDeadlineGroup(new WaitCommand(0.5), 
+    //           new DeliverFast()),
+    //           new StartingConfig(),
+    //           path61,
+    //           new AutoBalance());
 
-            autoChooser.addOption("2 Cube Open", twoCubeOpen);
-            autoChooser.addOption("3 Cube Open", threeCubeOpen);
-            autoChooser.addOption("2 Cube Open + Balance", twoCubeOpenBalance);
-            autoChooser.addOption("2 Cube Conduit", twoCubeConduit);
-            autoChooser.addOption("3 Cube Conduit", threeCubeConduit);
-            autoChooser.addOption("1 Cube Middle + Balance", oneCubeMiddleBalance);
+               var group7 = PathPlanner.loadPath("Move", new PathConstraints(1, 1));
+               Command auto11 = builder.followPath(group7);
+
+            // autoChooser.addOption("2 Cube Open", twoCubeOpen);
+            // autoChooser.addOption("3 Cube Open", threeCubeOpen);
+            // autoChooser.addOption("2 Cube Open + Balance", twoCubeOpenBalance);
+            // autoChooser.addOption("2 Cube Conduit", twoCubeConduit);
+            // autoChooser.addOption("3 Cube Conduit", threeCubeConduit);
+            // autoChooser.addOption("1 Cube Middle + Balance", oneCubeMiddleBalance);
+            // autoChooser.setDefaultOption("2 Cube Open", twoCubeOpen);
             SmartDashboard.putData("autoChooser", autoChooser);
 
-          return autoChooser.getSelected();
+          return auto11;
   }
 }

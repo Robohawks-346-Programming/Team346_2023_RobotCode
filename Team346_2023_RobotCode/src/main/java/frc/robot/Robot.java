@@ -4,8 +4,13 @@
 
 package frc.robot;
 
+import java.rmi.server.RemoteObjectInvocationHandler;
+
+import com.fasterxml.jackson.databind.node.POJONode;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -61,6 +66,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     RobotContainer.drivetrain.zeroHeading();
+    //RobotContainer.drivetrain.resetOdometry(new Pose2d(0,0, Rotation2d.fromDegrees(180)));
     RobotContainer.drivetrain.resetOdometry(new Pose2d());
     RobotContainer.drivetrain.resetEncoders();
     RobotContainer.intake.resetIntakePosition();

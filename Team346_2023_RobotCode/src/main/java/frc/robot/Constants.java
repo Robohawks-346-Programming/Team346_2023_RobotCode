@@ -45,8 +45,10 @@ public final class Constants {
   // Arm Roller Motor Speeds
   public static final double GRAB_MOTOR_SPEED                         = 0.75;
   public static final double RELEASE_MOTOR_SPEED                      = 0.45;
-  public static final double RELEASE_FAST_MOTOR_SPEED_1               = 0.603; //0.48 for cone also brake for cone
-  public static final double RELEASE_FAST_MOTOR_SPEED_2               = 0.35; //0.48 for cone
+  public static final double RELEASE_FAST_MOTOR_SPEED_1               = 0.75; //0.603 for cone
+  public static final double RELEASE_FAST_MOTOR_SPEED_2               = 0.75; //0.35 for cone
+  public static final double CONE_FAST_MOTOR_SPEED_1                  = 0.603; //0.603 for cone
+  public static final double CONE_FAST_MOTOR_SPEED_2                  = 0.35; //0.35 for cone
 
 
   // Arm Constants
@@ -78,25 +80,25 @@ public final class Constants {
   public static final int FRONT_LEFT_DRIVE_ID                         = 21;
   public static final int FRONT_LEFT_TURN_ID                          = 22;
   public static final int FRONT_LEFT_ENCODER_ID                       = 23;
-  public static final double FRONT_LEFT_TURN_OFFSET                   = 359;
+  public static final double FRONT_LEFT_TURN_OFFSET                   = 0; // 359 is good
 
   // Back left Swerve Module
   public static final int BACK_LEFT_DRIVE_ID                          = 31;  // 31 is og
   public static final int BACK_LEFT_TURN_ID                           = 32;  // 32 is og
   public static final int BACK_LEFT_ENCODER_ID                        = 33;  // 33 is og
-  public static final double BACK_LEFT_TURN_OFFSET                    = 358.5;
+  public static final double BACK_LEFT_TURN_OFFSET                    = 0; // 358.5 is good
 
   // Front Right Swerve Module
   public static final int FRONT_RIGHT_DRIVE_ID                        = 24;
   public static final int FRONT_RIGHT_TURN_ID                         = 25;
   public static final int FRONT_RIGHT_ENCODER_ID                      = 26;
-  public static final double FRONT_RIGHT_TURN_OFFSET                  = 1;
+  public static final double FRONT_RIGHT_TURN_OFFSET                  = 0; // 1 is good
 
   // Back Right Swerve Module
   public static final int BACK_RIGHT_DRIVE_ID                         = 34;  // 34 is og
   public static final int BACK_RIGHT_TURN_ID                          = 35;  // 35 is og
   public static final int BACK_RIGHT_ENCODER_ID                       = 36;  // 36 is og
-  public static final double BACK_RIGHT_TURN_OFFSET                   = 0; // in degrees
+  public static final double BACK_RIGHT_TURN_OFFSET                   = 0; // 0 is good
 
   // Drivetrain Velocities
   public static final double MAX_VELOCITY                             = 2;
