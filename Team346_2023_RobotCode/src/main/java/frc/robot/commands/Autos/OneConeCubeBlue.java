@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.Autos;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -20,33 +20,35 @@ import frc.robot.commands.States.DeliverFast;
 import frc.robot.commands.States.Level3Config;
 import frc.robot.commands.States.StartingConfig;
 
-public class Auto1 extends SequentialCommandGroup {
+public class OneConeCubeBlue extends SequentialCommandGroup {
 
-    public Auto1() {
+    public OneConeCubeBlue() {
         addCommands(
             new SequentialCommandGroup(
                 new Level3Config(),
                 new WaitCommand(0.25),
                 new ParallelDeadlineGroup(new WaitCommand(0.25), 
                     new DeliverFast()),
+                new StartingConfig(),
+                new ParallelDeadlineGroup(new WaitCommand(0.5), 
+                        new DriveForTime(RobotContainer.drivetrain, 0, -0.5, 0)),
+                new InstantCommand(RobotContainer.drivetrain::brake),
                 new ParallelRaceGroup(
-                    new SequentialCommandGroup(new StartingConfig(), new DeployIntakeIn()),
-                    new ParallelDeadlineGroup(new WaitCommand(5), 
-                        new DriveForTime(RobotContainer.drivetrain, -0.5, -0.05, 0))),
+                    new DeployIntakeIn(),
+                    new ParallelDeadlineGroup(new WaitCommand(3), 
+                        new DriveForTime(RobotContainer.drivetrain, -0.75, -0.01, 0))),
                 new InstantCommand(RobotContainer.drivetrain::brake),
                 new ParallelCommandGroup(
                     new MoveIntake(Constants.INTAKE_IN_POSITION),
-                    new ParallelDeadlineGroup (new WaitCommand(1.4), new DriveForTime(RobotContainer.drivetrain, 0, 0, 1))),
-                new ParallelDeadlineGroup(new WaitCommand(3.1), 
-                    new DriveForTime(RobotContainer.drivetrain, 0.75, -0.01, 0)),
+                    new ParallelDeadlineGroup (new WaitCommand(1.4), new DriveForTime(RobotContainer.drivetrain, 0, 0, 1))),                
+                    new ParallelDeadlineGroup(new WaitCommand(3), 
+                        new DriveForTime(RobotContainer.drivetrain, 0.75, -0.05, 0)),
                 new InstantCommand(RobotContainer.drivetrain::brake),
-                new ParallelDeadlineGroup(new WaitCommand(1), new RunIntakeOut()),
-                new ParallelDeadlineGroup(new WaitCommand(3), 
-                    new DriveForTime(RobotContainer.drivetrain, -0.75, -0.03, 0.02)
-                )
+                new ParallelDeadlineGroup(new WaitCommand(1), new RunIntakeOut())
 
             )
         );
     }
 
 }
+
