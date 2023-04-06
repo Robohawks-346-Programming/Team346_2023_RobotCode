@@ -34,7 +34,7 @@ public final class Constants {
   public static final double ARM_MOTOR_SPEED_DOWN_FINAL               = 0.2;
   // Intake Rotation Motor Speeds
   public static final double INTAKE_MOVE_OUT_MOTOR_SPEED              = 1;
-  public static final double INTAKE_MOVE_IN_MOTOR_SPEED               = 0.75;
+  public static final double INTAKE_MOVE_IN_MOTOR_SPEED               = 0.6;
   public static final double INTAKE_MOVE_OUT_MOTOR_SPEED_FINAL        = 0.1;
   public static final double INTAKE_MOVE_IN_MOTOR_SPEED_FINAL         = 0.1;
   // Intake Roller Motor Speeds
@@ -45,6 +45,7 @@ public final class Constants {
   // Arm Roller Motor Speeds
   public static final double GRAB_MOTOR_SPEED                         = 0.75;
   public static final double RELEASE_MOTOR_SPEED                      = 0.45;
+  public static final double RELEASE_LEVEL_2_MOTOR_SPEED              = 0.25;
   public static final double RELEASE_FAST_MOTOR_SPEED_1               = 0.75; //0.603 for cone
   public static final double RELEASE_FAST_MOTOR_SPEED_2               = 0.75; //0.35 for cone
   public static final double CONE_FAST_MOTOR_SPEED_1                  = 0.603; //0.603 for cone

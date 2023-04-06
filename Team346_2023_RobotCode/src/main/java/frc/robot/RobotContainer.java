@@ -47,6 +47,7 @@ import frc.robot.commands.Intake.MoveIntake;
 import frc.robot.commands.Intake.RunIntakeOut;
 import frc.robot.commands.States.Deliver;
 import frc.robot.commands.States.DeliverFast;
+import frc.robot.commands.States.DeliverLevel2;
 import frc.robot.commands.States.Level2Config;
 import frc.robot.commands.States.Level3Config;
 import frc.robot.commands.States.StartingConfig;
@@ -165,7 +166,7 @@ public class RobotContainer {
     BUTTON_4.onTrue(new Level3Config());
     BUTTON_8.onTrue(new StartingConfig());
     BUTTON_9.whileTrue(new Deliver());
-    BUTTON_10.whileTrue(new DeliverFast());
+    BUTTON_10.whileTrue(new DeliverLevel2());
     //BUTTON_11.onTrue(new SubstationRetract());
     //BUTTON_12.onTrue(new SubstationConfig());
     BUTTON_13.whileTrue(new DeployIntakeIn());
