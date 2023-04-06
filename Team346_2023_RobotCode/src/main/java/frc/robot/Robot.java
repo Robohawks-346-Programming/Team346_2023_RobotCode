@@ -66,7 +66,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     RobotContainer.drivetrain.zeroHeading();
-    //RobotContainer.drivetrain.resetOdometry(new Pose2d(0,0, Rotation2d.fromDegrees(180)));
+    // RobotContainer.drivetrain.resetOdometry(new Pose2d(0,0, Rotation2d.fromDegrees(180)));
     RobotContainer.drivetrain.resetOdometry(new Pose2d());
     RobotContainer.drivetrain.resetEncoders();
     RobotContainer.intake.resetIntakePosition();
