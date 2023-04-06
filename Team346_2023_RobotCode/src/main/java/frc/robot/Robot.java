@@ -95,8 +95,8 @@ public class Robot extends TimedRobot {
     RobotContainer.drivetrain.zeroHeading();
     RobotContainer.drivetrain.resetOdometry(new Pose2d());
     RobotContainer.visionProcessor.changePipeline(2);
-    RobotContainer.arm.setRotationEncoder();
-    RobotContainer.intake.resetIntakePosition();
+    // RobotContainer.arm.setRotationEncoder();
+    // RobotContainer.intake.resetIntakePosition();
   }
 
   /** This function is called periodically during operator control. */

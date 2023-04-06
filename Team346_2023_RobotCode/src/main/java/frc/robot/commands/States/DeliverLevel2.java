@@ -1,26 +1,25 @@
-package frc.robot.commands;
+package frc.robot.commands.States;
 
 import frc.robot.Constants;
 import frc.robot.commands.Arm.MoveArm;
 import frc.robot.commands.Grabber.Release;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 /** An example command that uses an example subsystem. */
-public class DeliverConeAuto extends SequentialCommandGroup {
+public class DeliverLevel2 extends SequentialCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public DeliverConeAuto() {
+  public DeliverLevel2() {
     // Use addRequirements() here to declare subsystem dependencies.
     addCommands(
       new ParallelCommandGroup(
         new SequentialCommandGroup(
-          new Release(Constants.CONE_FAST_MOTOR_SPEED_1, Constants.CONE_FAST_MOTOR_SPEED_2)
+          new Release(Constants.RELEASE_LEVEL_2_MOTOR_SPEED, Constants.RELEASE_LEVEL_2_MOTOR_SPEED)
         )
       )
       

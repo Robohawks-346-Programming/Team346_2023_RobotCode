@@ -22,14 +22,20 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.Auto1;
-import frc.robot.commands.Auto2;
-import frc.robot.commands.Auto3;
-import frc.robot.commands.Auto5;
-import frc.robot.commands.Auto6;
-import frc.robot.commands.Auto7;
-import frc.robot.commands.Auto8;
-import frc.robot.commands.AutoBalance;
+import frc.robot.commands.Autos.CubeLowNoMove;
+import frc.robot.commands.Autos.OneConeBalance;
+import frc.robot.commands.Autos.OneConeCubeBlue;
+import frc.robot.commands.Autos.OneConeCubeRed;
+import frc.robot.commands.Autos.OneCubeBalance;
+import frc.robot.commands.Autos.TwoCubeBlue;
+import frc.robot.commands.Autos.TwoCubeRed;
+import frc.robot.commands.Autos.OneCubeOutConduitBlue;
+import frc.robot.commands.Autos.OneCubeOutConduitRed;
+import frc.robot.commands.Autos.TwoCubeEncoderBlue;
+import frc.robot.commands.Autos.Test;
+import frc.robot.commands.Autos.AutoBalance;
+import frc.robot.commands.Autos.TwoCubeOutBlue;
+import frc.robot.commands.Autos.TwoCubeOutRed;
 import frc.robot.commands.Drivetrain.JoystickDrive;
 import frc.robot.commands.Drivetrain.JoystickDriveFast;
 import frc.robot.commands.Drivetrain.JoystickDriveReverse;
@@ -41,6 +47,7 @@ import frc.robot.commands.Intake.MoveIntake;
 import frc.robot.commands.Intake.RunIntakeOut;
 import frc.robot.commands.States.Deliver;
 import frc.robot.commands.States.DeliverFast;
+import frc.robot.commands.States.DeliverLevel2;
 import frc.robot.commands.States.Level2Config;
 import frc.robot.commands.States.Level3Config;
 import frc.robot.commands.States.StartingConfig;
@@ -73,15 +80,16 @@ public class RobotContainer {
   public static final VisionProcessor visionProcessor = new VisionProcessor();
   public final PS4Controller driverControl = new PS4Controller(Constants.DRIVER_CONTROLLER_PORT);
   public static final Joystick operatorControl = new Joystick(Constants.OPERATOR_CONTROLLER_PORT);
-  public static final Auto1 auto1 = new Auto1();
-  public static final Auto2 auto2 = new Auto2();
-  public static final Auto3 auto3 = new Auto3();
-  // public static final Auto4 auto4 = new Auto4();
-  public static final Auto5 auto5 = new Auto5();
-  public static final Auto6 auto6 = new Auto6();
-  public static final Auto7 auto7 = new Auto7();
-  public static final Auto8 auto8 = new Auto8();
-  public static final AutoBalance autoBalance = new AutoBalance();
+  public static final TwoCubeOutBlue twoCubeOutOpenBlue = new TwoCubeOutBlue();
+  public static final TwoCubeOutRed twoCubeOutOpenRed = new TwoCubeOutRed();
+  public static final TwoCubeBlue twoCubeBlue = new TwoCubeBlue();
+  public static final TwoCubeRed twoCubeRed = new TwoCubeRed();
+  public static final OneConeCubeBlue oneConeCubeOpenBlue = new OneConeCubeBlue();
+  public static final OneConeCubeRed oneConeCubeOpenRed = new OneConeCubeRed();
+  public static final OneCubeOutConduitBlue oneCubeOutConduitBlue = new OneCubeOutConduitBlue();
+  public static final OneCubeOutConduitRed oneCubeOutConduitRed = new OneCubeOutConduitRed();
+  public static final OneConeBalance oneConeBalance = new OneConeBalance();
+  public static final OneCubeBalance oneCubeBalance = new OneCubeBalance();
   SendableChooser<Command> autoChooser = new SendableChooser<Command>();
   
 
@@ -121,7 +129,7 @@ public class RobotContainer {
 
     // Configure the trigger bindings
     configureButtonBindings();
-
+    configureAutoPaths();
     drivetrain.setDefaultCommand(new JoystickDrive(drivetrain, xAxis, yAxis, thetaAxis));
   }
 
@@ -158,7 +166,7 @@ public class RobotContainer {
     BUTTON_4.onTrue(new Level3Config());
     BUTTON_8.onTrue(new StartingConfig());
     BUTTON_9.whileTrue(new Deliver());
-    BUTTON_10.whileTrue(new DeliverFast());
+    BUTTON_10.whileTrue(new DeliverLevel2());
     //BUTTON_11.onTrue(new SubstationRetract());
     //BUTTON_12.onTrue(new SubstationConfig());
     BUTTON_13.whileTrue(new DeployIntakeIn());
@@ -169,19 +177,35 @@ public class RobotContainer {
 
   }
 
+  public void configureAutoPaths() {
+    autoChooser.addOption("2 Cube Out Open Blue", twoCubeOutOpenBlue);
+    autoChooser.addOption("2 Cube Out Open Red", twoCubeOutOpenRed);
+    autoChooser.addOption("2 Cube Open Blue", twoCubeBlue);
+    autoChooser.addOption("2 Cube Open Red", twoCubeRed);
+    autoChooser.addOption("1 Cone Cube Open Blue", oneConeCubeOpenBlue);
+    autoChooser.addOption("1 Cone Cube Open Red", oneConeCubeOpenRed);
+    autoChooser.addOption("1 Cube Out Conduit Blue", oneCubeOutConduitBlue);
+    autoChooser.addOption("2 Cube Out Conduit Red", oneCubeOutConduitRed);
+    autoChooser.addOption("1 Cone Balance", oneConeBalance);
+    autoChooser.addOption("1 Cube Balance", oneCubeBalance);
+
+    SmartDashboard.putData("autoChooser", autoChooser);
+
+  }
+
     // An example command will be run in autonomous
   public Command getAutonomousCommand() {
-
-    HashMap<String, Command> eventMap = new HashMap<>();
-    SwerveAutoBuilder builder = new SwerveAutoBuilder(
-        drivetrain::getPose, // odometry position
-        drivetrain::resetOdometry,
-        new PIDConstants(0.05,0,0),
-        new PIDConstants(1,0,0),
-        speeds -> drivetrain.drive(speeds, true), // this sets the motor powers
-        eventMap,
-        true,
-        drivetrain);
+    return autoChooser.getSelected();
+    // HashMap<String, Command> eventMap = new HashMap<>();
+    // SwerveAutoBuilder builder = new SwerveAutoBuilder(
+    //     drivetrain::getPose, // odometry position
+    //     drivetrain::resetOdometry,
+    //     new PIDConstants(0.05,0,0),
+    //     new PIDConstants(1,0,0),
+    //     speeds -> drivetrain.drive(speeds, true), // this sets the motor powers
+    //     eventMap,
+    //     true,
+    //     drivetrain);
 
     //     var group1 = PathPlanner.loadPathGroup("TwoCubeOpen", new PathConstraints(1, 1));
     //     Command path11 = builder.followPath(group1.get(0));
@@ -308,8 +332,8 @@ public class RobotContainer {
     //           path61,
     //           new AutoBalance());
 
-               var group7 = PathPlanner.loadPath("Move", new PathConstraints(1, 1));
-               Command auto11 = builder.followPath(group7);
+              //  var group7 = PathPlanner.loadPath("Move", new PathConstraints(1, 1));
+              //  Command auto11 = builder.followPath(group7);
 
             // autoChooser.addOption("2 Cube Open", twoCubeOpen);
             // autoChooser.addOption("3 Cube Open", threeCubeOpen);
@@ -318,8 +342,5 @@ public class RobotContainer {
             // autoChooser.addOption("3 Cube Conduit", threeCubeConduit);
             // autoChooser.addOption("1 Cube Middle + Balance", oneCubeMiddleBalance);
             // autoChooser.setDefaultOption("2 Cube Open", twoCubeOpen);
-            SmartDashboard.putData("autoChooser", autoChooser);
-
-          return auto11;
   }
 }
