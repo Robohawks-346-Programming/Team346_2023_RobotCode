@@ -30,13 +30,10 @@ public class OneConeCubeRed extends SequentialCommandGroup {
                 new ParallelDeadlineGroup(new WaitCommand(0.25), 
                     new DeliverFast()),
                 new StartingConfig(),
-                new ParallelDeadlineGroup(new WaitCommand(0.5), 
-                        new DriveForTime(RobotContainer.drivetrain, 0, 0.5, 0)),
-                new InstantCommand(RobotContainer.drivetrain::brake),
                 new ParallelRaceGroup(
                     new DeployIntakeIn(),
                     new ParallelDeadlineGroup(new WaitCommand(3), 
-                        new DriveForTime(RobotContainer.drivetrain, -0.75, 0.01, 0))),
+                        new DriveForTime(RobotContainer.drivetrain, -0.75, 0, 0))),
                 new InstantCommand(RobotContainer.drivetrain::brake),
                 new ParallelCommandGroup(
                     new MoveIntake(Constants.INTAKE_IN_POSITION),

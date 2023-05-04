@@ -29,8 +29,8 @@ import frc.robot.commands.Autos.OneConeCubeRed;
 import frc.robot.commands.Autos.OneCubeBalance;
 import frc.robot.commands.Autos.TwoCubeBlue;
 import frc.robot.commands.Autos.TwoCubeRed;
-import frc.robot.commands.Autos.OneCubeOutConduitBlue;
-import frc.robot.commands.Autos.OneCubeOutConduitRed;
+import frc.robot.commands.Autos.TwoCubeConduitBlue;
+import frc.robot.commands.Autos.TwoCubeConduitRed;
 import frc.robot.commands.Autos.TwoCubeEncoderBlue;
 import frc.robot.commands.Autos.Test;
 import frc.robot.commands.Autos.AutoBalance;
@@ -44,6 +44,7 @@ import frc.robot.commands.Intake.DeployIntakeFastOut;
 import frc.robot.commands.Intake.DeployIntakeIn;
 import frc.robot.commands.Intake.DeployIntakeSlowOut;
 import frc.robot.commands.Intake.MoveIntake;
+import frc.robot.commands.Intake.RunIntakeFastOut;
 import frc.robot.commands.Intake.RunIntakeOut;
 import frc.robot.commands.States.Deliver;
 import frc.robot.commands.States.DeliverFast;
@@ -86,10 +87,11 @@ public class RobotContainer {
   public static final TwoCubeRed twoCubeRed = new TwoCubeRed();
   public static final OneConeCubeBlue oneConeCubeOpenBlue = new OneConeCubeBlue();
   public static final OneConeCubeRed oneConeCubeOpenRed = new OneConeCubeRed();
-  public static final OneCubeOutConduitBlue oneCubeOutConduitBlue = new OneCubeOutConduitBlue();
-  public static final OneCubeOutConduitRed oneCubeOutConduitRed = new OneCubeOutConduitRed();
+  public static final TwoCubeConduitBlue twoCubeConduitBlue = new TwoCubeConduitBlue();
+  public static final TwoCubeConduitRed twoCubeConduitRed = new TwoCubeConduitRed();
   public static final OneConeBalance oneConeBalance = new OneConeBalance();
   public static final OneCubeBalance oneCubeBalance = new OneCubeBalance();
+  public static final CubeLowNoMove cubeLowNoMove = new CubeLowNoMove();
   SendableChooser<Command> autoChooser = new SendableChooser<Command>();
   
 
@@ -161,7 +163,7 @@ public class RobotContainer {
     new JoystickButton(driverControl, Button.kL2.value).whileTrue(new JoystickDriveReverse(drivetrain, xAxis, yAxis, thetaAxis));
 
     //BUTTON_1.onTrue(new StartingConfig());
-    BUTTON_2.whileTrue(new Grab());
+    BUTTON_1.whileTrue(new Grab());
     BUTTON_3.onTrue(new Level2Config());
     BUTTON_4.onTrue(new Level3Config());
     BUTTON_8.onTrue(new StartingConfig());
@@ -172,7 +174,7 @@ public class RobotContainer {
     BUTTON_13.whileTrue(new DeployIntakeIn());
     BUTTON_13.whileFalse(new MoveIntake(Constants.INTAKE_IN_POSITION));
     BUTTON_14.whileTrue(new DeployIntakeFastOut());
-    BUTTON_15.whileTrue(new DeployIntakeSlowOut());
+    BUTTON_15.whileTrue(new RunIntakeFastOut());
     BUTTON_16.whileTrue(new RunIntakeOut());
 
   }
@@ -184,10 +186,11 @@ public class RobotContainer {
     autoChooser.addOption("2 Cube Open Red", twoCubeRed);
     autoChooser.addOption("1 Cone Cube Open Blue", oneConeCubeOpenBlue);
     autoChooser.addOption("1 Cone Cube Open Red", oneConeCubeOpenRed);
-    autoChooser.addOption("1 Cube Out Conduit Blue", oneCubeOutConduitBlue);
-    autoChooser.addOption("2 Cube Out Conduit Red", oneCubeOutConduitRed);
+    autoChooser.addOption("2 Cube Conduit Blue", twoCubeConduitBlue);
+    autoChooser.addOption("2 Cube Conduit Red", twoCubeConduitRed);
     autoChooser.addOption("1 Cone Balance", oneConeBalance);
     autoChooser.addOption("1 Cube Balance", oneCubeBalance);
+    autoChooser.addOption("1 Cube Low No Move", cubeLowNoMove);
 
     SmartDashboard.putData("autoChooser", autoChooser);
 

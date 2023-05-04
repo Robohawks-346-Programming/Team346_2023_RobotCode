@@ -32,18 +32,18 @@ public class TwoCubeOutRed extends SequentialCommandGroup {
                 new ParallelRaceGroup(
                     new SequentialCommandGroup(new StartingConfig(), new DeployIntakeIn()),
                     new ParallelDeadlineGroup(new WaitCommand(5), 
-                        new DriveForTime(RobotContainer.drivetrain, -0.5, 0.05, 0))),
+                        new DriveForTime(RobotContainer.drivetrain, -0.5, 0.01, 0))),
                 new InstantCommand(RobotContainer.drivetrain::brake),
                 new ParallelCommandGroup(
                     new MoveIntake(Constants.INTAKE_IN_POSITION),
                     new ParallelDeadlineGroup (new WaitCommand(1.4), new DriveForTime(RobotContainer.drivetrain, 0, 0, 1))),
-                new ParallelDeadlineGroup(new WaitCommand(3.1), 
+                new ParallelDeadlineGroup(new WaitCommand(3.3), 
                     new DriveForTime(RobotContainer.drivetrain, 0.75, 0.01, 0)),
                 new InstantCommand(RobotContainer.drivetrain::brake),
-                new ParallelDeadlineGroup(new WaitCommand(1), new RunIntakeOut()),
-                new ParallelDeadlineGroup(new WaitCommand(3), 
-                    new DriveForTime(RobotContainer.drivetrain, -0.75, 0.03, 0.02)
-                )
+                new ParallelDeadlineGroup(new WaitCommand(1), new RunIntakeOut())
+                // new ParallelDeadlineGroup(new WaitCommand(3), 
+                //     new DriveForTime(RobotContainer.drivetrain, -0.75, 0.0, 0.02)
+                // )
 
             )
         );

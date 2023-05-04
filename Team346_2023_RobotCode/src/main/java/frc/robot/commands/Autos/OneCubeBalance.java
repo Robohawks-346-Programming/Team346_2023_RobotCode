@@ -26,7 +26,8 @@ public class OneCubeBalance extends SequentialCommandGroup {
                 new ParallelDeadlineGroup(new WaitCommand(0.2), 
                     new DeliverFast()),
                 new StartingConfig(),
-                new ParallelDeadlineGroup (new WaitCommand(2.2), new DriveForTime(RobotContainer.drivetrain, -0.8, 0, 0)),
+                new ParallelDeadlineGroup (new WaitCommand(1.4), new DriveForTime(RobotContainer.drivetrain, 0, 0, 1)),
+                new ParallelDeadlineGroup (new WaitCommand(1.9), new DriveForTime(RobotContainer.drivetrain, -0.8, 0, 0)),
                 new ParallelDeadlineGroup(new WaitCommand(0.05), new DriveForTime(RobotContainer.drivetrain, 0, 0, 0.1))
 
 

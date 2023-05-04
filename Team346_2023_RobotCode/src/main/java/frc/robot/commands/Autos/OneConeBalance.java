@@ -27,7 +27,7 @@ public class OneConeBalance extends SequentialCommandGroup {
                 new ParallelDeadlineGroup(new WaitCommand(0.2), 
                     new DeliverCone()),
                 new StartingConfig(),
-                new ParallelDeadlineGroup (new WaitCommand(2.2), new DriveForTime(RobotContainer.drivetrain, -0.8, 0, 0)),
+                new ParallelDeadlineGroup (new WaitCommand(2), new DriveForTime(RobotContainer.drivetrain, -1, 0, 0)),
                 new ParallelDeadlineGroup(new WaitCommand(0.05), new DriveForTime(RobotContainer.drivetrain, 0, 0, 0.1))
 
 

@@ -27,8 +27,10 @@ public class Intake extends SubsystemBase {
     
     public Intake() {
         intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR_ID, MotorType.kBrushless);
+
+        intakeMotor.setSmartCurrentLimit(25);
         rotationMotor = new CANSparkMax(Constants.INTAKE_ROTATION_MOTOR_ID, MotorType.kBrushless);
-        rotationMotor.setIdleMode(IdleMode.kBrake);
+        rotationMotor.setIdleMode(IdleMode.kCoast);
         rotationMotor.setInverted(true);
         rotationMotor.setSmartCurrentLimit(25);
 
@@ -58,10 +60,12 @@ public class Intake extends SubsystemBase {
     public void moveIntake(double wantedPosition, double currentPosition1) {
         double currentPosition = rotationEncoder.getPosition();
         if (wantedPosition > currentPosition) {
+            rotationMotor.setIdleMode(IdleMode.kCoast);
             rotationMotor.set(lerpSpeed(currentPosition1, Constants.INTAKE_OUT_POSITION, Constants.INTAKE_MOVE_OUT_MOTOR_SPEED, Constants.INTAKE_MOVE_OUT_MOTOR_SPEED_FINAL));
         }
 
         else if (wantedPosition < currentPosition) {
+            rotationMotor.setIdleMode(IdleMode.kBrake);
             rotationMotor.set(-lerpSpeed(currentPosition1, Constants.INTAKE_IN_POSITION, Constants.INTAKE_MOVE_IN_MOTOR_SPEED, Constants.INTAKE_MOVE_IN_MOTOR_SPEED_FINAL));
         }
 

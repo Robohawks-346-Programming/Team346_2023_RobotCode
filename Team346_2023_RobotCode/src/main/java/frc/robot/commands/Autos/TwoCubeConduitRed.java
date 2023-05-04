@@ -20,9 +20,9 @@ import frc.robot.commands.States.DeliverFast;
 import frc.robot.commands.States.Level3Config;
 import frc.robot.commands.States.StartingConfig;
 
-public class OneCubeOutConduitBlue extends SequentialCommandGroup {
+public class TwoCubeConduitRed extends SequentialCommandGroup {
 
-    public OneCubeOutConduitBlue() {
+    public TwoCubeConduitRed() {
         addCommands(
             // new SequentialCommandGroup(
             //     new Level3Config(),
@@ -45,11 +45,16 @@ public class OneCubeOutConduitBlue extends SequentialCommandGroup {
                 new ParallelRaceGroup(
                     new SequentialCommandGroup(new StartingConfig(), new DeployIntakeIn()),
                     new ParallelDeadlineGroup(new WaitCommand(5), 
-                        new DriveForTime(RobotContainer.drivetrain, -0.5, 0.01, 0))),
+                        new DriveForTime(RobotContainer.drivetrain, -0.5, -0.01, 0))),
                 new InstantCommand(RobotContainer.drivetrain::brake),
                 new ParallelCommandGroup(
                     new MoveIntake(Constants.INTAKE_IN_POSITION),
-                    new ParallelDeadlineGroup (new WaitCommand(1.4), new DriveForTime(RobotContainer.drivetrain, 0, 0, 1)))
+                    new ParallelDeadlineGroup (new WaitCommand(1.4), new DriveForTime(RobotContainer.drivetrain, 0, 0, 1))),
+                new ParallelDeadlineGroup(new WaitCommand(5.1), 
+                    new DriveForTime(RobotContainer.drivetrain, 0.5, -0.01, 0)),
+                new InstantCommand(RobotContainer.drivetrain::brake),
+                new ParallelDeadlineGroup(new WaitCommand(1), new RunIntakeOut())
+
             )
         );
     }

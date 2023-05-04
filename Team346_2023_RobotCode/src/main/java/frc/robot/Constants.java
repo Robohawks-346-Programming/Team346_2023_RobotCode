@@ -41,7 +41,7 @@ public final class Constants {
   public static final double INTAKE_IN_MOTOR_SPEED                    = 0.75;
   public static final double INTAKE_OUT_SLOW_MOTOR_SPEED              = 0.75;
   public static final double INTAKE_OUT_FAST_MOTOR_SPEED              = 1;
-  public static final double INTAKE_OUT_MANUAL_MOTOR_SPEED            = 0.75;
+  public static final double INTAKE_OUT_MANUAL_MOTOR_SPEED            = 0.55;
   // Arm Roller Motor Speeds
   public static final double GRAB_MOTOR_SPEED                         = 0.75;
   public static final double RELEASE_MOTOR_SPEED                      = 0.45;
@@ -93,7 +93,7 @@ public final class Constants {
   public static final int FRONT_RIGHT_DRIVE_ID                        = 24;
   public static final int FRONT_RIGHT_TURN_ID                         = 25;
   public static final int FRONT_RIGHT_ENCODER_ID                      = 26;
-  public static final double FRONT_RIGHT_TURN_OFFSET                  = 0; // 1 is good
+  public static final double FRONT_RIGHT_TURN_OFFSET                  = 239.5; // 1 is good
 
   // Back Right Swerve Module
   public static final int BACK_RIGHT_DRIVE_ID                         = 34;  // 34 is og
@@ -105,8 +105,8 @@ public final class Constants {
   public static final double MAX_VELOCITY                             = 2;
   public static final double MAX_MOVE_VELOCITY                        = 2;
   public static final double MAX_TURN_VELOCITY                        = 2;
-  public static final double MAX_MOVE_VELOCITY_FAST                   = 4.5;
-  public static final double MAX_TURN_VELOCITY_FAST                   = 4.5;
+  public static final double MAX_MOVE_VELOCITY_FAST                   = 5.5;
+  public static final double MAX_TURN_VELOCITY_FAST                   = 5.5;
 
   // Drivetrain Parameters
   public static final int MAX_VOLTAGE                                 = 12;
