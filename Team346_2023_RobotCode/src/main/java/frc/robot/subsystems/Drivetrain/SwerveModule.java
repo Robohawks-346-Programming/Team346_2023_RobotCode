@@ -92,7 +92,7 @@ public class SwerveModule extends SubsystemBase{
         Rotation2d currentAngle = Rotation2d.fromDegrees(turnEncoder.getPosition());
         return new SwerveModuleState(driveEncoder.getVelocity(), currentAngle);
     }
-
+    
     public double deltaAdjustedAngle(double target, double current) {
         return((target - current + 180) % 360 + 360) %360 -180;
     }
