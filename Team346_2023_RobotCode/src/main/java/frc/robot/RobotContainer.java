@@ -28,14 +28,8 @@ import frc.robot.commands.Autos.OneConeCubeBlue;
 import frc.robot.commands.Autos.OneConeCubeRed;
 import frc.robot.commands.Autos.OneCubeBalance;
 import frc.robot.commands.Autos.TwoCubeBlue;
-import frc.robot.commands.Autos.TwoCubeRed;
 import frc.robot.commands.Autos.TwoCubeConduitBlue;
 import frc.robot.commands.Autos.TwoCubeConduitRed;
-import frc.robot.commands.Autos.TwoCubeEncoderBlue;
-import frc.robot.commands.Autos.Test;
-import frc.robot.commands.Autos.AutoBalance;
-import frc.robot.commands.Autos.TwoCubeOutBlue;
-import frc.robot.commands.Autos.TwoCubeOutRed;
 import frc.robot.commands.Drivetrain.JoystickDrive;
 import frc.robot.commands.Drivetrain.JoystickDriveFast;
 import frc.robot.commands.Drivetrain.JoystickDriveReverse;
@@ -77,14 +71,14 @@ public class RobotContainer {
   public static final Grabber grabber = new Grabber();
   public static final LED led = new LED();
   public static final Intake intake = new Intake();
-  public static final Drivetrain drivetrain = new Drivetrain();
+  public static final Drivetrain drivetrain = new Drivetrain(Constants.START_POSE);
   public static final VisionProcessor visionProcessor = new VisionProcessor();
   public final PS4Controller driverControl = new PS4Controller(Constants.DRIVER_CONTROLLER_PORT);
   public static final Joystick operatorControl = new Joystick(Constants.OPERATOR_CONTROLLER_PORT);
-  public static final TwoCubeOutBlue twoCubeOutOpenBlue = new TwoCubeOutBlue();
-  public static final TwoCubeOutRed twoCubeOutOpenRed = new TwoCubeOutRed();
+  // public static final TwoCubeOutBlue twoCubeOutOpenBlue = new TwoCubeOutBlue();
+  // public static final TwoCubeOutRed twoCubeOutOpenRed = new TwoCubeOutRed();
   public static final TwoCubeBlue twoCubeBlue = new TwoCubeBlue();
-  public static final TwoCubeRed twoCubeRed = new TwoCubeRed();
+  // public static final TwoCubeRed twoCubeRed = new TwoCubeRed();
   public static final OneConeCubeBlue oneConeCubeOpenBlue = new OneConeCubeBlue();
   public static final OneConeCubeRed oneConeCubeOpenRed = new OneConeCubeRed();
   public static final TwoCubeConduitBlue twoCubeConduitBlue = new TwoCubeConduitBlue();
@@ -180,10 +174,10 @@ public class RobotContainer {
   }
 
   public void configureAutoPaths() {
-    autoChooser.addOption("2 Cube Out Open Blue", twoCubeOutOpenBlue);
-    autoChooser.addOption("2 Cube Out Open Red", twoCubeOutOpenRed);
+    // autoChooser.addOption("2 Cube Out Open Blue", twoCubeOutOpenBlue);
+    // autoChooser.addOption("2 Cube Out Open Red", twoCubeOutOpenRed);
     autoChooser.addOption("2 Cube Open Blue", twoCubeBlue);
-    autoChooser.addOption("2 Cube Open Red", twoCubeRed);
+    // autoChooser.addOption("2 Cube Open Red", twoCubeRed);
     autoChooser.addOption("1 Cone Cube Open Blue", oneConeCubeOpenBlue);
     autoChooser.addOption("1 Cone Cube Open Red", oneConeCubeOpenRed);
     autoChooser.addOption("2 Cube Conduit Blue", twoCubeConduitBlue);

@@ -124,6 +124,7 @@ public final class Constants {
   public static final double WHEEL_DIAMETER                           = 0.09398; // 3.7 in
   public static final double DRIVE_CONVERSION                         = (WHEEL_DIAMETER * Math.PI) / DRIVETRAIN_GEAR_RATIO;
   public static final double TURN_CONVERSION                          = 12.8;
+  public static final Pose2d START_POSE                               = new Pose2d(3, 5, new Rotation2d());
   
   public static final SwerveDriveKinematics DRIVE_KINEMATICS          = 
       new SwerveDriveKinematics(

@@ -5,7 +5,9 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.Constants;
+import frc.robot.subsystems.Drivetrain.Drivetrain;
 public class VisionProcessor extends SubsystemBase {
+
     public VisionProcessor() {
     }
     //Variables:
@@ -51,6 +53,10 @@ public class VisionProcessor extends SubsystemBase {
     // check if at target distance
     public boolean atTargetDistance() {
         return (Math.abs(distanceFromTarget() - Constants.END_DISTANCE) <= Constants.END_DISTANCE_THRESHOLD);
+    }
+
+    public NetworkTableEntry getEstimatedPose() {
+        return limelightTable.getEntry("camerapose_robotspace");
     }
 
 }

@@ -1,36 +1,25 @@
 package frc.robot.subsystems.Drivetrain;
 
+import java.util.Optional;
+
+import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.PIDConstants;
 
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.ADIS16448_IMU;
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
-public class Drivetrain extends SubsystemBase{
-    
-    private final SwerveDriveOdometry odometry; 
-    private int debounceCount;
-    private double onChargeStationDegree;
-    private double levelDegree;
-    private double debounceTime;
-    private boolean onChargeStation = false;
-    private boolean levelOn = false;
-    private int levelCheck = 2;
-    // 1 means need to move forward slowly
-    // -1 meand need to move backward slowly
-    // 2 is initliazation
-    // 0 means level checked
-
+public class Drivetrain extends SubsystemBase {
     SwerveModule frontLeft = new SwerveModule(
             Constants.FRONT_LEFT_DRIVE_ID,
             Constants.FRONT_LEFT_TURN_ID,
@@ -61,140 +50,74 @@ public class Drivetrain extends SubsystemBase{
 
     SwerveModule[] modules = {frontLeft, frontRight, backLeft, backRight};
 
-    //ADIS16448_IMU gyro = new ADIS16448_IMU();
     AHRS gyro = new AHRS();
+
+    private final double[] lockAngles = new double[] { 45, 315, 45, 315 };
+
+    public final SwerveDrivePoseEstimator poseEstimator; 
+
+    private double lastFPGATimestamp;
 
     PIDConstants driveConstants, turnConstants;
 
-    public Drivetrain() {
+    public Drivetrain(Pose2d startPose) {
         gyro.calibrate();; //Ask if this would work
         
-        odometry = new SwerveDriveOdometry(Constants.DRIVE_KINEMATICS, getHeading(), getModulePositions());
-
+        poseEstimator = new SwerveDrivePoseEstimator(Constants.DRIVE_KINEMATICS, getHeading(), getModulePositions(), startPose);
+        
         for( SwerveModule module : modules) {
             module.resetDistance();
+            module.syncTurnEncoders();
         }
 
         driveConstants = new PIDConstants(Constants.DRIVE_P, Constants.DRIVE_I, Constants.DRIVE_D);
         turnConstants = new PIDConstants(Constants.TURN_P, Constants.TURN_I, Constants.TURN_D);
 
-        debounceCount = 0;
-
-
-        // Angle where the robot knows it is on the charge station, default = 13.0
-        onChargeStationDegree = 13.0;
-
-        // Angle where the robot can assume it is level on the charging station
-        // Used for exiting the drive forward sequence as well as for auto balancing,
-        // default = 6.0
-        levelDegree = 6.0;
-
-        // Amount of time a sensor condition needs to be met before changing states in
-        // seconds
-        // Reduces the impact of sensor noice, but too high can make the auto run
-        // slower, default = 0.2
-        debounceTime = 0.5;
-        onChargeStation = false;
-
+        lastFPGATimestamp = Timer.getFPGATimestamp();
     }
-    @Override
-    public void periodic() {
-        updateOdometry();
-        SmartDashboard.putNumber("x", odometry.getPoseMeters().getX());
-        SmartDashboard.putNumber("y", odometry.getPoseMeters().getY());
-        SmartDashboard.putNumber("theta", odometry.getPoseMeters().getRotation().getDegrees());
-        SmartDashboard.putNumber("Gyro Heading", getHeading().getDegrees());
-        SmartDashboard.putNumber("Gyro Pitch()", gyro.getPitch());
-        SmartDashboard.putNumber("Gyro Roll()", gyro.getRoll());
-        SmartDashboard.putNumber("Tilt", getTilt());
-        // SmartDashboard.putNumber("Front Right Delta", frontRight.getDelta());
-        // SmartDashboard.putNumber("Front Left Delta", frontLeft.getDelta());
-        // SmartDashboard.putNumber("Back Right Delta", backRight.getDelta());
-        // SmartDashboard.putNumber("Back Left Delta", backLeft.getDelta());
-        // SmartDashboard.putNumber("Back Left State Angle", backLeft.getStateAngle());
-        // SmartDashboard.putNumber("Back Right State Angle", backRight.getStateAngle());
-        // SmartDashboard.putNumber("Front Left State Angle", frontLeft.getStateAngle());
-        // SmartDashboard.putNumber("Front Right State Angle", frontRight.getStateAngle());
-        // SmartDashboard.putNumber("Back right encoder", backRight.getPosition().angle.getDegrees());
-        // SmartDashboard.putNumber("Back left encoder", backLeft.getPosition().angle.getDegrees());
-        SmartDashboard.putNumber("Y Acceleration", getAcceleration());
-        SmartDashboard.putNumber("Front Left Meters Driven", getFrontLeftMetersDriven());
-        //SmartDashboard.putNumber("Balance Value", checkBalance());
-        //SmartDashboard.putBoolean("OnChargeStation", getOnToChargeStation());
-        SmartDashboard.putNumber("Gyro Yaw", getYaw());
 
-    }
     
-    public PIDConstants getDriveConstants() {
-        driveConstants = new PIDConstants(Constants.DRIVE_P, Constants.DRIVE_I, Constants.DRIVE_D);
-        return driveConstants;
+    // @Override
+    // public void periodic() {
+    //     // poseEstimator.update(gyro.getRotation2d(), getModulePositions());
+    //     // if (lastFPGATimestamp < Timer.getFPGATimestamp()) {
+    //     //     lastFPGATimestamp = Timer.getFPGATimestamp() + 1;
+    //     //     for (SwerveModule module : modules) {
+    //     //         module.syncTurnEncoders();
+    //     //     }
+    //     // }
+    // }
+
+    public void resetOdometry(Pose2d pose) {
+        poseEstimator.resetPosition(gyro.getRotation2d(), getModulePositions(), pose);
     }
 
-    public PIDConstants getTurnConstants() {
-        turnConstants = new PIDConstants(Constants.TURN_P, Constants.TURN_I, Constants.TURN_D);
-        return turnConstants;
-    }
-    public Pose2d getPose() {
-        return odometry.getPoseMeters();
-    }
-
-    public void resetOdometry(Pose2d pose2d) {
-        odometry.resetPosition(getHeading(), getModulePositions(), pose2d);
-    }
-
-    private void updateOdometry() {
-        odometry.update(getHeading(), getModulePositions());
-    }
-
-    public void drive(ChassisSpeeds speed, boolean normalize) {
-        if(speed.vxMetersPerSecond == 0 && speed.vyMetersPerSecond == 0 && speed.omegaRadiansPerSecond == 0) {
-            brake();
-            return;
+    public Rotation2d getHeading() {
+        float rawYaw = gyro.getYaw();
+        float calcYaw = rawYaw;
+        if(0.0 > rawYaw) {
+            calcYaw +=360.0;
         }
-
-        SwerveModuleState[] swerveStates = Constants.DRIVE_KINEMATICS.toSwerveModuleStates(speed);
-
-        if(normalize) {
-            normalDrive(swerveStates, speed);
-        }
-        SmartDashboard.putNumber("DriveX", speed.vxMetersPerSecond);
-        SmartDashboard.putNumber("DriveY", speed.vyMetersPerSecond);
-        SmartDashboard.putNumber("DriveTheta", speed.omegaRadiansPerSecond);
-        setModuleState(swerveStates);
+        return Rotation2d.fromDegrees(-calcYaw);
     }
 
-    public void brake() {
-        for (SwerveModule module : modules) {
-            module.setState(new SwerveModuleState(0, module.getState().angle));
-        }
-    }
+    // public SwerveModulePosition[] getModulePositions() {
+    //     SwerveModulePosition[] position = new SwerveModulePosition[4];
 
-    public void normalDrive(SwerveModuleState[] desiredState, ChassisSpeeds speed) {
-        double translationK = Math.hypot(speed.vxMetersPerSecond, speed.vyMetersPerSecond) / Constants.MAX_MOVE_VELOCITY;
-        double rotationK = Math.abs(speed.omegaRadiansPerSecond) / Constants.MAX_TURN_VELOCITY;
-        double k = Math.max(translationK, rotationK);
+    //     for (int i2=0; i2<=3; i2++) {
+    //         position[i2++] = modules[i2].getPosition(); 
+    //     }
 
-        double currentMaxSpeed = 0.0;
-        for (SwerveModuleState moduleState: desiredState) {
-            currentMaxSpeed = Math.max(currentMaxSpeed, Math.abs(moduleState.speedMetersPerSecond));
-        }
+    //     return position;
+    // }
 
-        double scale = Math.min(k * Constants.MAX_VELOCITY / currentMaxSpeed, 1);
-        for (SwerveModuleState moduleState : desiredState) {
-            moduleState.speedMetersPerSecond *= scale;
-        }
-    }
-
-    public void setModuleState(SwerveModuleState[] states) {
-        for (int i = 0; i<=3; i++) {
-            modules[i].setState(states[i]);
-        }
-    }
-
-    public void setOpenLoopState(SwerveModuleState[] desiredState) {
-        for (int i = 0; i<=3; i++) {
-            modules[i].setOpenLoopState(desiredState[i]);
-        }
+    public SwerveModulePosition[] getModulePositions() {
+        return new SwerveModulePosition[] {
+            frontLeft.getPosition(),
+            frontRight.getPosition(),
+            backLeft.getPosition(),
+            backRight.getPosition()
+        };
     }
 
     public SwerveModuleState[] getModuleState() {
@@ -207,9 +130,37 @@ public class Drivetrain extends SubsystemBase{
         return states;
     }
 
+    public void brake() {
+        for (int i = 0; i < modules.length; i++) {
+          modules[i].setState(new SwerveModuleState(0, Rotation2d.fromDegrees(lockAngles[i])));
+        }
+    }
+
+    public void drive(ChassisSpeeds speeds, boolean normalize) {
+        if (normalize){
+        SwerveModuleState[] moduleStates = Constants.DRIVE_KINEMATICS.toSwerveModuleStates(speeds);
+
+        for (int i = 0; i < moduleStates.length; i++) {
+            moduleStates[i] = SwerveModuleState.optimize(moduleStates[i], modules[i].getStateAngle());
+        }
+
+        setModuleStates(moduleStates);
+    }
+    }
+
+    public void setModuleStates(SwerveModuleState[] moduleStates) {
+        for (int i = 0; i < moduleStates.length; i++) {
+          modules[i].setState(moduleStates[i]);
+        }
+    }
+
+    public void addVisionOdometryMeasurement(Pose3d pose, double timestampSeconds) {
+        poseEstimator.addVisionMeasurement(pose.toPose2d(), timestampSeconds);
+    }    
+
     public void resetEncoders() {
         for (SwerveModule module : modules) {
-            module.resetEncoders();
+                module.resetEncoders();
         }
     }
 
@@ -217,124 +168,10 @@ public class Drivetrain extends SubsystemBase{
         gyro.zeroYaw();
     }
 
-    public Rotation2d getHeading() {
-        float rawYaw = gyro.getYaw();
-        float calcYaw = rawYaw;
-        if(0.0 > rawYaw) {
-            calcYaw +=360.0;
-        }
-        return Rotation2d.fromDegrees(-calcYaw);
-    }
-
-    public void syncEncoders() {
-        for(SwerveModule module : modules) {
-            module.syncTurnEncoders();
-        }
-    }
-
-    public SwerveModulePosition[] getModulePositions() {
-        return new SwerveModulePosition[] {
-            frontLeft.getPosition(),
-            frontRight.getPosition(),
-            backLeft.getPosition(),
-            backRight.getPosition()
-        };
-    }
-
-    public double getTilt() {
-        double pitch = gyro.getPitch();
-        double roll = gyro.getRoll();
-        if ((pitch + roll) >= 0) {
-            return Math.sqrt(pitch * pitch + roll * roll);
-        } else {
-            return -Math.sqrt(pitch * pitch + roll * roll);
-        }
-    }
-
-    public int secondsToTicks(double time) {
-        return (int) (time * 50);
-    }
-
-    // Drive at fast speed until method below returns true
-    public boolean getOnToChargeStation() {
-        if ((gyro.getPitch() < -9) && (gyro.getPitch() > -15)) {
-            debounceCount++;
-        }
-        if (debounceCount > secondsToTicks(debounceTime)) {
-            //System.out.println("true");
-            debounceCount = 0;
-            onChargeStation = true;
-        }
-        else {
-            //System.out.println("false");
-        }
-        return onChargeStation;
-    }
-
-    // Drive at slow speed until level
-    public boolean levelOnChargeStation() {
-        if (getTilt() > levelDegree) {
-            debounceCount++;
-        }
-        if (debounceCount > secondsToTicks(debounceTime)) {
-            debounceCount = 0;
-            levelOn = true;
-        }
-        return levelOn;
-   }
-
-   // Checks Balance on charge station
-   public int checkBalance() {
-    if (Math.abs(getTilt()) < levelDegree) {   //(Math.abs(getTilt()) <= levelDegree / 2)
-        debounceCount++;
-    }
-    if (debounceCount > secondsToTicks(debounceTime)) {
-        debounceCount = 0;
-        // Read comments under initilization
-        levelCheck = 0;
-    }
-    if (getTilt() >= levelDegree) {
-        debounceCount = 0;
-        // Read comments under initilization
-        levelCheck = -1;
-    } else if (getTilt() < -levelDegree) {
-        debounceCount = 0;
-        // Read comments under initilization
-        levelCheck = 1;
-    }
-    return levelCheck;
-   }
-
-   public double getAcceleration() {
-    return Math.abs(gyro.getWorldLinearAccelY());
-   }
-
-   public double getYaw() {
-    return gyro.getYaw();
-   }
-
-  public double getFrontLeftEncoder() {
-    return (frontLeft.turnAngleRadians());
-  }
-
-  public double getFrontRightEncoder() {
-    return (frontRight.turnAngleRadians());
-  }
-
-  public double getBackLeftEncoder() {
-    return (backLeft.turnAngleRadians());
-  }
-
-  public double getBackRightEncoder() {
-    return (backRight.turnAngleRadians());
-  }
-
-  public void resetFrontLeftDistance() {
-    frontLeft.resetDistance();
-  }
-
-  public double getFrontLeftMetersDriven() {
-    return Math.abs(frontLeft.getMetersDriven());
-  }
-  
+    // @ Override
+    // public void periodic() {
+    //     if (RobotContainer.visionProcessor.getEstimatedPose() != null) {
+    //         poseEstimator.addVisionMeasurement(RobotContainer.visionProcessor.getEstimatedPose(), lastFPGATimestamp);
+    //     }
+    // }
 }
