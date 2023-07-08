@@ -192,18 +192,24 @@ public class RobotContainer {
 
     // An example command will be run in autonomous
   public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
-    // HashMap<String, Command> eventMap = new HashMap<>();
-    // SwerveAutoBuilder builder = new SwerveAutoBuilder(
-    //     drivetrain::getPose, // odometry position
-    //     drivetrain::resetOdometry,
-    //     new PIDConstants(0.05,0,0),
-    //     new PIDConstants(1,0,0),
-    //     speeds -> drivetrain.drive(speeds, true), // this sets the motor powers
-    //     eventMap,
-    //     true,
-    //     drivetrain);
+    HashMap<String, Command> eventMap = new HashMap<>();
+    SwerveAutoBuilder builder = new SwerveAutoBuilder(
+        drivetrain::getPose, // odometry position
+        drivetrain::resetOdometry,
+        new PIDConstants(0.05,0,0),
+        new PIDConstants(1,0,0),
+        speeds -> drivetrain.drive(speeds, true), // this sets the motor powers
+        eventMap,
+        true,
+        drivetrain);
     
+
+        var test = PathPlanner.loadPathGroup("Move", new PathConstraints(1, 1));
+        Command path1 = builder.followPath(test.get(0));
+        Command move = new SequentialCommandGroup(
+          path1
+        );
+        return move;
 
     //     var group1 = PathPlanner.loadPathGroup("TwoCubeOpen", new PathConstraints(1, 1));
     //     Command path11 = builder.followPath(group1.get(0));
