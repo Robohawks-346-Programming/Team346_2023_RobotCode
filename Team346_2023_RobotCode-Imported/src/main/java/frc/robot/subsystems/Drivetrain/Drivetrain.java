@@ -58,6 +58,8 @@ public class Drivetrain extends SubsystemBase {
 
     private double lastFPGATimestamp;
 
+    public Pose3d lastPose3d;
+
     PIDConstants driveConstants, turnConstants;
 
     public Drivetrain(Pose2d startPose) {
@@ -168,12 +170,12 @@ public class Drivetrain extends SubsystemBase {
 
     public void zeroHeading() {
         gyro.zeroYaw();
-    }
+    }   
 
-    // @ Override
-    // public void periodic() {
-    //     if (RobotContainer.visionProcessor.getEstimatedPose() != null) {
-    //         poseEstimator.addVisionMeasurement(RobotContainer.visionProcessor.getEstimatedPose(), lastFPGATimestamp);
-    //     }
-    // }
+    public void periodic() {
+        RobotContainer.visionProcessor.getEstimatedRobotPose().ifPresent(pose -> {
+          lastPose3d = pose.estimatedPose;
+          addVisionOdometryMeasurement(pose.estimatedPose, pose.timestampSeconds);
+        });
+    }
 }

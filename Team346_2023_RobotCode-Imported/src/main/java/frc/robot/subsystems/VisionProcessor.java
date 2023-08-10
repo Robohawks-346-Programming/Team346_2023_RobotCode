@@ -1,15 +1,47 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTableValue;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain.Drivetrain;
+
+import java.io.IOException;
+import java.util.Optional;
+
+import org.photonvision.EstimatedRobotPose;
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+
+
 public class VisionProcessor extends SubsystemBase {
 
+
+    private Optional<EstimatedRobotPose> curPose;
+    private PhotonCamera cam;
+    private Transform3d robotToCam;
+    private PhotonPoseEstimator photonPoseEstimator;
+    public AprilTagFieldLayout aprilTagFieldLayout;
+    
     public VisionProcessor() {
+        cam = new PhotonCamera("testCamera");
+        robotToCam = new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0,0,0)); //Cam mounted facing forward, half a meter forward of center, half a meter up from center.
+        try {
+            aprilTagFieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, cam, robotToCam);
     }
     //Variables:
     NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelightTable"); // creates network table object
@@ -55,10 +87,18 @@ public class VisionProcessor extends SubsystemBase {
     public boolean atTargetDistance() {
         return (Math.abs(distanceFromTarget() - Constants.END_DISTANCE) <= Constants.END_DISTANCE_THRESHOLD);
     }
+  
+  public Optional<EstimatedRobotPose> getEstimatedRobotPose() {
+    if (cam.getPipelineIndex() == Constants.APRIL_TAG_PIPELINE) {
+      if (photonPoseEstimator != null) {
+        curPose = photonPoseEstimator.update();
+        return curPose;
+      } else {
+        return Optional.empty();
+      }
+    }
+    return Optional.empty();
+  }
 
-    // public Pose2d getEstimatedPose() {
-    //     NetworkTableEntry estimate = limelightTable.getEntry("botpose_targetspace");
-    //     return estimate.toPose2d();
-    // }
 
 }

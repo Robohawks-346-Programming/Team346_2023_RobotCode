@@ -169,6 +169,8 @@ public final class Constants {
   public static final double HEIGHT_OF_TARGET = 0.854075;                          // the mean of target height 1 and 2
   public static final double HEIGHT_OF_GRID_APRIL_TAG = 0.38735;           // the height of the grid april tag in relation to the camera
   public static final double HEIGHT_OF_SUBSTATION_APRIL_TAG = 0.619125;          // the height of the substation april tag in relation to the camera
+  public static final double APRIL_TAG_PIPELINE             = 1;
+  public static final double REFLECTIVE_TAPE_PIPELINE             = 2;
   
 }
 
