@@ -35,11 +35,8 @@ public class SwerveModule extends SubsystemBase {
    public SwerveModule (
     int driveMotorID,
     int turnMotorID,
-    int turningCANCoderID,
-    double turnEncoderOffset) 
+    int turningCANCoderID) 
     {
-
-        encoderOffset = turnEncoderOffset;
 
         driveMotor = new CANSparkMax(driveMotorID, MotorType.kBrushless);
         turnMotor = new CANSparkMax(turnMotorID, MotorType.kBrushless);
@@ -78,7 +75,7 @@ public class SwerveModule extends SubsystemBase {
         driveController.setP(Constants.DRIVE_P);
         driveController.setI(Constants.DRIVE_I);
         driveController.setD(Constants.DRIVE_D);
-        driveController.setFF(Constants.DRIVE_FF);
+        //driveController.setFF(Constants.DRIVE_FF);
 
         turnController.setP(Constants.TURN_P);
         turnController.setI(Constants.TURN_I);
@@ -113,9 +110,9 @@ public class SwerveModule extends SubsystemBase {
     public Rotation2d adjustedAngle = new Rotation2d();
 
     public void setState(SwerveModuleState state) {
-        double driveOutput = state.speedMetersPerSecond / 11.63659;
+        double driveOutput = state.speedMetersPerSecond;
         turnController.setReference(state.angle.getDegrees(), ControlType.kPosition);
-        driveController.setReference(driveOutput, ControlType.kVelocity, 0, Constants.DRIVE_FF * driveOutput);
+        driveController.setReference(driveOutput, ControlType.kVelocity, 0, driveOutput);
     }
 
     public double adjustedAngle(double wantedAngle, double currentAngle) {
@@ -135,13 +132,16 @@ public class SwerveModule extends SubsystemBase {
     }
 
     public void resetEncoders() {
-        turnEncoder.setPosition(turningCANCoder.getAbsolutePosition()- encoderOffset);
-
-        //turningCANCoder.setPosition(0);
-        //turningCANCoder.configMagnetOffset(turningCANCoder.configGetMagnetOffset()- turningCANCoder.getAbsolutePosition());
+        turnEncoder.setPosition(turningCANCoder.getAbsolutePosition());
     }
 
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(driveEncoder.getPosition(), getStateAngle());
     }
+
+    // public void resetAbsoluteEncoders() {
+    //     turningCANCoder.setPosition(0);
+    //     turningCANCoder.setPositionToAbsolute();
+    //     turningCANCoder.configMagnetOffset(turningCANCoder.configGetMagnetOffset()- turningCANCoder.getAbsolutePosition());
+    // }
 }

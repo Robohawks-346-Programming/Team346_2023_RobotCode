@@ -23,29 +23,25 @@ public class Drivetrain extends SubsystemBase {
     SwerveModule frontLeft = new SwerveModule(
             Constants.FRONT_LEFT_DRIVE_ID,
             Constants.FRONT_LEFT_TURN_ID,
-            Constants.FRONT_LEFT_ENCODER_ID,
-            Constants.FRONT_LEFT_TURN_OFFSET
+            Constants.FRONT_LEFT_ENCODER_ID
         );
 
     SwerveModule frontRight = new SwerveModule(
             Constants.FRONT_RIGHT_DRIVE_ID,
             Constants.FRONT_RIGHT_TURN_ID,
-            Constants.FRONT_RIGHT_ENCODER_ID,
-            Constants.FRONT_RIGHT_TURN_OFFSET
+            Constants.FRONT_RIGHT_ENCODER_ID
         ); 
 
     SwerveModule backLeft = new SwerveModule(
             Constants.BACK_LEFT_DRIVE_ID,
             Constants.BACK_LEFT_TURN_ID,
-            Constants.BACK_LEFT_ENCODER_ID,
-            Constants.BACK_LEFT_TURN_OFFSET
+            Constants.BACK_LEFT_ENCODER_ID
         );
 
     SwerveModule backRight = new SwerveModule(
             Constants.BACK_RIGHT_DRIVE_ID,
             Constants.BACK_RIGHT_TURN_ID,
-            Constants.BACK_RIGHT_ENCODER_ID,
-            Constants.BACK_RIGHT_TURN_OFFSET
+            Constants.BACK_RIGHT_ENCODER_ID
         );
 
     SwerveModule[] modules = {frontLeft, frontRight, backLeft, backRight};
@@ -62,14 +58,14 @@ public class Drivetrain extends SubsystemBase {
 
     PIDConstants driveConstants, turnConstants;
 
-    public Drivetrain(Pose2d startPose) {
+    public Drivetrain() {
         gyro.calibrate();; //Ask if this would work
         
-        poseEstimator = new SwerveDrivePoseEstimator(Constants.DRIVE_KINEMATICS, getHeading(), getModulePositions(), startPose);
+        poseEstimator = new SwerveDrivePoseEstimator(Constants.DRIVE_KINEMATICS, getHeading(), getModulePositions(), new Pose2d());
         
         for( SwerveModule module : modules) {
             module.resetDistance();
-            module.syncTurnEncoders();
+            //module.syncTurnEncoders();
         }
 
         driveConstants = new PIDConstants(Constants.DRIVE_P, Constants.DRIVE_I, Constants.DRIVE_D);
@@ -81,16 +77,21 @@ public class Drivetrain extends SubsystemBase {
     public Pose2d getPose() {
         return poseEstimator.getEstimatedPosition();
     }
-    // @Override
-    // public void periodic() {
-    //     // poseEstimator.update(gyro.getRotation2d(), getModulePositions());
-    //     // if (lastFPGATimestamp < Timer.getFPGATimestamp()) {
-    //     //     lastFPGATimestamp = Timer.getFPGATimestamp() + 1;
-    //     //     for (SwerveModule module : modules) {
-    //     //         module.syncTurnEncoders();
-    //     //     }
-    //     // }
-    // }
+    @Override
+    public void periodic() {
+        poseEstimator.update(gyro.getRotation2d(), getModulePositions());
+        if (lastFPGATimestamp < Timer.getFPGATimestamp()) {
+            lastFPGATimestamp = Timer.getFPGATimestamp() + 1;
+            for (SwerveModule module : modules) {
+                module.syncTurnEncoders();
+            }
+        }
+
+        RobotContainer.visionProcessor.getEstimatedRobotPose().ifPresent(pose -> {
+            lastPose3d = pose.estimatedPose;
+            addVisionOdometryMeasurement(pose.estimatedPose, pose.timestampSeconds);
+        });
+    }
 
     public void resetOdometry(Pose2d pose) {
         poseEstimator.resetPosition(gyro.getRotation2d(), getModulePositions(), pose);
@@ -140,8 +141,7 @@ public class Drivetrain extends SubsystemBase {
         }
     }
 
-    public void drive(ChassisSpeeds speeds, boolean normalize) {
-        if (normalize){
+    public void drive(ChassisSpeeds speeds) {
         SwerveModuleState[] moduleStates = Constants.DRIVE_KINEMATICS.toSwerveModuleStates(speeds);
 
         for (int i = 0; i < moduleStates.length; i++) {
@@ -149,7 +149,6 @@ public class Drivetrain extends SubsystemBase {
         }
 
         setModuleStates(moduleStates);
-    }
     }
 
     public void setModuleStates(SwerveModuleState[] moduleStates) {
@@ -164,7 +163,7 @@ public class Drivetrain extends SubsystemBase {
 
     public void resetEncoders() {
         for (SwerveModule module : modules) {
-                module.resetEncoders();
+            module.resetEncoders();
         }
     }
 
@@ -172,10 +171,13 @@ public class Drivetrain extends SubsystemBase {
         gyro.zeroYaw();
     }   
 
-    public void periodic() {
-        RobotContainer.visionProcessor.getEstimatedRobotPose().ifPresent(pose -> {
-          lastPose3d = pose.estimatedPose;
-          addVisionOdometryMeasurement(pose.estimatedPose, pose.timestampSeconds);
-        });
+    public void setFieldToVehicle(Rotation2d rotation, SwerveModulePosition[] modulePositions, Pose2d fieldToVehicle) {
+        poseEstimator.resetPosition(rotation, modulePositions, fieldToVehicle);
     }
+
+    // public void resetAbsoluteEncoders() {
+    //     for (SwerveModule module : modules) {
+    //             module.resetAbsoluteEncoders();
+    //     }
+    // }
 }

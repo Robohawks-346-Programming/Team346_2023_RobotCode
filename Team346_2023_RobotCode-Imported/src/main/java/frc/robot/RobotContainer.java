@@ -5,13 +5,18 @@
 package frc.robot;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.function.DoubleSupplier;
 
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
@@ -71,7 +76,7 @@ public class RobotContainer {
   public static final Grabber grabber = new Grabber();
   public static final LED led = new LED();
   public static final Intake intake = new Intake();
-  public static final Drivetrain drivetrain = new Drivetrain(Constants.START_POSE);
+  public static final Drivetrain drivetrain = new Drivetrain();
   public static final VisionProcessor visionProcessor = new VisionProcessor();
   public final PS4Controller driverControl = new PS4Controller(Constants.DRIVER_CONTROLLER_PORT);
   public static final Joystick operatorControl = new Joystick(Constants.OPERATOR_CONTROLLER_PORT);
@@ -125,8 +130,8 @@ public class RobotContainer {
 
     // Configure the trigger bindings
     configureButtonBindings();
-    configureAutoPaths();
     drivetrain.setDefaultCommand(new JoystickDrive(drivetrain, xAxis, yAxis, thetaAxis));
+    configureAutoPaths();
   }
 
   /**
@@ -155,6 +160,7 @@ public class RobotContainer {
         .whileTrue(new JoystickDriveFast(drivetrain, xAxis, yAxis, thetaAxis));
     new JoystickButton(driverControl, Button.kL1.value).onTrue(new JoystickDrive(drivetrain, xAxis, yAxis, thetaAxis));
     new JoystickButton(driverControl, Button.kL2.value).whileTrue(new JoystickDriveReverse(drivetrain, xAxis, yAxis, thetaAxis));
+    //new JoystickButton(driverControl, Button.kCross.value).onTrue(new InstantCommand(drivetrain::resetAbsoluteEncoders));
 
     //BUTTON_1.onTrue(new StartingConfig());
     BUTTON_1.whileTrue(new Grab());
@@ -190,6 +196,13 @@ public class RobotContainer {
 
   }
 
+  public Command resetOdometry(List<PathPlannerTrajectory> pathGroup) {
+      return new InstantCommand( () -> {
+          PathPlannerState initialState = pathGroup.get(0).getInitialState();
+          drivetrain.zeroHeading();
+          drivetrain.setFieldToVehicle(new Rotation2d(0), drivetrain.getModulePositions(), new Pose2d(initialState.poseMeters.getTranslation(), initialState.holonomicRotation));
+      });
+  }
     // An example command will be run in autonomous
   public Command getAutonomousCommand() {
     HashMap<String, Command> eventMap = new HashMap<>();
@@ -198,18 +211,22 @@ public class RobotContainer {
         drivetrain::resetOdometry,
         new PIDConstants(0.05,0,0),
         new PIDConstants(1,0,0),
-        speeds -> drivetrain.drive(speeds, true), // this sets the motor powers
+        drivetrain::drive, // this sets the motor powers
         eventMap,
         true,
         drivetrain);
     
 
-        var test = PathPlanner.loadPathGroup("Move", new PathConstraints(1, 1));
+        List<PathPlannerTrajectory> test = PathPlanner.loadPathGroup("Move", new PathConstraints(1, 1));
         Command path1 = builder.followPath(test.get(0));
         Command move = new SequentialCommandGroup(
+          resetOdometry(test),
           path1
         );
-        return move;
+        autoChooser.addOption("move1", move);
+        autoChooser.setDefaultOption("move1", move);
+        configureAutoPaths();
+        return autoChooser.getSelected();
 
     //     var group1 = PathPlanner.loadPathGroup("TwoCubeOpen", new PathConstraints(1, 1));
     //     Command path11 = builder.followPath(group1.get(0));

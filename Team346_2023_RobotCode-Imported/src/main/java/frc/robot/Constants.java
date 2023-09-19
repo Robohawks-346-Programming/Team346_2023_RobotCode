@@ -95,7 +95,7 @@ public final class Constants {
   public static final int FRONT_RIGHT_DRIVE_ID                        = 24;
   public static final int FRONT_RIGHT_TURN_ID                         = 25;
   public static final int FRONT_RIGHT_ENCODER_ID                      = 26;
-  public static final double FRONT_RIGHT_TURN_OFFSET                  = 59.5; // 1 is good
+  public static final double FRONT_RIGHT_TURN_OFFSET                  = 0; // 1 is good
 
   // Back Right Swerve Module
   public static final int BACK_RIGHT_DRIVE_ID                         = 34;  // 34 is og
@@ -120,11 +120,10 @@ public final class Constants {
   public static final double OFFSET                                   = 180.0;
   public static final double DRIVETRAIN_TRACKWIDTH_METERS             = 0.8128; //32 in
   public static final double DRIVETRAIN_WHEELBASE_METERS              = 0.7112; //28 in
-  public static final double DRIVETRAIN_GEAR_RATIO                    = 5.12; //For L2 Module
+  public static final double DRIVETRAIN_GEAR_RATIO                    = 5.12; //For L4 Module
   public static final double WHEEL_DIAMETER                           = 0.09398; // 3.7 in
-  public static final double DRIVE_CONVERSION                         = (WHEEL_DIAMETER * Math.PI) / DRIVETRAIN_GEAR_RATIO;
+  public static final double DRIVE_CONVERSION                         = (WHEEL_DIAMETER * Math.PI) / DRIVETRAIN_GEAR_RATIO; // Maybe: 1 / 22.0409
   public static final double TURN_CONVERSION                          = 12.8;
-  public static final Pose2d START_POSE                               = new Pose2d(3, 5, new Rotation2d());
   
   public static final SwerveDriveKinematics DRIVE_KINEMATICS          = 
       new SwerveDriveKinematics(

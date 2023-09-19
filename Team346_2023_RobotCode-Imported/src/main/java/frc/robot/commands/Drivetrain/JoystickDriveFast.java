@@ -39,7 +39,7 @@ public class JoystickDriveFast extends CommandBase {
     ChassisSpeeds velocity = Constants.IS_FIELD_RELATIVE ? ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, omega, drivetrain.getHeading()) 
       : new ChassisSpeeds(vx, vy, omega);
 
-    drivetrain.drive(velocity, true);
+    drivetrain.drive(velocity);
   }
 
   // Called once the command ends or is interrupted.
