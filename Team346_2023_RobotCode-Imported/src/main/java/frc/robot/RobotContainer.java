@@ -8,12 +8,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.DoubleSupplier;
 
+import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
+import com.pathplanner.lib.commands.FollowPathWithEvents;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -215,13 +217,12 @@ public class RobotContainer {
         eventMap,
         true,
         drivetrain);
-    
-
         List<PathPlannerTrajectory> test = PathPlanner.loadPathGroup("Move", new PathConstraints(1, 1));
         Command path1 = builder.followPath(test.get(0));
         Command move = new SequentialCommandGroup(
           resetOdometry(test),
-          path1
+          new FollowPathWithEvents(path1, null, eventMap)
+          //path1
         );
         autoChooser.addOption("move1", move);
         autoChooser.setDefaultOption("move1", move);
