@@ -13,6 +13,8 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.RelativeEncoder;
@@ -111,8 +113,9 @@ public class SwerveModule extends SubsystemBase {
 
     public void setState(SwerveModuleState state) {
         double driveOutput = state.speedMetersPerSecond;
+        SmartDashboard.putNumber("Velocity Input", driveOutput);
         turnController.setReference(state.angle.getDegrees(), ControlType.kPosition);
-        driveController.setReference(driveOutput, ControlType.kVelocity, 0, driveOutput);
+        driveController.setReference(driveOutput, ControlType.kVelocity, 0, 2.375 * driveOutput);
     }
 
     public double adjustedAngle(double wantedAngle, double currentAngle) {
@@ -139,9 +142,9 @@ public class SwerveModule extends SubsystemBase {
         return new SwerveModulePosition(driveEncoder.getPosition(), getStateAngle());
     }
 
-    // public void resetAbsoluteEncoders() {
-    //     turningCANCoder.setPosition(0);
-    //     turningCANCoder.setPositionToAbsolute();
-    //     turningCANCoder.configMagnetOffset(turningCANCoder.configGetMagnetOffset()- turningCANCoder.getAbsolutePosition());
-    // }
+    public void resetAbsoluteEncoders() {
+        turningCANCoder.setPosition(0);
+        turningCANCoder.setPositionToAbsolute();
+        turningCANCoder.configMagnetOffset(turningCANCoder.configGetMagnetOffset()- turningCANCoder.getAbsolutePosition());
+    }
 }

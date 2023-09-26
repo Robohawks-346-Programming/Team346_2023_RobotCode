@@ -15,6 +15,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -79,13 +80,16 @@ public class Drivetrain extends SubsystemBase {
     }
     @Override
     public void periodic() {
-        poseEstimator.update(gyro.getRotation2d(), getModulePositions());
+        poseEstimator.update(getHeading(), getModulePositions());
         if (lastFPGATimestamp < Timer.getFPGATimestamp()) {
             lastFPGATimestamp = Timer.getFPGATimestamp() + 1;
             for (SwerveModule module : modules) {
                 module.syncTurnEncoders();
             }
         }
+
+        SmartDashboard.putNumber("Velocity Ouput", backLeft.getDriveVelocity());
+        SmartDashboard.putNumber("Gyro Heading", getHeading().getDegrees());
 
         RobotContainer.visionProcessor.getEstimatedRobotPose().ifPresent(pose -> {
             lastPose3d = pose.estimatedPose;
@@ -175,9 +179,9 @@ public class Drivetrain extends SubsystemBase {
         poseEstimator.resetPosition(rotation, modulePositions, fieldToVehicle);
     }
 
-    // public void resetAbsoluteEncoders() {
-    //     for (SwerveModule module : modules) {
-    //             module.resetAbsoluteEncoders();
-    //     }
-    // }
+    public void resetAbsoluteEncoders() {
+        for (SwerveModule module : modules) {
+                module.resetAbsoluteEncoders();
+        }
+    }
 }

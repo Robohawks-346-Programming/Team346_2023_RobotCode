@@ -8,6 +8,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.util.Units;
+import frc.lib.ExtendedPathPoint;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -109,13 +111,15 @@ public final class Constants {
   public static final double MAX_TURN_VELOCITY                        = 2;
   public static final double MAX_MOVE_VELOCITY_FAST                   = 5.5;
   public static final double MAX_TURN_VELOCITY_FAST                   = 5.5;
+  public static final double MAX_MOVE_VELOCITY_SLOW                   = 0.4;
+  public static final double MAX_TURN_VELOCITY_SLOW                   = 0.4;
+  public static final double MAX_VELOCITY_AUTO                   = 2;
+  public static final double MAX_ACELLERATION_AUTO                    = 0.5;
 
   // Drivetrain Parameters
   public static final int MAX_VOLTAGE                                 = 12;
   public static final int DRIVE_CURRENT_LIMIT                         = 60;
   public static final int TURN_CURRENT_LIMIT                          = 25;
-  public static final double MAX_MOVE_VELOCITY_SLOW                   = 0.4;
-  public static final double MAX_TURN_VELOCITY_SLOW                   = 0.4;
   public static final boolean IS_FIELD_RELATIVE                       = true;
   public static final double OFFSET                                   = 180.0;
   public static final double DRIVETRAIN_TRACKWIDTH_METERS             = 0.8128; //32 in
@@ -170,7 +174,14 @@ public final class Constants {
   public static final double HEIGHT_OF_SUBSTATION_APRIL_TAG = 0.619125;          // the height of the substation april tag in relation to the camera
   public static final double APRIL_TAG_PIPELINE             = 1;
   public static final double REFLECTIVE_TAPE_PIPELINE             = 2;
+
+  public static final double kFieldLengthMeters = Units.feetToMeters(54.27083);
+  public static final double kFieldWidthMeters = Units.feetToMeters(26.2916);
+  public static final Pose2d kOppositeField = new Pose2d(kFieldLengthMeters, kFieldWidthMeters,
+    Rotation2d.fromDegrees(180));
   
 }
+
+
 
 

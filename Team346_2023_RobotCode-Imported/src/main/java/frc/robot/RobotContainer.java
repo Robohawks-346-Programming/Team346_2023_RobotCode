@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.Autos.AutoFactory;
 import frc.robot.commands.Autos.CubeLowNoMove;
 import frc.robot.commands.Autos.OneConeBalance;
 import frc.robot.commands.Autos.OneConeCubeBlue;
@@ -62,6 +63,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.VisionProcessor;
 import frc.robot.subsystems.Drivetrain.Drivetrain;
+import frc.lib.PathPlannerUtils;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -93,7 +95,8 @@ public class RobotContainer {
   public static final OneConeBalance oneConeBalance = new OneConeBalance();
   public static final OneCubeBalance oneCubeBalance = new OneCubeBalance();
   public static final CubeLowNoMove cubeLowNoMove = new CubeLowNoMove();
-  SendableChooser<Command> autoChooser = new SendableChooser<Command>();
+  private AutoFactory m_autoFactory;
+  SendableChooser<Command> autoChooser;
   
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -116,7 +119,7 @@ public class RobotContainer {
 
     public DoubleSupplier xAxis = () -> (-driverControl.getLeftY());
     public DoubleSupplier yAxis = () -> (-driverControl.getLeftX());
-    public DoubleSupplier thetaAxis = () -> (-driverControl.getRightX());
+    public DoubleSupplier thetaAxis = () -> (driverControl.getRightX());
 
 
 
@@ -162,7 +165,7 @@ public class RobotContainer {
         .whileTrue(new JoystickDriveFast(drivetrain, xAxis, yAxis, thetaAxis));
     new JoystickButton(driverControl, Button.kL1.value).onTrue(new JoystickDrive(drivetrain, xAxis, yAxis, thetaAxis));
     new JoystickButton(driverControl, Button.kL2.value).whileTrue(new JoystickDriveReverse(drivetrain, xAxis, yAxis, thetaAxis));
-    //new JoystickButton(driverControl, Button.kCross.value).onTrue(new InstantCommand(drivetrain::resetAbsoluteEncoders));
+    new JoystickButton(driverControl, Button.kCross.value).onTrue(new InstantCommand(drivetrain::resetAbsoluteEncoders));
 
     //BUTTON_1.onTrue(new StartingConfig());
     BUTTON_1.whileTrue(new Grab());
@@ -182,6 +185,13 @@ public class RobotContainer {
   }
 
   public void configureAutoPaths() {
+    autoChooser = new SendableChooser<Command>();
+    // m_autoFactory = new AutoFactory(drivetrain, grabber, arm, intake);
+
+    // PathPlannerUtils.getExistingPaths().forEach(path -> {
+    //   autoChooser.addOption(path, m_autoFactory.getAutoCommand(path));
+    // });
+
     // autoChooser.addOption("2 Cube Out Open Blue", twoCubeOutOpenBlue);
     // autoChooser.addOption("2 Cube Out Open Red", twoCubeOutOpenRed);
     autoChooser.addOption("2 Cube Open Blue", twoCubeBlue);
@@ -213,7 +223,7 @@ public class RobotContainer {
         drivetrain::resetOdometry,
         new PIDConstants(0.05,0,0),
         new PIDConstants(1,0,0),
-        drivetrain::drive, // this sets the motor powers
+        drivetrain::drive,
         eventMap,
         true,
         drivetrain);
@@ -221,13 +231,11 @@ public class RobotContainer {
         Command path1 = builder.followPath(test.get(0));
         Command move = new SequentialCommandGroup(
           resetOdometry(test),
-          new FollowPathWithEvents(path1, null, eventMap)
-          //path1
+          path1
         );
         autoChooser.addOption("move1", move);
         autoChooser.setDefaultOption("move1", move);
-        configureAutoPaths();
-        return autoChooser.getSelected();
+        return move;
 
     //     var group1 = PathPlanner.loadPathGroup("TwoCubeOpen", new PathConstraints(1, 1));
     //     Command path11 = builder.followPath(group1.get(0));
@@ -364,5 +372,9 @@ public class RobotContainer {
             // autoChooser.addOption("3 Cube Conduit", threeCubeConduit);
             // autoChooser.addOption("1 Cube Middle + Balance", oneCubeMiddleBalance);
             // autoChooser.setDefaultOption("2 Cube Open", twoCubeOpen);
+
+
+
+      
   }
 }
