@@ -62,7 +62,7 @@ public class Drivetrain extends SubsystemBase {
     public Drivetrain() {
         gyro.calibrate();; //Ask if this would work
         
-        poseEstimator = new SwerveDrivePoseEstimator(Constants.DRIVE_KINEMATICS, getHeading(), getModulePositions(), new Pose2d());
+        poseEstimator = new SwerveDrivePoseEstimator(Constants.DRIVE_KINEMATICS, gyro.getRotation2d(), getModulePositions(), new Pose2d());
         
         for( SwerveModule module : modules) {
             module.resetDistance();
@@ -80,7 +80,7 @@ public class Drivetrain extends SubsystemBase {
     }
     @Override
     public void periodic() {
-        poseEstimator.update(getHeading(), getModulePositions());
+        poseEstimator.update(gyro.getRotation2d(), getModulePositions());
         if (lastFPGATimestamp < Timer.getFPGATimestamp()) {
             lastFPGATimestamp = Timer.getFPGATimestamp() + 1;
             for (SwerveModule module : modules) {
@@ -89,7 +89,7 @@ public class Drivetrain extends SubsystemBase {
         }
 
         SmartDashboard.putNumber("Velocity Ouput", backLeft.getDriveVelocity());
-        SmartDashboard.putNumber("Gyro Heading", getHeading().getDegrees());
+        SmartDashboard.putNumber("Gyro Heading", gyro.getRotation2d().getDegrees());
 
         RobotContainer.visionProcessor.getEstimatedRobotPose().ifPresent(pose -> {
             lastPose3d = pose.estimatedPose;

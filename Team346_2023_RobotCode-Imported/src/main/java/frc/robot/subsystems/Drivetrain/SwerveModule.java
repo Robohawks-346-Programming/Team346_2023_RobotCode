@@ -147,4 +147,9 @@ public class SwerveModule extends SubsystemBase {
         turningCANCoder.setPositionToAbsolute();
         turningCANCoder.configMagnetOffset(turningCANCoder.configGetMagnetOffset()- turningCANCoder.getAbsolutePosition());
     }
+
+    public Rotation2d getAngle() {
+        double angle = Units.degreesToRadians(turnEncoder.getPosition());
+        return new Rotation2d(MathUtil.angleModulus(angle));
+    }
 }
