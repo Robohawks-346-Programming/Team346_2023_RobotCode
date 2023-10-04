@@ -179,6 +179,12 @@ public final class Constants {
   public static final double kFieldWidthMeters = Units.feetToMeters(26.2916);
   public static final Pose2d kOppositeField = new Pose2d(kFieldLengthMeters, kFieldWidthMeters,
     Rotation2d.fromDegrees(180));
+
+    /* Drive Motor Characterization Values */
+    public static final double driveKS = 0.667;
+    public static final double driveKV = 2.44;
+    public static final double driveKA = 0.27;
+    public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
   
 }
 

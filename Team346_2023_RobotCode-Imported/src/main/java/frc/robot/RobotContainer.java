@@ -16,9 +16,13 @@ import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import com.pathplanner.lib.commands.FollowPathWithEvents;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
@@ -165,7 +169,7 @@ public class RobotContainer {
         .whileTrue(new JoystickDriveFast(drivetrain, xAxis, yAxis, thetaAxis));
     new JoystickButton(driverControl, Button.kL1.value).onTrue(new JoystickDrive(drivetrain, xAxis, yAxis, thetaAxis));
     new JoystickButton(driverControl, Button.kL2.value).whileTrue(new JoystickDriveReverse(drivetrain, xAxis, yAxis, thetaAxis));
-    new JoystickButton(driverControl, Button.kCross.value).onTrue(new InstantCommand(drivetrain::resetAbsoluteEncoders));
+    //new JoystickButton(driverControl, Button.kCross.value).onTrue(new InstantCommand(drivetrain::resetAbsoluteEncoders));
 
     //BUTTON_1.onTrue(new StartingConfig());
     BUTTON_1.whileTrue(new Grab());
@@ -223,7 +227,7 @@ public class RobotContainer {
         drivetrain::resetOdometry,
         new PIDConstants(0.05,0,0),
         new PIDConstants(1,0,0),
-        drivetrain::drive,
+        speeds -> drivetrain.drive(speeds), // speeds -> drivetrain.drive(speeds, true) 
         eventMap,
         true,
         drivetrain);
