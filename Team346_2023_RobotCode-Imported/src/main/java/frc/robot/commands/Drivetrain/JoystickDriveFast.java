@@ -5,15 +5,15 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.Drivetrain.Drivetrain;
+import frc.robot.subsystems.Drivetrain.Drivetrain422;
 
 /** An example command that uses an example subsystem. */
 public class JoystickDriveFast extends CommandBase {
 
-  Drivetrain drivetrain;
+  Drivetrain422 drivetrain;
   DoubleSupplier x,y,theta;
 
-  public JoystickDriveFast(Drivetrain drivetrain, DoubleSupplier x, DoubleSupplier y, DoubleSupplier theta) {
+  public JoystickDriveFast(Drivetrain422 drivetrain, DoubleSupplier x, DoubleSupplier y, DoubleSupplier theta) {
     this.drivetrain = drivetrain;
     this.x = x;
     this.y = y;
@@ -39,7 +39,8 @@ public class JoystickDriveFast extends CommandBase {
     ChassisSpeeds velocity = Constants.IS_FIELD_RELATIVE ? ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, omega, drivetrain.getHeading()) 
       : new ChassisSpeeds(vx, vy, omega);
 
-    drivetrain.drive(velocity);
+    drivetrain.drive(velocity
+    );
   }
 
   // Called once the command ends or is interrupted.

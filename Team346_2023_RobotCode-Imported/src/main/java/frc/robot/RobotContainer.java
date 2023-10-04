@@ -34,17 +34,18 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Autos.AutoFactory;
-import frc.robot.commands.Autos.CubeLowNoMove;
-import frc.robot.commands.Autos.OneConeBalance;
-import frc.robot.commands.Autos.OneConeCubeBlue;
-import frc.robot.commands.Autos.OneConeCubeRed;
-import frc.robot.commands.Autos.OneCubeBalance;
-import frc.robot.commands.Autos.TwoCubeBlue;
-import frc.robot.commands.Autos.TwoCubeConduitBlue;
-import frc.robot.commands.Autos.TwoCubeConduitRed;
+// import frc.robot.commands.Autos.CubeLowNoMove;
+// import frc.robot.commands.Autos.OneConeBalance;
+// import frc.robot.commands.Autos.OneConeCubeBlue;
+// import frc.robot.commands.Autos.OneConeCubeRed;
+// import frc.robot.commands.Autos.OneCubeBalance;
+// import frc.robot.commands.Autos.TwoCubeBlue;
+// import frc.robot.commands.Autos.TwoCubeConduitBlue;
+// import frc.robot.commands.Autos.TwoCubeConduitRed;
 import frc.robot.commands.Drivetrain.JoystickDrive;
 import frc.robot.commands.Drivetrain.JoystickDriveFast;
 import frc.robot.commands.Drivetrain.JoystickDriveReverse;
+import frc.robot.commands.Drivetrain.TeleopSwerve;
 import frc.robot.commands.Grabber.Grab;
 import frc.robot.commands.Intake.DeployIntakeFastOut;
 import frc.robot.commands.Intake.DeployIntakeIn;
@@ -67,6 +68,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.VisionProcessor;
 import frc.robot.subsystems.Drivetrain.Drivetrain;
+import frc.robot.subsystems.Drivetrain.Drivetrain422;
 import frc.lib.PathPlannerUtils;
 
 /**
@@ -90,15 +92,15 @@ public class RobotContainer {
   public static final Joystick operatorControl = new Joystick(Constants.OPERATOR_CONTROLLER_PORT);
   // public static final TwoCubeOutBlue twoCubeOutOpenBlue = new TwoCubeOutBlue();
   // public static final TwoCubeOutRed twoCubeOutOpenRed = new TwoCubeOutRed();
-  public static final TwoCubeBlue twoCubeBlue = new TwoCubeBlue();
+  //public static final TwoCubeBlue twoCubeBlue = new TwoCubeBlue();
   // public static final TwoCubeRed twoCubeRed = new TwoCubeRed();
-  public static final OneConeCubeBlue oneConeCubeOpenBlue = new OneConeCubeBlue();
-  public static final OneConeCubeRed oneConeCubeOpenRed = new OneConeCubeRed();
-  public static final TwoCubeConduitBlue twoCubeConduitBlue = new TwoCubeConduitBlue();
-  public static final TwoCubeConduitRed twoCubeConduitRed = new TwoCubeConduitRed();
-  public static final OneConeBalance oneConeBalance = new OneConeBalance();
-  public static final OneCubeBalance oneCubeBalance = new OneCubeBalance();
-  public static final CubeLowNoMove cubeLowNoMove = new CubeLowNoMove();
+  // public static final OneConeCubeBlue oneConeCubeOpenBlue = new OneConeCubeBlue();
+  // public static final OneConeCubeRed oneConeCubeOpenRed = new OneConeCubeRed();
+  // public static final TwoCubeConduitBlue twoCubeConduitBlue = new TwoCubeConduitBlue();
+  // public static final TwoCubeConduitRed twoCubeConduitRed = new TwoCubeConduitRed();
+  // public static final OneConeBalance oneConeBalance = new OneConeBalance();
+  // // public static final OneCubeBalance oneCubeBalance = new OneCubeBalance();
+  // public static final CubeLowNoMove cubeLowNoMove = new CubeLowNoMove();
   private AutoFactory m_autoFactory;
   SendableChooser<Command> autoChooser;
   
@@ -139,7 +141,7 @@ public class RobotContainer {
 
     // Configure the trigger bindings
     configureButtonBindings();
-    drivetrain.setDefaultCommand(new JoystickDrive(drivetrain, xAxis, yAxis, thetaAxis));
+    drivetrain.setDefaultCommand(new TeleopSwerve(drivetrain, yAxis, xAxis, thetaAxis));
     configureAutoPaths();
   }
 
@@ -165,10 +167,10 @@ public class RobotContainer {
     // cancelling on release.
     new JoystickButton(driverControl, Button.kOptions.value).onTrue(new InstantCommand(drivetrain::resetEncoders));
     new JoystickButton(driverControl, Button.kShare.value).onTrue(new InstantCommand(drivetrain::zeroHeading));
-    new JoystickButton(driverControl, Button.kR2.value)
-        .whileTrue(new JoystickDriveFast(drivetrain, xAxis, yAxis, thetaAxis));
-    new JoystickButton(driverControl, Button.kL1.value).onTrue(new JoystickDrive(drivetrain, xAxis, yAxis, thetaAxis));
-    new JoystickButton(driverControl, Button.kL2.value).whileTrue(new JoystickDriveReverse(drivetrain, xAxis, yAxis, thetaAxis));
+    // new JoystickButton(driverControl, Button.kR2.value)
+    //     .whileTrue(new JoystickDriveFast(drivetrain, xAxis, yAxis, thetaAxis));
+    // new JoystickButton(driverControl, Button.kL1.value).onTrue(new JoystickDrive(drivetrain, xAxis, yAxis, thetaAxis));
+    // new JoystickButton(driverControl, Button.kL2.value).whileTrue(new JoystickDriveReverse(drivetrain, xAxis, yAxis, thetaAxis));
     //new JoystickButton(driverControl, Button.kCross.value).onTrue(new InstantCommand(drivetrain::resetAbsoluteEncoders));
 
     //BUTTON_1.onTrue(new StartingConfig());
@@ -198,15 +200,15 @@ public class RobotContainer {
 
     // autoChooser.addOption("2 Cube Out Open Blue", twoCubeOutOpenBlue);
     // autoChooser.addOption("2 Cube Out Open Red", twoCubeOutOpenRed);
-    autoChooser.addOption("2 Cube Open Blue", twoCubeBlue);
-    // autoChooser.addOption("2 Cube Open Red", twoCubeRed);
-    autoChooser.addOption("1 Cone Cube Open Blue", oneConeCubeOpenBlue);
-    autoChooser.addOption("1 Cone Cube Open Red", oneConeCubeOpenRed);
-    autoChooser.addOption("2 Cube Conduit Blue", twoCubeConduitBlue);
-    autoChooser.addOption("2 Cube Conduit Red", twoCubeConduitRed);
-    autoChooser.addOption("1 Cone Balance", oneConeBalance);
-    autoChooser.addOption("1 Cube Balance", oneCubeBalance);
-    autoChooser.addOption("1 Cube Low No Move", cubeLowNoMove);
+    // autoChooser.addOption("2 Cube Open Blue", twoCubeBlue);
+    // // autoChooser.addOption("2 Cube Open Red", twoCubeRed);
+    // autoChooser.addOption("1 Cone Cube Open Blue", oneConeCubeOpenBlue);
+    // autoChooser.addOption("1 Cone Cube Open Red", oneConeCubeOpenRed);
+    // autoChooser.addOption("2 Cube Conduit Blue", twoCubeConduitBlue);
+    // autoChooser.addOption("2 Cube Conduit Red", twoCubeConduitRed);
+    // autoChooser.addOption("1 Cone Balance", oneConeBalance);
+    // autoChooser.addOption("1 Cube Balance", oneCubeBalance);
+    // autoChooser.addOption("1 Cube Low No Move", cubeLowNoMove);
 
     SmartDashboard.putData("autoChooser", autoChooser);
 
@@ -216,7 +218,7 @@ public class RobotContainer {
       return new InstantCommand( () -> {
           PathPlannerState initialState = pathGroup.get(0).getInitialState();
           drivetrain.zeroHeading();
-          drivetrain.setFieldToVehicle(new Rotation2d(0), drivetrain.getModulePositions(), new Pose2d(initialState.poseMeters.getTranslation(), initialState.holonomicRotation));
+          drivetrain.setFieldToVehicle(new Rotation2d(0), drivetrain.getPositions(), new Pose2d(initialState.poseMeters.getTranslation(), initialState.holonomicRotation));
       });
   }
     // An example command will be run in autonomous
@@ -227,7 +229,7 @@ public class RobotContainer {
         drivetrain::resetOdometry,
         new PIDConstants(0.05,0,0),
         new PIDConstants(1,0,0),
-        speeds -> drivetrain.drive(speeds), // speeds -> drivetrain.drive(speeds, true) 
+        drivetrain::driveAuto, // speeds -> drivetrain.drive(speeds, true) 
         eventMap,
         true,
         drivetrain);

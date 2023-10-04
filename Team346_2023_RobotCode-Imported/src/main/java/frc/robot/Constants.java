@@ -185,6 +185,7 @@ public final class Constants {
     public static final double driveKV = 2.44;
     public static final double driveKA = 0.27;
     public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
+    public static final double stickDeadband = 0.1;
   
 }
 

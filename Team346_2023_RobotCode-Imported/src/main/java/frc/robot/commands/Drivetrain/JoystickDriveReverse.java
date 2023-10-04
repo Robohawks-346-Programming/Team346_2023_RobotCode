@@ -5,15 +5,15 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.Drivetrain.Drivetrain;
+import frc.robot.subsystems.Drivetrain.Drivetrain422;
 
 /** An example command that uses an example subsystem. */
 public class JoystickDriveReverse extends CommandBase {
 
-  Drivetrain drivetrain;
+  Drivetrain422 drivetrain;
   DoubleSupplier x,y,theta;
 
-  public JoystickDriveReverse(Drivetrain drivetrain, DoubleSupplier x, DoubleSupplier y, DoubleSupplier theta) {
+  public JoystickDriveReverse(Drivetrain422 drivetrain, DoubleSupplier x, DoubleSupplier y, DoubleSupplier theta) {
     this.drivetrain = drivetrain;
     this.x = x;
     this.y = y;

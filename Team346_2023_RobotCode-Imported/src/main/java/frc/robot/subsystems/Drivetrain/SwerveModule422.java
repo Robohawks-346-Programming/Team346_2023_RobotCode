@@ -1,4 +1,3 @@
-
 package frc.robot.subsystems.Drivetrain;
 
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
@@ -9,7 +8,6 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -24,7 +22,7 @@ import com.revrobotics.SparkMaxPIDController;
 
 import frc.robot.Constants;
 
-public class SwerveModule3512 extends SubsystemBase {
+public class SwerveModule422 extends SubsystemBase {
 
    CANSparkMax driveMotor, turnMotor;
 
@@ -32,15 +30,13 @@ public class SwerveModule3512 extends SubsystemBase {
 
    CANCoder turningCANCoder;
 
-   private Rotation2d lastAngle;
-
    double encoderOffset;
 
    SparkMaxPIDController driveController, turnController;
 
    private double adjustedSpeed;
 
-   public SwerveModule3512 (
+   public SwerveModule422 (
     int driveMotorID,
     int turnMotorID,
     int turningCANCoderID) 
@@ -94,52 +90,69 @@ public class SwerveModule3512 extends SubsystemBase {
         turnMotor.burnFlash();  
     }
 
-    private final SimpleMotorFeedforward feedforward =
-    new SimpleMotorFeedforward(
-        Constants.driveKS, Constants.driveKV, Constants.driveKA);
+    public SwerveModuleState getState() {
+        return new SwerveModuleState(driveEncoder.getVelocity(), getStateAngle());
+    }
 
-    public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
-        // Custom optimize command, since default WPILib optimize assumes continuous controller which
-        // REV and CTRE are not
-        desiredState = OnboardModuleState.optimize(desiredState, getState().angle);
-    
-        setAngle(desiredState);
-        setSpeed(desiredState, isOpenLoop);
-      }
+    public SwerveModuleState getAbsoluteState() {
+        return new SwerveModuleState(getDriveVelocity(), getAbsoluteRotation());
+    }
 
-      private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop) {
-        if (isOpenLoop) {
-          double percentOutput = desiredState.speedMetersPerSecond / Constants.MAX_MOVE_VELOCITY;
-          driveMotor.set(percentOutput);
-        } else {
-          driveController.setReference(
-              desiredState.speedMetersPerSecond,
-              ControlType.kVelocity,
-              0,
-              feedforward.calculate(desiredState.speedMetersPerSecond));
-        }
-      }
+    public Rotation2d getStateAngle() {
+        double stateAngle = Units.degreesToRadians(turnEncoder.getPosition());
+        return new Rotation2d(MathUtil.angleModulus(stateAngle));
+    }
 
-      private void setAngle(SwerveModuleState desiredState) {
-        // Prevent rotating module if speed is less then 1%. Prevents jittering.
-        Rotation2d angle =
-            (Math.abs(desiredState.speedMetersPerSecond) <= (Constants.MAX_MOVE_VELOCITY * 0.01))
-                ? lastAngle
-                : desiredState.angle;
-    
-        turnController.setReference(angle.getDegrees(), ControlType.kPosition);
-        lastAngle = angle;
-      }
+    public double getDriveVelocity() {
+        return driveEncoder.getVelocity();
+    }
 
-      private Rotation2d getAngle() {
-        return Rotation2d.fromDegrees(turnEncoder.getPosition());
-      }
-    
-      public Rotation2d getCanCoder() {
+    public Rotation2d getAbsoluteRotation() {
         return Rotation2d.fromDegrees(turningCANCoder.getAbsolutePosition());
-      }
-    
-      public SwerveModuleState getState() {
-        return new SwerveModuleState(driveEncoder.getVelocity(), getAngle());
-      }
+    }
+
+    public Rotation2d adjustedAngle = new Rotation2d();
+
+    public void setState(SwerveModuleState state) {
+        double driveOutput = state.speedMetersPerSecond;
+        SmartDashboard.putNumber("Velocity Input", driveOutput);
+        turnController.setReference(state.angle.getDegrees(), ControlType.kPosition);
+        adjustedSpeed = driveOutput;
+        driveController.setReference(driveOutput, ControlType.kVelocity, 0, adjustedSpeed);
+    }
+
+    public double adjustedAngle(double wantedAngle, double currentAngle) {
+        return ((wantedAngle - currentAngle + 180) % 360 + 360) % 360 - 180;
+    }
+
+    public double getDriveDistance() {
+        return driveEncoder.getPosition();
+    }
+
+    public void resetDistance() {
+        driveEncoder.setPosition(0.0);
+    }
+
+    public void syncTurnEncoders() {
+        turnEncoder.setPosition(turningCANCoder.getAbsolutePosition());
+    }
+
+    public void resetEncoders() {
+        turnEncoder.setPosition(turningCANCoder.getAbsolutePosition());
+    }
+
+    public SwerveModulePosition getPosition() {
+        return new SwerveModulePosition(driveEncoder.getPosition(), getStateAngle());
+    }
+
+    public void resetAbsoluteEncoders() {
+        turningCANCoder.setPosition(0);
+        turningCANCoder.setPositionToAbsolute();
+        turningCANCoder.configMagnetOffset(turningCANCoder.configGetMagnetOffset()- turningCANCoder.getAbsolutePosition());
+    }
+
+    public Rotation2d getAngle() {
+        double angle = Units.degreesToRadians(turnEncoder.getPosition());
+        return new Rotation2d(MathUtil.angleModulus(angle));
+    }
 }
