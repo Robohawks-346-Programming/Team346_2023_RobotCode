@@ -30,7 +30,7 @@ public class Intake extends SubsystemBase {
 
         intakeMotor.setSmartCurrentLimit(25);
         rotationMotor = new CANSparkMax(Constants.INTAKE_ROTATION_MOTOR_ID, MotorType.kBrushless);
-        rotationMotor.setIdleMode(IdleMode.kCoast);
+        rotationMotor.setIdleMode(IdleMode.kBrake);
         rotationMotor.setInverted(true);
         rotationMotor.setSmartCurrentLimit(25);
 
@@ -113,6 +113,14 @@ public class Intake extends SubsystemBase {
 
     public boolean getLaserBreak() {
         return !laserBreak.get();
+    }
+
+    public void setRotationMotorToBrake() {
+        rotationMotor.setIdleMode(IdleMode.kBrake);
+    }
+
+    public void setRotationMotorToCoast() {
+        rotationMotor.setIdleMode(IdleMode.kCoast);
     }
 
 }

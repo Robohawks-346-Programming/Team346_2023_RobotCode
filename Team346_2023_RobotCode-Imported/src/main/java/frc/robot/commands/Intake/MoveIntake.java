@@ -28,6 +28,7 @@ public class MoveIntake extends CommandBase {
   @Override
   public void initialize() {
   currentRev = RobotContainer.intake.getRotationEncoder();
+  RobotContainer.intake.setRotationMotorToCoast();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -41,6 +42,9 @@ public class MoveIntake extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     RobotContainer.intake.stopRotationMotor();
+    if (position == Constants.INTAKE_IN_POSITION) {
+      RobotContainer.intake.setRotationMotorToBrake();
+    }
   }
 
   // Returns true when the command should end.

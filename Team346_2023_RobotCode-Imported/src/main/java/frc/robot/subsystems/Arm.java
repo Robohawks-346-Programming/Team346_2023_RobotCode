@@ -31,11 +31,13 @@ public class Arm extends SubsystemBase {
         rotationEncoder.setPositionConversionFactor(armDegreesPerMotorRev);
         rotationEncoder.setPosition(Constants.HOME_ARM_ANGLE);
         rotationMotor.setInverted(true);
+        rotationMotor.setIdleMode(IdleMode.kBrake);
 
         rotationPIDController = rotationMotor.getPIDController();
         rotationPIDController.setP(Constants.ARM_P);
         rotationPIDController.setI(Constants.ARM_I);
         rotationPIDController.setD(Constants.ARM_D);
+        
 
         rotationPIDController.setOutputRange(-Constants.ARM_MOTOR_SPEED_DOWN, Constants.ARM_MOTOR_SPEED_UP);
 
