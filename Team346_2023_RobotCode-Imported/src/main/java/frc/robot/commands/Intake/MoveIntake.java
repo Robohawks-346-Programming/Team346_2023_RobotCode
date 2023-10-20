@@ -42,9 +42,6 @@ public class MoveIntake extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     RobotContainer.intake.stopRotationMotor();
-    if (position == Constants.INTAKE_IN_POSITION) {
-      RobotContainer.intake.setRotationMotorToBrake();
-    }
   }
 
   // Returns true when the command should end.

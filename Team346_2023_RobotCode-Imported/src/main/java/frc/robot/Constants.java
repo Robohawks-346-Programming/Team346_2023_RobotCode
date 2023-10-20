@@ -9,7 +9,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
-import frc.lib.ExtendedPathPoint;
+// import frc.lib.ExtendedPathPoint;
+import edu.wpi.first.wpilibj.util.Color;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -159,8 +160,12 @@ public final class Constants {
   public static final int GRABBER_LASER_BREAK_PORT                    = 0;
   public static final int INTAKE_LASER_BREAK_PORT                     = 2;
 
-  // LED Ports
+  // LEDs
   public static final int LED_1_PWM_PORT                              = 5;
+  public static final int LED_2_PWM_PORT                              = 6;
+  public static final int LED_2_LENGTH                                = 60;
+  public static final Color ROBOHAWKS_BLUE = new Color(0, 191, 255);
+  public static final Color CUBE_PURPLE = new Color(128, 0, 255);
     
   // Vision Processor 
   public static final double END_DISTANCE = 2;                                  // the distance we want the robot to be from the target
