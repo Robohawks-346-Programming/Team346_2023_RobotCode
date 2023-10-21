@@ -37,12 +37,12 @@ public class VisionProcessor extends SubsystemBase {
     
     public VisionProcessor() {
         cam = new PhotonCamera("testCamera");
-        robotToCam = new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0,0,0)); //Cam mounted facing forward, half a meter forward of center, half a meter up from center.
-        try {
-            aprilTagFieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        robotToCam = new Transform3d(new Translation3d(0.1016, 0.0, 0.4191), new Rotation3d(0,0.436332,0)); //Cam mounted facing forward, 4 inches forward of center, 16.5 inches up from center.
+            try {
+                aprilTagFieldLayout = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, cam, robotToCam);
     }
     //Variables:

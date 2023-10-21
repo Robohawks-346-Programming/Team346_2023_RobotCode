@@ -90,7 +90,7 @@ import frc.lib.PathPlannerUtils;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  public static final Arm arm = new Arm();
+  public final static Arm arm = new Arm();
   public static final Grabber grabber = new Grabber();
   public static final LED led = new LED();
   public static final Intake intake = new Intake();

@@ -12,8 +12,10 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.LED.Rainbow;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -61,7 +63,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    
+    RobotContainer.led.setSolidColor(Color.kAqua);
   }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
@@ -69,7 +71,6 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     RobotContainer.drivetrain.zeroHeading();
     // RobotContainer.drivetrain.resetOdometry(new Pose2d(0,0, Rotation2d.fromDegrees(180)));
-    RobotContainer.drivetrain.resetOdometry(new Pose2d());
     RobotContainer.drivetrain.resetEncoders();
     RobotContainer.intake.resetIntakePosition();
     RobotContainer.arm.setRotationEncoder();

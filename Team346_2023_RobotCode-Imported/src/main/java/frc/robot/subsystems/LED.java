@@ -34,6 +34,7 @@ public class LED extends SubsystemBase{
         m_fade = new Fade(this,
         new Color[] { Constants.ROBOHAWKS_BLUE, Constants.CUBE_PURPLE});
         m_fade.initialize();
+        LED2.start();
 
     }
 
@@ -62,7 +63,7 @@ public class LED extends SubsystemBase{
         for (int i = 0; i < LED2_Buffer.getLength(); i++) {
             LED2_Buffer.setLED(i, color);
         }
-        //LED2.setData(LED2_Buffer);
+        LED2.setData(LED2_Buffer);
     }
 
     public Command setSolidColorCommand(Color color) {
