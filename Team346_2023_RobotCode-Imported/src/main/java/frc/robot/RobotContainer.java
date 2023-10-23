@@ -32,8 +32,6 @@ import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -67,8 +65,6 @@ import frc.robot.commands.States.DeliverLevel2;
 import frc.robot.commands.States.Level2Config;
 import frc.robot.commands.States.Level3Config;
 import frc.robot.commands.States.StartingConfig;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Grabber;
@@ -191,6 +187,7 @@ public class RobotContainer {
     BUTTON_8.onTrue(new StartingConfig());
     BUTTON_9.whileTrue(new Deliver());
     BUTTON_10.whileTrue(new DeliverLevel2());
+    //BUTTON_11.whileTrue(new Grab());
     //BUTTON_11.onTrue(new SubstationRetract());
     //BUTTON_12.onTrue(new SubstationConfig());
     BUTTON_13.whileTrue(new DeployIntakeIn());
@@ -258,7 +255,7 @@ public class RobotContainer {
         autoChooser.addOption("move1", move);
         autoChooser.setDefaultOption("move1", move);
 
-        List<PathPlannerTrajectory> group1 = PathPlanner.loadPathGroup("TwoCubeOpen", new PathConstraints(1, 1));
+        List<PathPlannerTrajectory> group1 = PathPlanner.loadPathGroup("TwoCubeOpen", new PathConstraints(2, 2));
         Command path11 = builder.followPath(group1.get(0));
         Command path12 = builder.followPath(group1.get(1));
         Command twoCubeOpen = 
@@ -268,7 +265,7 @@ public class RobotContainer {
             new ParallelDeadlineGroup(new WaitCommand(0.5), 
               new DeliverFast()),
             new ParallelRaceGroup(
-              new SequentialCommandGroup(new StartingConfig(), new DeployIntakeIn()),
+              new ParallelCommandGroup(new StartingConfig(), new DeployIntakeIn()),
                 path11),
             new InstantCommand(drivetrain::brake),
             new MoveIntake(Constants.INTAKE_IN_POSITION),
@@ -351,20 +348,18 @@ public class RobotContainer {
             new InstantCommand(drivetrain::brake),
             new ParallelDeadlineGroup(new WaitCommand(1), new RunIntakeOut()));
 
-            var group5 = PathPlanner.loadPathGroup("FourCubeConduit", new PathConstraints(2, 3));
+            var group5 = PathPlanner.loadPathGroup("FourCubeConduit", new PathConstraints(2, 2));
             Command path51 = builder.followPath(group5.get(0));
             Command path52 = builder.followPath(group5.get(1));
             Command path53 = builder.followPath(group5.get(2));
             Command path54 = builder.followPath(group5.get(3));
-            Command path55 = builder.followPath(group5.get(4));
             Command fourCubeConduit = 
             new SequentialCommandGroup(
               resetOdometry(group5),
-            new Level3Config(),
             new ParallelDeadlineGroup(new WaitCommand(0.5), 
-              new DeliverFast()),
+              new Deliver()),
             new ParallelRaceGroup(
-              new SequentialCommandGroup(new StartingConfig(), new DeployIntakeIn()),
+              new DeployIntakeIn(),
                 path51),
             new InstantCommand(drivetrain::brake),
             new MoveIntake(Constants.INTAKE_IN_POSITION),
@@ -377,10 +372,8 @@ public class RobotContainer {
                 new InstantCommand(drivetrain::brake),
                 path54,
                 new InstantCommand(drivetrain::brake),
-                new ParallelDeadlineGroup(new WaitCommand(0.5), new RunIntakeOut()),
-            new ParallelRaceGroup(
-              new SequentialCommandGroup(new DeployIntakeIn(), new MoveIntake(Constants.INTAKE_IN_POSITION)),
-                  path55)
+                new MoveIntake(Constants.INTAKE_IN_POSITION),
+                new ParallelDeadlineGroup(new WaitCommand(0.5), new RunIntakeOut())
             );
 
             var group6 = PathPlanner.loadPathGroup("OneCubeMiddle+Balance", 2, 3);
@@ -395,7 +388,7 @@ public class RobotContainer {
               path61,
               new AutoBalance(drivetrain));
 
-              var group7 = PathPlanner.loadPathGroup("ThreeCubeOpen", new PathConstraints(2, 2));
+              var group7 = PathPlanner.loadPathGroup("ThreeCubeOpen", new PathConstraints(4, 4));
             Command path71 = builder.followPath(group7.get(0));
             Command path72 = builder.followPath(group7.get(1));
             Command path73 = builder.followPath(group7.get(2));
@@ -407,15 +400,15 @@ public class RobotContainer {
             new ParallelDeadlineGroup(new WaitCommand(0.5), 
               new DeliverFast()),
             new ParallelRaceGroup(
-              new SequentialCommandGroup(new StartingConfig(), new DeployIntakeIn()),
-                path71),
+              new ParallelCommandGroup(path71, new DeployIntakeIn()),
+                new StartingConfig()),
             new InstantCommand(drivetrain::brake),
             new MoveIntake(Constants.INTAKE_IN_POSITION),
             path72,
             new InstantCommand(drivetrain::brake),
             new ParallelDeadlineGroup(new WaitCommand(0.5), new RunIntakeOut()),
             new ParallelRaceGroup(
-              new DeployIntakeIn(),
+              new SequentialCommandGroup(new WaitCommand(2), new DeployIntakeIn()),
               path73),
                 new InstantCommand(drivetrain::brake),
                 new MoveIntake(Constants.INTAKE_IN_POSITION),
@@ -462,7 +455,7 @@ public class RobotContainer {
             autoChooser.addOption("1 Cube Middle + Balance", oneCubeMiddleBalance);
             autoChooser.addOption("3 Cube Open", threeCubeOpen);
             autoChooser.addOption("3 Cube Conduit", threeCubeConduit);
-            autoChooser.setDefaultOption("3 Cube Open", threeCubeOpen);
+            autoChooser.setDefaultOption("4 Cube Conduit", fourCubeConduit);
             
 
             return autoChooser.getSelected();
@@ -504,6 +497,10 @@ public class RobotContainer {
     } else {
       led.setSolidColorCommand(Color.kBrown);
     }
+  }
+
+  public void onDisabled() {
+    Command selectedAutoCommand = autoChooser.getSelected();
   }
 
 }

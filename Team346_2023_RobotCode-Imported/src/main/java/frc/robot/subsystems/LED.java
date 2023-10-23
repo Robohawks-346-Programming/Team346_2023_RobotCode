@@ -31,9 +31,12 @@ public class LED extends SubsystemBase{
         
       m_flash = new Flash(this, Color.kAliceBlue, 25);
 
-        m_fade = new Fade(this,
-        new Color[] { Constants.ROBOHAWKS_BLUE, Constants.CUBE_PURPLE});
-        m_fade.initialize();
+        // m_fade = new Fade(this,
+        // new Color[] { Constants.ROBOHAWKS_BLUE, Constants.CUBE_PURPLE});
+        // m_fade.initialize();
+
+        LED2.setLength(Constants.LED_2_LENGTH);
+        LED2.setData(LED2_Buffer);
         LED2.start();
 
     }
