@@ -31,6 +31,7 @@ public class RunIntakeIn extends CommandBase {
   @Override
   public void execute() {
     RobotContainer.intake.runIntake(Constants.INTAKE_IN_MOTOR_SPEED);
+    //new MoveIntake(Constants.INTAKE_OUT_POSITION);
   }
 
   // Called once the command ends or is interrupted.

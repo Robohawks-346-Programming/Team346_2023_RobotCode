@@ -5,6 +5,7 @@
 package frc.robot.commands.Intake;
 
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -42,6 +43,11 @@ public class MoveIntake extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     RobotContainer.intake.stopRotationMotor();
+    if (position == Constants.INTAKE_IN_POSITION){
+    RobotContainer.intake.setRotationMotorToBrake();
+    } else {
+      RobotContainer.intake.setRotationMotorToCoast();
+    }
   }
 
   // Returns true when the command should end.

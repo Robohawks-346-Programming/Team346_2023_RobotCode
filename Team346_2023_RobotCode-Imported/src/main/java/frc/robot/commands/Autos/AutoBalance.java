@@ -15,7 +15,7 @@ public class AutoBalance extends CommandBase {
   public AutoBalance(Drivetrain drivetrain) {
     m_drive = drivetrain;
     addRequirements(m_drive);
-    m_rollController = new PIDController(.5, 0, 0);
+    m_rollController = new PIDController(.1, 0, 0);
     m_turnController = new PIDController(1, 0, 0);
 
   }
@@ -29,9 +29,7 @@ public class AutoBalance extends CommandBase {
     //       m_turnController.calculate(m_drive.getPose().getRotation().getRadians(), Math.PI),
     //       m_drive.getPose().getRotation()));
     // } else {
-    if (Timer.getMatchTime() < .125) {
-      m_drive.brake();
-    } else if (Math.abs(m_drive.getPitchDegrees()) < 2.5) {
+if (Math.abs(m_drive.getPitchDegrees()) < 2.5) {
       m_drive.brake();
     } else if (Math.abs(m_drive.getPitchRadians()) < Units.degreesToRadians(11)) {
       m_drive.drive(ChassisSpeeds.fromFieldRelativeSpeeds(

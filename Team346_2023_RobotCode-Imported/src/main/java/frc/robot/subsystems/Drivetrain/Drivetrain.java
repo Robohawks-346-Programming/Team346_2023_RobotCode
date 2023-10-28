@@ -98,6 +98,7 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("Front Left", frontLeft.turnAngleDegrees());
         SmartDashboard.putNumber("Back Right", backRight.turnAngleDegrees());
         SmartDashboard.putNumber("Back Left", backLeft.turnAngleDegrees());
+        SmartDashboard.putNumber("Pitch", getPitchDegrees());
 
         RobotContainer.visionProcessor.getEstimatedRobotPose().ifPresent(pose -> {
             lastPose3d = pose.estimatedPose;
@@ -107,6 +108,7 @@ public class Drivetrain extends SubsystemBase {
 
     public void resetOdometry(Pose2d pose) {
         poseEstimator.resetPosition(gyro.getRotation2d(), getModulePositions(), pose);
+        
     }
 
     public Rotation2d getHeading() {

@@ -36,7 +36,7 @@ public class VisionProcessor extends SubsystemBase {
     public AprilTagFieldLayout aprilTagFieldLayout;
     
     public VisionProcessor() {
-        cam = new PhotonCamera("testCamera");
+        cam = new PhotonCamera("OV5647");
         robotToCam = new Transform3d(new Translation3d(0.1016, 0.0, 0.4191), new Rotation3d(0,0.436332,0)); //Cam mounted facing forward, 4 inches forward of center, 16.5 inches up from center.
             try {
                 aprilTagFieldLayout = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
@@ -44,6 +44,7 @@ public class VisionProcessor extends SubsystemBase {
                 e.printStackTrace();
             }
         photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, cam, robotToCam);
+        cam.setPipelineIndex(0);
     }
     //Variables:
     NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelightTable"); // creates network table object

@@ -36,7 +36,7 @@ public class JoystickDrive extends CommandBase {
     double vy = doubleY * Constants.MAX_MOVE_VELOCITY;
     double omega = doubleTheta * Constants.MAX_TURN_VELOCITY;
 
-    ChassisSpeeds velocity = Constants.IS_FIELD_RELATIVE ? ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, omega, drivetrain.getHeading()) 
+    ChassisSpeeds velocity = Constants.IS_FIELD_RELATIVE ? ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, -omega, drivetrain.getHeading()) 
       : new ChassisSpeeds(vx, vy, omega);
 
     drivetrain.drive(velocity);

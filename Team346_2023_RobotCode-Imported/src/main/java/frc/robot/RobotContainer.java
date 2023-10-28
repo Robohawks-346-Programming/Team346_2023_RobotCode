@@ -28,6 +28,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -93,6 +94,7 @@ public class RobotContainer {
   public static final Drivetrain drivetrain = new Drivetrain();
   public static final VisionProcessor visionProcessor = new VisionProcessor();
   public final PS4Controller driverControl = new PS4Controller(Constants.DRIVER_CONTROLLER_PORT);
+  //public final XboxController driverControl = new XboxController(Constants.DRIVER_CONTROLLER_PORT);
   public static final Joystick operatorControl = new Joystick(Constants.OPERATOR_CONTROLLER_PORT);
   public static final TwoCubeOutBlue twoCubeOutOpenBlue = new TwoCubeOutBlue();
   public static final TwoCubeOutRed twoCubeOutOpenRed = new TwoCubeOutRed();
@@ -176,7 +178,7 @@ public class RobotContainer {
     new JoystickButton(driverControl, Button.kShare.value).onTrue(new InstantCommand(drivetrain::zeroHeading));
     new JoystickButton(driverControl, Button.kR2.value)
         .whileTrue(new JoystickDriveFast(drivetrain, xAxis, yAxis, thetaAxis));
-    new JoystickButton(driverControl, Button.kL1.value).onTrue(led.startFlash());
+    new JoystickButton(driverControl, Button.kL1.value).whileTrue(led.startFlash());
     new JoystickButton(driverControl, Button.kL2.value).whileTrue(new JoystickDriveReverse(drivetrain, xAxis, yAxis, thetaAxis));
     //new JoystickButton(driverControl, Button.kCross.value).onTrue(new InstantCommand(drivetrain::resetAbsoluteEncoders));
 
@@ -256,15 +258,12 @@ public class RobotContainer {
         autoChooser.addOption("move1", move);
         autoChooser.setDefaultOption("move1", move);
 
-        List<PathPlannerTrajectory> group1 = PathPlanner.loadPathGroup("TwoCubeOpen", new PathConstraints(2, 2));
+        List<PathPlannerTrajectory> group1 = PathPlanner.loadPathGroup("TwoCubeOpen", new PathConstraints(2.5, 2));
         Command path11 = builder.followPath(group1.get(0));
         Command path12 = builder.followPath(group1.get(1));
         Command twoCubeOpen = 
         new SequentialCommandGroup(
-            resetOdometry(group1),
-            new Level3Config(),
-            new ParallelDeadlineGroup(new WaitCommand(0.5), 
-              new DeliverFast()),
+            new ParallelCommandGroup(resetOdometry(group1), new SequentialCommandGroup(new Level3Config(), new ParallelDeadlineGroup(new WaitCommand(0.5), new DeliverFast()))),
             new ParallelRaceGroup(
               new ParallelCommandGroup(new StartingConfig(), new DeployIntakeIn()),
                 path11),
@@ -276,20 +275,16 @@ public class RobotContainer {
 
         
 
-          var group2 = PathPlanner.loadPathGroup("FourCubeOpen", new PathConstraints(1, 1));
+          var group2 = PathPlanner.loadPathGroup("FourCubeOpen", new PathConstraints(4, 4));
           Command path21 = builder.followPath(group2.get(0));
           Command path22 = builder.followPath(group2.get(1));
           Command path23 = builder.followPath(group2.get(2));
           Command path24 = builder.followPath(group2.get(3));
-          Command path25 = builder.followPath(group2.get(4));
           Command fourCubeOpen = 
           new SequentialCommandGroup(
-            resetOdometry(group2),
-            new Level3Config(),
-            new ParallelDeadlineGroup(new WaitCommand(0.5), 
-              new DeliverFast()),
+            new ParallelCommandGroup(resetOdometry(group2), new SequentialCommandGroup(new Level3Config(), new ParallelDeadlineGroup(new WaitCommand(0.5), new DeliverFast()))),
             new ParallelRaceGroup(
-              new SequentialCommandGroup(new StartingConfig(), new DeployIntakeIn()),
+              new ParallelCommandGroup(new StartingConfig(), new DeployIntakeIn()),
                 path21),
             new InstantCommand(drivetrain::brake),
             new MoveIntake(Constants.INTAKE_IN_POSITION),
@@ -302,10 +297,7 @@ public class RobotContainer {
                 new InstantCommand(drivetrain::brake),
                 path24,
                 new InstantCommand(drivetrain::brake),
-                new ParallelDeadlineGroup(new WaitCommand(0.5), new RunIntakeOut()),
-            new ParallelRaceGroup(
-              new SequentialCommandGroup(new DeployIntakeIn(), new MoveIntake(Constants.INTAKE_IN_POSITION)),
-                  path25)
+                new ParallelDeadlineGroup(new WaitCommand(0.5), new RunIntakeOut())
             );
 
             var group3 = PathPlanner.loadPathGroup("TwoCubeOpen+Balance", new PathConstraints(2, 2));
@@ -353,7 +345,6 @@ public class RobotContainer {
             Command path51 = builder.followPath(group5.get(0));
             Command path52 = builder.followPath(group5.get(1));
             Command path53 = builder.followPath(group5.get(2));
-            Command path54 = builder.followPath(group5.get(3));
             Command fourCubeConduit = 
             new SequentialCommandGroup(
               resetOdometry(group5),
@@ -371,20 +362,21 @@ public class RobotContainer {
               new SequentialCommandGroup(new DeployIntakeIn(), new MoveIntake(Constants.INTAKE_IN_POSITION)),
               path53),
                 new InstantCommand(drivetrain::brake),
-                path54,
-                new InstantCommand(drivetrain::brake),
-                new MoveIntake(Constants.INTAKE_IN_POSITION),
-                new ParallelDeadlineGroup(new WaitCommand(0.5), new RunIntakeOut())
+                new MoveIntake(Constants.INTAKE_IN_POSITION)
+                // path54,
+                // new InstantCommand(drivetrain::brake),
+                // new MoveIntake(Constants.INTAKE_IN_POSITION),
+                // new ParallelDeadlineGroup(new WaitCommand(0.5), new RunIntakeOut())
             );
 
-            var group6 = PathPlanner.loadPathGroup("OneCubeMiddle+Balance", 2, 3);
+            var group6 = PathPlanner.loadPathGroup("OneCubeMiddle+Balance", 1, 1);
             Command path61 = builder.followPathGroup(group6);
             Command oneCubeMiddleBalance = 
             new SequentialCommandGroup(
-              resetOdometry(group6),
-            new Level3Config(),
+              new ParallelCommandGroup(resetOdometry(group6),
+            new SequentialCommandGroup(new Level3Config(),
             new ParallelDeadlineGroup(new WaitCommand(0.5), 
-              new DeliverFast()),
+              new DeliverFast()))),
               new StartingConfig(),
               path61,
               new AutoBalance(drivetrain));
@@ -396,10 +388,7 @@ public class RobotContainer {
             Command path74 = builder.followPath(group7.get(3));
             Command threeCubeOpen = 
             new SequentialCommandGroup(
-              resetOdometry(group7),
-            new Level3Config(),
-            new ParallelDeadlineGroup(new WaitCommand(0.5), 
-              new DeliverFast()),
+              new ParallelCommandGroup(resetOdometry(group7), new SequentialCommandGroup(new Level3Config(), new ParallelDeadlineGroup(new WaitCommand(0.5), new DeliverFast()))),
             new ParallelRaceGroup(
               new ParallelCommandGroup(path71, new DeployIntakeIn()),
                 new StartingConfig()),
@@ -449,14 +438,9 @@ public class RobotContainer {
 
 
             autoChooser.addOption("2 Cube Open", twoCubeOpen);
-            autoChooser.addOption("4 Cube Open", fourCubeOpen);
-            autoChooser.addOption("2 Cube Open + Balance", twoCubeOpenBalance);
-            autoChooser.addOption("2 Cube Conduit", twoCubeConduit);
             autoChooser.addOption("4 Cube Conduit", fourCubeConduit);
             autoChooser.addOption("1 Cube Middle + Balance", oneCubeMiddleBalance);
-            autoChooser.addOption("3 Cube Open", threeCubeOpen);
-            autoChooser.addOption("3 Cube Conduit", threeCubeConduit);
-            autoChooser.setDefaultOption("4 Cube Conduit", fourCubeConduit);
+            autoChooser.setDefaultOption("2 Cube Open", twoCubeOpen);
             
 
             return autoChooser.getSelected();
